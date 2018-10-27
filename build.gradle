@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'application'
+    id "com.diffplug.gradle.spotless" version "3.15.0"
 }
 
 group 'ca.uvic.seng330.assn3'
@@ -8,13 +9,38 @@ version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
 
+apply plugin: 'checkstyle'
+
+configurations {
+  checkstyleConfig
+}
+
+def versions = [
+  checkstyle: '8.13',
+]
+
 repositories {
+    jcenter()
     mavenCentral()
+}
+
+checkstyle {
+  toolVersion = "${versions.checkstyle}"
+  config = resources.text.fromArchiveEntry(configurations.checkstyleConfig, 'google_checks.xml')
+}
+
+spotless {
+  java {
+    googleJavaFormat()
+  }
 }
 
 mainClassName = "ca.uvic.seng330.assn3.MVCExample"
 
 dependencies {
+    checkstyleConfig ("com.puppycrawl.tools:checkstyle:${versions.checkstyle}") {
+        transitive = false 
+    }
     testCompile group: 'junit', name: 'junit', version: '4.12'
     testCompile "org.testfx:testfx-core:4.0.15-alpha"
     testCompile "org.testfx:testfx-junit:4.0.15-alpha"
