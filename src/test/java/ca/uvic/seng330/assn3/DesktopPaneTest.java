@@ -1,4 +1,4 @@
-/*package ca.uvic.seng330.assn3;
+package ca.uvic.seng330.assn3;
 
 import static org.testfx.api.FxAssert.verifyThat;
 
@@ -37,4 +37,4 @@ public class DesktopPaneTest extends ApplicationTest {
     // expect:
     verifyThat("#yField", TextInputControlMatchers.hasText("33"));
   }
-}*/
+}
