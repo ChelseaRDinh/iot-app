@@ -7,6 +7,16 @@ plugins {
 group 'ca.uvic.seng330.assn3'
 version '1.0-SNAPSHOT'
 
+apply plugin: 'war'
+
+sourceSets {
+    main {
+        resources {
+            exclude '**/Examples/*'
+        }
+    }
+}
+
 sourceCompatibility = 1.8
 
 apply plugin: 'checkstyle'
@@ -29,13 +39,22 @@ checkstyle {
   config = resources.text.fromArchiveEntry(configurations.checkstyleConfig, 'google_checks.xml')
 }
 
+tasks.withType(Checkstyle) {
+    exclude '**/Examples/*'
+}
+
 spotless {
   java {
     googleJavaFormat()
   }
 }
 
-mainClassName = "ca.uvic.seng330.assn3.MVCExample"
+mainClassName = "ca.uvic.seng330.assn3.IOTApplication"
+
+test {
+  exclude '**/ClickApplicationTest*'
+  exclude '**/DesktopPaneTest*'
+}
 
 dependencies {
     checkstyleConfig ("com.puppycrawl.tools:checkstyle:${versions.checkstyle}") {
