@@ -12,6 +12,12 @@ public class LoginView {
   private LoginController controller;
   private LoginModel model;
 
+  /**
+   * Constructor for the login view.
+   *
+   * @param controller the controller for the login view
+   * @param model the model for the login view
+   */
   public LoginView(LoginController controller, LoginModel model) {
     this.controller = controller;
     this.model = model;

@@ -4,7 +4,7 @@ import org.junit.Test;
 
 public class NonGUITest {
   @Test
-  public void ApplicationExists() {
+  public void applicationExists() {
     ClickApplication c = new ClickApplication();
   }
 }
