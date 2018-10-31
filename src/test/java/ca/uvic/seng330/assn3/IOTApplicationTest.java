@@ -1,5 +1,8 @@
 package ca.uvic.seng330.assn3;
 
+import static org.testfx.api.FxAssert.verifyThat;
+import static org.junit.Assert.assertEquals;
+
 import ca.uvic.seng330.assn3.login.LoginController;
 import ca.uvic.seng330.assn3.login.LoginModel;
 import ca.uvic.seng330.assn3.login.LoginView;
@@ -7,6 +10,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
+import org.testfx.matcher.control.LabeledMatchers;
+import org.testfx.matcher.control.TextInputControlMatchers;
 
 public class IOTApplicationTest extends ApplicationTest {
 
@@ -29,11 +34,39 @@ public class IOTApplicationTest extends ApplicationTest {
   }
 
   @Test
-  public void shouldContainLoginButton() {}
+  public void shouldContainLoginButton() {
+    // expect:
+    verifyThat(".button", LabeledMatchers.hasText("Login"));
+  }
 
   @Test
-  public void shouldContainUsernameField() {}
+  public void shouldContainUsernameField() {
+    // given:
+    clickOn("#usernameField").write("admin");
+    // expect:
+    verifyThat("#usernameField", TextInputControlMatchers.hasText("admin"));
+  }
 
   @Test
-  public void shouldContainPasswordField() {}
+  public void shouldContainPasswordField() {
+    // given:
+    clickOn("#passwordField").write("admin");
+    // expect:
+    verifyThat("#passwordField", TextInputControlMatchers.hasText("admin"));
+  }
+
+  @Test
+  public void adminShouldLogin() {
+      // given:
+      // Might need to ensure pw file is reset here, then restored.
+      clickOn("#usernameField").write("admin");
+      clickOn("#passwordField").write("admin");
+
+      // when:
+      clickOn(".button");
+
+      // expect:
+      // Not implemented.
+      assertEquals(false, true);
+  }
 }

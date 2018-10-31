@@ -5,6 +5,6 @@ import org.junit.Test;
 public class NonGUITest {
   @Test
   public void applicationExists() {
-    ClickApplication c = new ClickApplication();
+    IOTApplication app = new IOTApplication();
   }
 }
