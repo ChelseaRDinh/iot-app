@@ -1,6 +1,9 @@
 package ca.uvic.seng330.assn3.login;
 
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
 /*
@@ -8,6 +11,7 @@ import javafx.scene.layout.GridPane;
  */
 public class LoginView {
   private GridPane view;
+  private Label username;
 
   private LoginController controller;
   private LoginModel model;
@@ -23,6 +27,21 @@ public class LoginView {
     this.model = model;
 
     view = new GridPane();
+    // Testing with adding labels.
+    Label userName = new Label("User Name: ");
+    view.add(userName, 0, 1);
+
+    TextField userTextField = new TextField();
+    view.add(userTextField, 1, 1);
+
+    Label passPhrase = new Label("Passphrase: ");
+    view.add(passPhrase, 0, 2);
+
+    TextField passPhraseField = new TextField();
+    view.add(passPhraseField, 1, 2);
+
+    Button b = new Button("Login");
+    view.addRow(3, new Label(""), b);
   }
 
   public Parent asParent() {
