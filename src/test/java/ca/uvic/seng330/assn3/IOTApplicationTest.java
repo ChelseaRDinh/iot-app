@@ -1,7 +1,7 @@
 package ca.uvic.seng330.assn3;
 
-import static org.testfx.api.FxAssert.verifyThat;
 import static org.junit.Assert.assertEquals;
+import static org.testfx.api.FxAssert.verifyThat;
 
 import ca.uvic.seng330.assn3.login.LoginController;
 import ca.uvic.seng330.assn3.login.LoginModel;
@@ -57,16 +57,16 @@ public class IOTApplicationTest extends ApplicationTest {
 
   @Test
   public void adminShouldLogin() {
-      // given:
-      // Might need to ensure pw file is reset here, then restored.
-      clickOn("#usernameField").write("admin");
-      clickOn("#passwordField").write("admin");
+    // given:
+    // Might need to ensure pw file is reset here, then restored.
+    clickOn("#usernameField").write("admin");
+    clickOn("#passwordField").write("admin");
 
-      // when:
-      clickOn(".button");
+    // when:
+    clickOn(".button");
 
-      // expect:
-      // Not implemented.
-      assertEquals(false, true);
+    // expect:
+    // Not implemented.
+    assertEquals(false, true);
   }
 }

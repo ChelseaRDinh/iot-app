@@ -6,8 +6,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
-import javafx.scene.control.TextFormatter.Change;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
@@ -52,7 +50,7 @@ public class LoginView {
     leftCol.setHalignment(HPos.RIGHT);
     leftCol.setHgrow(Priority.NEVER);
     ColumnConstraints rightCol = new ColumnConstraints();
-    //This was previously set to 'SOMETIMES', so the text field used to get cut off.
+    // This was previously set to 'SOMETIMES', so the text field used to get cut off.
     rightCol.setHgrow(Priority.NEVER);
     view.getColumnConstraints().addAll(leftCol, rightCol);
     view.setAlignment(Pos.CENTER);

@@ -57,6 +57,7 @@ test {
 }
 
 dependencies {
+    compile 'org.json:json:20180813','org.slf4j:slf4j-simple:1.7.25'
     checkstyleConfig ("com.puppycrawl.tools:checkstyle:${versions.checkstyle}") {
         transitive = false 
     }
