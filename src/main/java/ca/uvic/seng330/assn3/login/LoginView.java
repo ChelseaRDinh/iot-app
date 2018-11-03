@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.PasswordField;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
@@ -97,11 +98,12 @@ public class LoginView {
     password = new Label("Password: ");
     view.add(password, 0, 2);
 
-    passwordField = new TextField();
+    passwordField = new PasswordField();
     passwordField.setId("passwordField");
     view.add(passwordField, 1, 2);
 
     loginButton = new Button("Login");
+    loginButton.setOnAction(actionEvent -> loginButton.setText("processing..."));
     view.addRow(3, new Label(""), loginButton);
 
     title = new Label("Welcome!");
