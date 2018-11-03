@@ -4,10 +4,7 @@ import org.json.JSONObject;
 
 public final class Camera extends Device {
   private boolean isRecording;
-
-  // Actually is the percentage used but the assignment spec doesn't explicitly state that and the
-  // test implies it despite it being called diskSize implying that it indicates bytes of storage.
-  private int diskSize;
+  private int diskPercentageUsed;
 
   /**
    * Constructor for camera that takes a hub.
@@ -18,7 +15,7 @@ public final class Camera extends Device {
     super(h);
 
     isRecording = false;
-    diskSize = 0;
+    diskPercentageUsed = 0;
   }
 
   /**
@@ -28,17 +25,17 @@ public final class Camera extends Device {
    *     actually disk percentage used
    */
   public void record() throws CameraFullException {
-    if (diskSize >= 100) {
+    if (diskPercentageUsed >= 100) {
       throw new CameraFullException("Camera is full and cannot record.");
     }
 
     // Use up disk size when a recording is started.
     isRecording = true;
-    diskSize++;
+    diskPercentageUsed++;
 
-    alertHub("Camera recording started, diskSize: " + new Integer(diskSize).toString());
+    alertHub("Camera recording started, diskSize: " + new Integer(diskPercentageUsed).toString());
 
-    if (diskSize == 100) {
+    if (diskPercentageUsed == 100) {
       alertHub("Camera disk is now full.");
     }
   }
@@ -57,8 +54,8 @@ public final class Camera extends Device {
    *
    * @return the percentage of the disk used
    */
-  public int getDiskSize() {
-    return diskSize;
+  public int getDiskPercentageUsed() {
+    return diskPercentageUsed;
   }
 
   /**
@@ -83,10 +80,11 @@ public final class Camera extends Device {
           Hub.targetJSONMessage(
               jsonMessage.getString("node_id"),
               "isRecording," + new Boolean(isRecording()).toString()));
-    } else if (message.equals("getDiskSize")) {
+    } else if (message.equals("getDiskPercentageUsed")) {
       alertHub(
           Hub.targetJSONMessage(
-              jsonMessage.getString("node_id"), "getDiskSize," + new Integer(diskSize).toString()));
+              jsonMessage.getString("node_id"),
+              "getDiskPercentageUsed," + new Integer(diskPercentageUsed).toString()));
     }
   }
 }

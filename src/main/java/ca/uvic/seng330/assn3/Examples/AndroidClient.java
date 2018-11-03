@@ -1,5 +1,6 @@
-package ca.uvic.seng330.assn3;
+package ca.uvic.seng330.assn3.Examples;
 
+import ca.uvic.seng330.assn3.Client;
 import ca.uvic.seng330.assn3.devices.*;
 import java.util.HashMap;
 import java.util.UUID;
