@@ -10,4 +10,12 @@ public class LoginController {
   public LoginController(LoginModel model) {
     this.model = model;
   }
+
+  public void updateUsername(String username) {
+    model.setUsername(username);
+  }
+
+  public void updatePassword(String password) {
+    model.setPassword(password);
+  }
 }

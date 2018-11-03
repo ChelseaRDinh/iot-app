@@ -16,10 +16,11 @@ import javafx.scene.layout.Priority;
 public class LoginView {
   private GridPane view;
   private Label title;
-  private Label userName;
-  private Label passPhrase;
-  private TextField passPhraseField;
-  private Button b;
+  private Label username;
+  private Label password;
+  private TextField usernameField;
+  private TextField passwordField;
+  private Button loginButton;
 
   private LoginController controller;
   private LoginModel model;
@@ -37,10 +38,36 @@ public class LoginView {
 
     createAndConfigurePane();
     createAndLayoutControls();
+    updateControllerFromListeners();
+    observeModelAndUpdateControls();
   }
 
   public Parent asParent() {
     return view;
+  }
+
+  private void observeModelAndUpdateControls() {
+    model
+        .usernameProperty()
+        .addListener((obs, oldUsername, newUsername) -> updateIfNeeded(newUsername, usernameField));
+    model
+        .passwordProperty()
+        .addListener((obs, oldPassword, newPassword) -> updateIfNeeded(newPassword, passwordField));
+  }
+
+  private void updateIfNeeded(String value, TextField field) {
+    if (!field.getText().equals(value)) {
+      field.setText(value);
+    }
+  }
+
+  private void updateControllerFromListeners() {
+    usernameField
+        .textProperty()
+        .addListener((obs, oldText, newText) -> controller.updateUsername(newText));
+    passwordField
+        .textProperty()
+        .addListener((obs, oldText, newText) -> controller.updatePassword(newText));
   }
 
   private void createAndConfigurePane() {
@@ -60,20 +87,22 @@ public class LoginView {
 
   private void createAndLayoutControls() {
     // Testing with adding labels.
-    userName = new Label("User Name: ");
-    view.add(userName, 0, 1);
+    username = new Label("Username: ");
+    view.add(username, 0, 1);
 
-    TextField userTextField = new TextField();
-    view.add(userTextField, 1, 1);
+    usernameField = new TextField();
+    usernameField.setId("usernameField");
+    view.add(usernameField, 1, 1);
 
-    passPhrase = new Label("Passphrase: ");
-    view.add(passPhrase, 0, 2);
+    password = new Label("Password: ");
+    view.add(password, 0, 2);
 
-    passPhraseField = new TextField();
-    view.add(passPhraseField, 1, 2);
+    passwordField = new TextField();
+    passwordField.setId("passwordField");
+    view.add(passwordField, 1, 2);
 
-    b = new Button("Login");
-    view.addRow(3, new Label(""), b);
+    loginButton = new Button("Login");
+    view.addRow(3, new Label(""), loginButton);
 
     title = new Label("Welcome!");
     view.add(title, 1, 0);
