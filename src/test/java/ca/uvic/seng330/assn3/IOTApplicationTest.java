@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 import org.testfx.matcher.control.LabeledMatchers;
+import static org.testfx.matcher.control.LabeledMatchers.hasText;
 import org.testfx.matcher.control.TextInputControlMatchers;
 
 public class IOTApplicationTest extends ApplicationTest {
@@ -67,17 +68,17 @@ public class IOTApplicationTest extends ApplicationTest {
   @Test
   public void shouldContainUsernameField() {
     // given:
-    clickOn("#usernameField").write("admin");
+    clickOn("#usernameField").write("username");
     // expect:
-    verifyThat("#usernameField", TextInputControlMatchers.hasText("admin"));
+    verifyThat("#usernameField", TextInputControlMatchers.hasText("username"));
   }
 
   @Test
   public void shouldContainPasswordField() {
     // given:
-    clickOn("#passwordField").write("admin");
+    clickOn("#passwordField").write("password");
     // expect:
-    verifyThat("#passwordField", TextInputControlMatchers.hasText("admin"));
+    verifyThat("#passwordField", TextInputControlMatchers.hasText("password"));
   }
 
   @Test
@@ -95,5 +96,12 @@ public class IOTApplicationTest extends ApplicationTest {
     // to go to the main view.
     assertEquals(from, currentController);
     assertEquals(to, Views.MAIN);
+  }
+
+  @Test
+  public void testClickButton() {
+    clickOn(".button");
+    
+    verifyThat(".button", hasText("processing..."));
   }
 }

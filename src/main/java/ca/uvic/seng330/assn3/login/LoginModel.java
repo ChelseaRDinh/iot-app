@@ -21,18 +21,18 @@ public class LoginModel {
   }
 
   public final String getUsername() {
-    return this.username.get();
+    return this.usernameProperty().get();
   }
 
   public final void setUsername(final String username) {
-    this.username.set(username);
+    this.usernameProperty().set(username);
   }
 
   public final String getPassword() {
-    return this.password.get();
+    return this.passwordProperty().get();
   }
 
   public final void setPassword(final String password) {
-    this.password.set(password);
+    this.passwordProperty().set(password);
   }
 }
