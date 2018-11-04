@@ -2,6 +2,7 @@ package ca.uvic.seng330.assn3.login;
 
 import ca.uvic.seng330.assn3.AuthManager;
 import ca.uvic.seng330.assn3.Controller;
+import ca.uvic.seng330.assn3.Token;
 import ca.uvic.seng330.assn3.ViewTransition;
 import ca.uvic.seng330.assn3.Views;
 
@@ -25,9 +26,9 @@ public class LoginController extends Controller {
 
   public void login() {
     // Check to see if the username and password are valid first.
-    String token = authManager.getToken(model.getUsername(), model.getPassword());
+    Token token = authManager.getToken(model.getUsername(), model.getPassword());
 
-    if (token.length() > 0) {
+    if (token != null) {
       switchViews(this, Views.MAIN, token);
     }
   }
