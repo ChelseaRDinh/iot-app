@@ -7,8 +7,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
@@ -105,7 +105,7 @@ public class LoginView {
     view.add(passwordField, 1, 2);
 
     loginButton = new Button("Login");
-    
+
     loginButton.setOnAction(
         new EventHandler<ActionEvent>() {
           @Override
@@ -113,7 +113,7 @@ public class LoginView {
             controller.login();
           }
         });
-    
+
     view.addRow(3, new Label(""), loginButton);
 
     title = new Label("Welcome!");
