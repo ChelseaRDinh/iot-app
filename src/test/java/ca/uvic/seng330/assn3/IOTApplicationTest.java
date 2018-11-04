@@ -6,6 +6,9 @@ import static org.testfx.api.FxAssert.verifyThat;
 import ca.uvic.seng330.assn3.login.LoginController;
 import ca.uvic.seng330.assn3.login.LoginModel;
 import ca.uvic.seng330.assn3.login.LoginView;
+import ca.uvic.seng330.assn3.home.HomeController;
+import ca.uvic.seng330.assn3.home.HomeModel;
+import ca.uvic.seng330.assn3.home.HomeView;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.junit.Test;
@@ -37,6 +40,8 @@ public class IOTApplicationTest extends ApplicationTest {
     // app.start(primaryStage);
 
     // Or just follow the example and start manually...
+    
+    /*
     try {
       authManager = new AuthManager();
     } catch (Exception e) {
@@ -53,18 +58,26 @@ public class IOTApplicationTest extends ApplicationTest {
               this.transition(from, to, token);
             });
     LoginView view = new LoginView((LoginController) currentController, model);
+    scene = new Scene(view.asParent(), 600, 600);
+    primaryStage.setScene(scene);
+    primaryStage.show();
+    */
 
-    scene = new Scene(view.asParent(), 400, 400);
+    HomeModel model = new HomeModel();
+    HomeController controller = new HomeController(model);
+    HomeView view = new HomeView(controller, model);
+
+    scene = new Scene(view.asParent(), 600, 600);
     primaryStage.setScene(scene);
     primaryStage.show();
   }
-
+  
   @Test
   public void shouldContainLoginButton() {
     // expect:
     verifyThat(".button", LabeledMatchers.hasText("Login"));
   }
-
+  
   @Test
   public void shouldContainUsernameField() {
     // given:
@@ -99,9 +112,13 @@ public class IOTApplicationTest extends ApplicationTest {
   }
 
   @Test
-  public void testClickButton() {
+  public void testLoginButton() {
     clickOn(".button");
     
     verifyThat(".button", hasText("processing..."));
+  }
+
+  @Test
+  public void testHome() {
   }
 }
