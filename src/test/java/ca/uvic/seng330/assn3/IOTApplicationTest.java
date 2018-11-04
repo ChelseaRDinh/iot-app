@@ -61,7 +61,7 @@ public class IOTApplicationTest extends ApplicationTest {
     // given:
     // Might need to ensure pw file is reset here, then restored.
     clickOn("#usernameField").write("admin");
-    clickOn("#passwordField").write("password");
+    clickOn("#passwordField").write("admin");
 
     // when:
     clickOn(".button");
