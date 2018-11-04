@@ -29,14 +29,6 @@ public final class AuthManager {
   public AuthManager()
       throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
           InvalidAlgorithmParameterException {
-
-    /* String password = "admin";
-    byte[] hash = sha256.digest(password.getBytes(StandardCharsets.UTF_8));
-    String hashedString = new String(hash, StandardCharsets.UTF_8);
-    users.put("admin", hashedString);
-    saveDatabase();
-    users.clear(); */
-
     loadCrypto();
     loadDatabase();
   }
@@ -137,6 +129,12 @@ public final class AuthManager {
   private void loadDatabase() {
     try {
       File file = new File(userDatabasePath);
+
+      if (!file.exists()) {
+        createDatabase();
+        file = new File(userDatabasePath);
+      }
+
       Scanner fileInput = new Scanner(file, StandardCharsets.UTF_8.name());
 
       while (fileInput.hasNextLine()) {
@@ -188,5 +186,20 @@ public final class AuthManager {
     } catch (Exception e) {
       return;
     }
+  }
+
+  /**
+   * Creates the database from scratch.
+   *
+   * @pre Should only be used on load. Having other users defined is invalid, just saveDatabase().
+   */
+  private void createDatabase() {
+    assert users.isEmpty();
+    String password = "admin";
+    byte[] hash = sha256.digest(password.getBytes(StandardCharsets.UTF_8));
+    String hashedString = new String(hash, StandardCharsets.UTF_8);
+    users.put("admin", hashedString);
+    saveDatabase();
+    users.clear();
   }
 }
