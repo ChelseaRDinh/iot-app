@@ -1,5 +1,7 @@
 package ca.uvic.seng330.assn3.login;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -102,6 +104,13 @@ public class LoginView {
     view.add(passwordField, 1, 2);
 
     loginButton = new Button("Login");
+    loginButton.setOnAction(
+        new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent e) {
+            controller.login();
+          }
+        });
     view.addRow(3, new Label(""), loginButton);
 
     title = new Label("Welcome!");

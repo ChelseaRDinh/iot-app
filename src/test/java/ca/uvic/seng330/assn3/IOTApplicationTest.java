@@ -16,6 +16,18 @@ import org.testfx.matcher.control.TextInputControlMatchers;
 public class IOTApplicationTest extends ApplicationTest {
 
   private Scene scene;
+  private AuthManager authManager;
+
+  private Controller currentController;
+  private Controller from;
+  private Views to;
+  private String token;
+
+  public void transition(Controller from, Views to, String token) {
+    this.from = from;
+    this.to = to;
+    this.token = token;
+  }
 
   @Override
   public void start(Stage primaryStage) {
@@ -24,9 +36,22 @@ public class IOTApplicationTest extends ApplicationTest {
     // app.start(primaryStage);
 
     // Or just follow the example and start manually...
+    try {
+      authManager = new AuthManager();
+    } catch (Exception e) {
+      authManager = null;
+      return;
+    }
+
     LoginModel model = new LoginModel();
-    LoginController controller = new LoginController(model);
-    LoginView view = new LoginView(controller, model);
+    currentController =
+        new LoginController(
+            model,
+            authManager,
+            (from, to, token) -> {
+              this.transition(from, to, token);
+            });
+    LoginView view = new LoginView((LoginController) currentController, model);
 
     scene = new Scene(view.asParent(), 400, 400);
     primaryStage.setScene(scene);
@@ -66,7 +91,9 @@ public class IOTApplicationTest extends ApplicationTest {
     clickOn(".button");
 
     // expect:
-    // Not implemented.
-    assertEquals(false, true);
+    // The from controller should be the login controller and it should be asking
+    // to go to the main view.
+    assertEquals(from, currentController);
+    assertEquals(to, Views.MAIN);
   }
 }
