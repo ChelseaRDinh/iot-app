@@ -11,6 +11,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.collections;
 
 public class ManageUsers {
   private GridPane view;
