@@ -14,8 +14,22 @@ public class AdminViewTest extends ApplicationTest {
   @Override
   public void start(Stage primaryStage) {
     AdminView view = new AdminView();
-    // Scene scene = new Scene(view.asParent(), 600, 600);
-    // primaryStage.setScene(scene);
-    // primaryStage.show();
+    Scene scene = new Scene(view.asParent(), 600, 600);
+    primaryStage.setScene(scene);
+    primaryStage.show();
+  }
+
+  @Test
+  public void testUsersDB() {
+    //when:
+
+    //then:
+  }
+
+  @Test
+  public void testDevicesDB() {
+    //when:
+
+    //then:
   }
 }
