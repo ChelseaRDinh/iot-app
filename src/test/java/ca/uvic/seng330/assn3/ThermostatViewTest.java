@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
+import javafx.scene.input.DragEvent;
 
 public class ThermostatViewTest extends ApplicationTest {
 

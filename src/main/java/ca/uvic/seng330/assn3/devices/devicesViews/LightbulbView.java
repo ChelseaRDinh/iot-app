@@ -53,11 +53,11 @@ public class LightbulbView {
 
     // Lightbulb toggle.
     on = new ToggleButton("ON");
-    on.setUserData(Color.GREEN);
+    on.setStyle("-fx-base: green;");
     on.setToggleGroup(group);
 
     off = new ToggleButton("OFF");
-    off.setUserData(Color.RED);
+    off.setStyle("-fx-base: red;");
     off.setToggleGroup(group);
 
     HBox lightbulbContainer = new HBox(on, off);
