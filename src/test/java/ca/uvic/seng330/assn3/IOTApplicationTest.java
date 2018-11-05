@@ -37,6 +37,7 @@ public class IOTApplicationTest extends ApplicationTest {
     // app.start(primaryStage);
 
     // Or just follow the example and start manually...
+
     try {
       authManager = new AuthManager();
     } catch (Exception e) {
@@ -53,8 +54,7 @@ public class IOTApplicationTest extends ApplicationTest {
               this.transition(from, to, token);
             });
     LoginView view = new LoginView((LoginController) currentController, model);
-
-    scene = new Scene(view.asParent(), 400, 400);
+    scene = new Scene(view.asParent(), 600, 600);
     primaryStage.setScene(scene);
     primaryStage.show();
   }
@@ -99,9 +99,11 @@ public class IOTApplicationTest extends ApplicationTest {
   }
 
   @Test
-  public void testClickButton() {
+  public void testLoginButton() {
+    // when:
     clickOn(".button");
 
+    // then:
     verifyThat(".button", hasText("processing..."));
   }
 }
