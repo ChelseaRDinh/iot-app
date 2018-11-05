@@ -1,27 +1,24 @@
-package ca.uvic.seng330.assn3.devices.devicesViews;
+package ca.uvic.seng330.assn3.devices.camera;
 
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-public class LightbulbView {
+public class CameraView {
   private GridPane view;
   private Text title;
-  private ToggleGroup group;
-  private ToggleButton on;
-  private ToggleButton off;
+  private Button recordButton;
 
-  public LightbulbView() {
+  public CameraView() {
+
     createAndConfigurePane();
     createAndLayoutControls();
     updateControllerFromListeners();
@@ -47,23 +44,25 @@ public class LightbulbView {
   }
 
   private void createAndLayoutControls() {
-    title = new Text("Lightbulb Settings");
+    title = new Text("Camera Settings");
     title.setFont(new Font(20));
-    group = new ToggleGroup();
 
-    // Lightbulb toggle.
-    on = new ToggleButton("ON");
-    on.setUserData(Color.GREEN);
-    on.setToggleGroup(group);
+    recordButton = new Button("OFF");
 
-    off = new ToggleButton("OFF");
-    off.setUserData(Color.RED);
-    off.setToggleGroup(group);
+    double r = 30;
+    recordButton.setShape(new Circle(r));
+    recordButton.setMinSize(2 * r, 2 * r);
+    recordButton.setMaxSize(2 * r, 2 * r);
+    recordButton.setStyle("-fx-base: red;");
 
-    HBox lightbulbContainer = new HBox(on, off);
+    recordButton.setOnAction(actionEvent -> recordButton.setText("ON"));
+    recordButton.setOnAction(actionEvent -> recordButton.setStyle("-fx-base: green;"));
 
     view.addRow(0, title);
-    view.addRow(2, new Label("Switch:"), lightbulbContainer);
+    view.addRow(2, new Label("Record:"), recordButton);
+
+    // Camera Disk Space bar to go here.
+
   }
 
   private void updateControllerFromListeners() {}
