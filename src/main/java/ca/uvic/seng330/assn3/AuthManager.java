@@ -1,7 +1,9 @@
 package ca.uvic.seng330.assn3;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
@@ -10,7 +12,6 @@ import java.security.Key;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
-import java.util.Scanner;
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
@@ -47,7 +48,7 @@ public final class AuthManager {
     }
 
     byte[] hash = sha256.digest(password.getBytes(StandardCharsets.UTF_8));
-    String hashedString = new String(hash, StandardCharsets.UTF_8);
+    String hashedString = byteHashToString(hash);
 
     // If the entered password isn't the same as the user's password, return empty token.
     if (!users.get(username).equals(hashedString)) {
@@ -132,24 +133,42 @@ public final class AuthManager {
 
       if (!file.exists()) {
         createDatabase();
-        file = new File(userDatabasePath);
       }
 
-      Scanner fileInput = new Scanner(file, StandardCharsets.UTF_8.name());
+      InputStreamReader reader = // f =
+          new InputStreamReader(new FileInputStream(userDatabasePath), StandardCharsets.UTF_8);
 
-      while (fileInput.hasNextLine()) {
-        String username = fileInput.nextLine();
+      while (true) {
+        StringBuilder b = new StringBuilder();
 
-        if (!fileInput.hasNextLine()) {
+        while (true) {
+          int charRead = reader.read();
+
+          if (charRead == -1 || charRead == '\n') {
+            break;
+          }
+
+          b.append((char) charRead);
+        }
+
+        String username = b.toString();
+
+        if (username.length() == 0) {
           break;
         }
 
-        String password = fileInput.nextLine();
+        char[] password = new char[32]; // 32 because sha256 is 256 / 8 bytes
+        int result = reader.read(password, 0, password.length);
 
-        users.put(username, password);
+        // It should read 32 characters, otherwise it's invalid.
+        if (result != password.length) {
+          break;
+        }
+
+        users.put(username, new String(password));
       }
 
-      fileInput.close();
+      reader.close();
     } catch (Exception e) {
       return;
     }
@@ -196,10 +215,21 @@ public final class AuthManager {
   private void createDatabase() {
     assert users.isEmpty();
     String password = "admin";
+
     byte[] hash = sha256.digest(password.getBytes(StandardCharsets.UTF_8));
-    String hashedString = new String(hash, StandardCharsets.UTF_8);
+    String hashedString = byteHashToString(hash);
+
     users.put("admin", hashedString);
     saveDatabase();
     users.clear();
+  }
+
+  private String byteHashToString(byte[] hash) {
+    char[] converted = new char[32];
+    for (int i = 0; i < 32; i++) {
+      converted[i] = (char) hash[i];
+    }
+
+    return new String(converted);
   }
 }
