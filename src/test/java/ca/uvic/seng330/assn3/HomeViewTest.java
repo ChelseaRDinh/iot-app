@@ -9,12 +9,12 @@ import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 
 public class HomeViewTest extends ApplicationTest {
-    private Scene scene;
+  private Scene scene;
 
   @Override
   public void start(Stage primaryStage) {
     HomeModel model = new HomeModel();
-    HomeController controller = new HomeController(model);
+    HomeController controller = new HomeController(model, null, null);
     HomeView view = new HomeView(controller, model);
     scene = new Scene(view.asParent(), 600, 600);
     primaryStage.setScene(scene);
