@@ -89,6 +89,7 @@ public class LoginView {
   }
 
   private void createAndLayoutControls() {
+    // Testing with adding labels.
     username = new Label("Username: ");
     view.add(username, 0, 1);
 
