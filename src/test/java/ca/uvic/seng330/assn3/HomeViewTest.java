@@ -14,7 +14,7 @@ public class HomeViewTest extends ApplicationTest {
   @Override
   public void start(Stage primaryStage) {
     HomeModel model = new HomeModel();
-    HomeController controller = new HomeController(model);
+    HomeController controller = new HomeController(model, null, null);
     HomeView view = new HomeView(controller, model);
     scene = new Scene(view.asParent(), 600, 600);
     primaryStage.setScene(scene);

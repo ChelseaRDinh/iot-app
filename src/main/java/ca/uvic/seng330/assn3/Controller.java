@@ -9,7 +9,7 @@ public class Controller {
     this.transitionNotifier = transitionNotifier;
   }
 
-  protected void switchViews(Controller from, Views to, String token) {
+  protected void switchViews(Controller from, Views to, Token token) {
     transitionNotifier.transition(from, to, token);
   }
 }

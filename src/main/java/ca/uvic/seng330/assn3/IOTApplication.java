@@ -1,5 +1,8 @@
 package ca.uvic.seng330.assn3;
 
+import ca.uvic.seng330.assn3.home.HomeController;
+import ca.uvic.seng330.assn3.home.HomeModel;
+import ca.uvic.seng330.assn3.home.HomeView;
 import ca.uvic.seng330.assn3.login.LoginController;
 import ca.uvic.seng330.assn3.login.LoginModel;
 import ca.uvic.seng330.assn3.login.LoginView;
@@ -8,7 +11,9 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class IOTApplication extends Application {
-  AuthManager authManager;
+  private AuthManager authManager;
+  private Scene scene;
+  private Stage primaryStage;
 
   @Override
   public void start(Stage primaryStage) {
@@ -17,6 +22,8 @@ public class IOTApplication extends Application {
     } catch (Exception e) {
       return;
     }
+
+    this.primaryStage = primaryStage;
 
     LoginModel model = new LoginModel();
     LoginController controller =
@@ -28,14 +35,37 @@ public class IOTApplication extends Application {
             });
     LoginView view = new LoginView(controller, model);
 
-    Scene scene = new Scene(view.asParent(), 960, 480);
-    primaryStage.setScene(scene);
-    primaryStage.show();
+    scene = new Scene(view.asParent(), 960, 480);
+    this.primaryStage.setScene(scene);
+    this.primaryStage.show();
   }
 
   public static void main(String[] args) {
     launch(args);
   }
 
-  private void transition(Controller from, Views to, String token) {}
+  private void transition(Controller sourceController, Views desiredView, Token authToken) {
+    if (!authManager.isValidToken(authToken)) {
+      return;
+    }
+
+    switch (desiredView) {
+      case MAIN:
+        HomeModel model = new HomeModel();
+        HomeController controller =
+            new HomeController(
+                model,
+                authManager,
+                (from, to, token) -> {
+                  this.transition(from, to, token);
+                });
+        HomeView view = new HomeView(controller, model);
+        scene = new Scene(view.asParent(), 960, 480);
+        this.primaryStage.setScene(scene);
+        this.primaryStage.show();
+        break;
+      default:
+        break;
+    }
+  }
 }

@@ -29,14 +29,6 @@ public final class AuthManager {
   public AuthManager()
       throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
           InvalidAlgorithmParameterException {
-
-    /* String password = "admin";
-    byte[] hash = sha256.digest(password.getBytes(StandardCharsets.UTF_8));
-    String hashedString = new String(hash, StandardCharsets.UTF_8);
-    users.put("admin", hashedString);
-    saveDatabase();
-    users.clear(); */
-
     loadCrypto();
     loadDatabase();
   }
@@ -46,12 +38,12 @@ public final class AuthManager {
    *
    * @param username the username of the user
    * @param password the password of the user
-   * @return a non-empty token if the username and password pair is valid.
+   * @return a token if the username and password pair is valid, null otherwise.
    */
-  public String getToken(String username, String password) {
+  public Token getToken(String username, String password) {
     // If there's no such user, return empty token.
     if (!users.containsKey(username)) {
-      return "";
+      return null;
     }
 
     byte[] hash = sha256.digest(password.getBytes(StandardCharsets.UTF_8));
@@ -59,29 +51,29 @@ public final class AuthManager {
 
     // If the entered password isn't the same as the user's password, return empty token.
     if (!users.get(username).equals(hashedString)) {
-      return "";
+      return null;
     }
 
     String combination = username + "," + hashedString;
 
     try {
-      byte[] encrypted = encrypt.doFinal(combination.getBytes());
-      String token = new String(encrypted, StandardCharsets.UTF_8);
+      byte[] encrypted = encrypt.doFinal(combination.getBytes(StandardCharsets.UTF_8.name()));
+      Token token = new Token(encrypted);
 
       return token;
     } catch (Exception e) {
-      return "";
+      return null;
     }
   }
 
-  public boolean isValidToken(String token) {
+  public boolean isValidToken(Token token) {
     String decryptedToken = getDecryptedText(token);
     String[] tokenParts = decryptedToken.split(",");
 
     return getTokenPartValidity(tokenParts);
   }
 
-  public boolean isAdminToken(String token) {
+  public boolean isAdminToken(Token token) {
     String decryptedToken = getDecryptedText(token);
     String[] tokenParts = decryptedToken.split(",");
 
@@ -92,9 +84,9 @@ public final class AuthManager {
     return tokenParts[0].equals("admin");
   }
 
-  private String getDecryptedText(String text) {
+  private String getDecryptedText(Token token) {
     try {
-      byte[] decrypted = decrypt.doFinal(text.getBytes());
+      byte[] decrypted = decrypt.doFinal(token.getBytes());
       String decryptedText = new String(decrypted, StandardCharsets.UTF_8);
 
       return decryptedText;
@@ -137,6 +129,12 @@ public final class AuthManager {
   private void loadDatabase() {
     try {
       File file = new File(userDatabasePath);
+
+      if (!file.exists()) {
+        createDatabase();
+        file = new File(userDatabasePath);
+      }
+
       Scanner fileInput = new Scanner(file, StandardCharsets.UTF_8.name());
 
       while (fileInput.hasNextLine()) {
@@ -188,5 +186,20 @@ public final class AuthManager {
     } catch (Exception e) {
       return;
     }
+  }
+
+  /**
+   * Creates the database from scratch.
+   *
+   * @pre Should only be used on load. Having other users defined is invalid, just saveDatabase().
+   */
+  private void createDatabase() {
+    assert users.isEmpty();
+    String password = "admin";
+    byte[] hash = sha256.digest(password.getBytes(StandardCharsets.UTF_8));
+    String hashedString = new String(hash, StandardCharsets.UTF_8);
+    users.put("admin", hashedString);
+    saveDatabase();
+    users.clear();
   }
 }
