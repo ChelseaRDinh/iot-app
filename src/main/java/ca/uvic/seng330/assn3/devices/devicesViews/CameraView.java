@@ -53,8 +53,10 @@ public class CameraView {
     recordButton.setShape(new Circle(r));
     recordButton.setMinSize(2 * r, 2 * r);
     recordButton.setMaxSize(2 * r, 2 * r);
+    recordButton.setStyle("-fx-background-color: #FF0000");
 
     recordButton.setOnAction(actionEvent -> recordButton.setText("ON"));
+    recordButton.setOnAction(actionEvent -> recordButton.setStyle("-fx-background-color: #7FFF00"));
 
     view.addRow(0, title);
     view.addRow(2, new Label("Record:"), recordButton);
