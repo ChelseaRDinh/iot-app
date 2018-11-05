@@ -22,9 +22,9 @@ public class IOTApplicationTest extends ApplicationTest {
   private Controller currentController;
   private Controller from;
   private Views to;
-  private String token;
+  private Token token;
 
-  public void transition(Controller from, Views to, String token) {
+  public void transition(Controller from, Views to, Token token) {
     this.from = from;
     this.to = to;
     this.token = token;
