@@ -100,10 +100,10 @@ public class IOTApplicationTest extends ApplicationTest {
 
   @Test
   public void testLoginButton() {
-    //when:
+    // when:
     clickOn(".button");
 
-    //then:
+    // then:
     verifyThat(".button", hasText("processing..."));
   }
 }

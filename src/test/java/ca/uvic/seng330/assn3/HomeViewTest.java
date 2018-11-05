@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 
 public class HomeViewTest extends ApplicationTest {
-    private Scene scene;
+  private Scene scene;
 
   @Override
   public void start(Stage primaryStage) {
