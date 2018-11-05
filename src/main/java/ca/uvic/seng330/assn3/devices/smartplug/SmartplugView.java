@@ -10,12 +10,15 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 public class SmartplugView {
   private GridPane view;
+  private Text title;
+  private ToggleGroup group;
+  private ToggleButton on;
+  private ToggleButton off;
 
   public SmartplugView() {
     createAndConfigurePane();
@@ -42,7 +45,25 @@ public class SmartplugView {
     view.setVgap(10);
   }
 
-  private void createAndLayoutControls() {}
+  private void createAndLayoutControls() {
+    title = new Text("Smartplug Settings");
+    title.setFont(new Font(20));
+    group = new ToggleGroup();
+
+    // Lightbulb toggle.
+    on = new ToggleButton("ON");
+    on.setStyle("-fx-base: green;");
+    on.setToggleGroup(group);
+
+    off = new ToggleButton("OFF");
+    off.setStyle("-fx-base: red;");
+    off.setToggleGroup(group);
+
+    HBox SmartplugContainer = new HBox(on, off);
+
+    view.addRow(0, title);
+    view.addRow(2, new Label("Switch:"), SmartplugContainer);
+  }
 
   private void updateControllerFromListeners() {}
 

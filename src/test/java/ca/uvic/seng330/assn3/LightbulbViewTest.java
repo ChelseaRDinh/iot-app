@@ -1,6 +1,6 @@
 package ca.uvic.seng330.assn3;
 
-import ca.uvic.seng330.assn3.devices.devicesViews.LightbulbView;
+import ca.uvic.seng330.assn3.devices.lightbulb.LightbulbView;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.junit.Test;

@@ -1,8 +1,5 @@
 package ca.uvic.seng330.assn3;
 
-import static org.testfx.api.FxAssert.verifyThat;
-import static org.testfx.matcher.control.LabeledMatchers.hasText;
-
 import ca.uvic.seng330.assn3.devices.smartplug.SmartplugView;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
