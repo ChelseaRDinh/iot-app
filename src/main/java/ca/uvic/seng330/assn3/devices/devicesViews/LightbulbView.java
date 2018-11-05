@@ -10,19 +10,22 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.Font;
-import javafx.scene.shape.Circle;
 
-public class CameraView {
+public class LightbulbView {
     private GridPane view;
     private Text title;
-    private Button recordButton;
+    private ToggleGroup group;
+    private ToggleButton on;
+    private ToggleButton off;
 
-    public CameraView() {
-    
+    public LightbulbView() {
         createAndConfigurePane();
         createAndLayoutControls();
         updateControllerFromListeners();
@@ -48,22 +51,23 @@ public class CameraView {
     }
 
     private void createAndLayoutControls() {
-        title = new Text("Camera Settings");
+        title = new Text("Lightbulb Settings");
         title.setFont(new Font(20));
+        group = new ToggleGroup();
 
-        recordButton = new Button("OFF");
-        
-        double r = 30;
-        recordButton.setShape(new Circle(r));
-        recordButton.setMinSize(2 * r, 2 * r);
-        recordButton.setMaxSize(2 * r, 2 * r);
+        //Lightbulb toggle.
+        on = new ToggleButton("ON");
+        on.setUserData(Color.GREEN);
+        on.setToggleGroup(group);
 
-        recordButton.setOnAction(actionEvent -> recordButton.setText("ON"));
+        off = new ToggleButton("OFF");
+        off.setUserData(Color.RED);
+        off.setToggleGroup(group);
+
+        HBox lightbulbContainer = new HBox(on, off);
 
         view.addRow(0, title);
-        view.addRow(2, new Label("Record:"), recordButton);
-
-        //Camera Disk Space bar to go here.
+        view.addRow(2, new Label("Switch:"), lightbulbContainer);
 
     }
 
