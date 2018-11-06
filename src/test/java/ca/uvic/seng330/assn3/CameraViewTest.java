@@ -22,7 +22,7 @@ public class CameraViewTest extends ApplicationTest {
   @Test
   public void testRecordButton() {
     // when:
-    clickOn(".button");
+    clickOn("OFF");
 
     // then:
     verifyThat(".button", hasText("ON"));

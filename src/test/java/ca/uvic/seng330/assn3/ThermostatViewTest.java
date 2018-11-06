@@ -22,7 +22,7 @@ public class ThermostatViewTest extends ApplicationTest {
   @Test
   public void setTemperatureTest() {
     // when:
-    clickOn(".button");
+    clickOn("OFF");
 
     // then:
     verifyThat(".button", hasText("ON"));
