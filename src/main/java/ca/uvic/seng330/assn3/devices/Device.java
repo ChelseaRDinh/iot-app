@@ -1,5 +1,6 @@
 package ca.uvic.seng330.assn3.devices;
 
+import ca.uvic.seng330.assn3.JSONMessaging;
 import java.util.UUID;
 import org.json.JSONObject;
 
@@ -49,7 +50,11 @@ public abstract class Device implements IOTDevice {
    * @param message the message to send to the hub.
    */
   protected final void alertHub(String message) {
-    hub.alert(this, message);
+    hub.alert(new JSONMessaging(this, message));
+  }
+
+  protected final void alertHub(String target, String message) {
+    hub.alert(new JSONMessaging(this, message, UUID.fromString(target)));
   }
 
   /**

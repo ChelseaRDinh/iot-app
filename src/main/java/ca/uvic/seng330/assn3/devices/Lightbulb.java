@@ -52,9 +52,8 @@ public final class Lightbulb extends Device {
       toggle();
     } else if (message.equals("getCondition")) {
       alertHub(
-          Hub.targetJSONMessage(
-              jsonMessage.getString("node_id"),
-              "getCondition." + new Boolean(getCondition()).toString()));
+          jsonMessage.getString("node_id"),
+          "getCondition." + new Boolean(getCondition()).toString());
     }
   }
 }

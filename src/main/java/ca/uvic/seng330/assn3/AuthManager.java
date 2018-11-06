@@ -35,11 +35,11 @@ public final class AuthManager {
   }
 
   /**
-   * Gets a token for use in auth transactions
+   * Gets a token for use in auth transactions.
    *
    * @param username the username of the user
    * @param password the password of the user
-   * @return a token if the username and password pair is valid, null otherwise.
+   * @return a token if the username and password pair is valid, null otherwise
    */
   public Token getToken(String username, String password) {
     // If there's no such user, return empty token.
@@ -67,6 +67,13 @@ public final class AuthManager {
     }
   }
 
+  /**
+   * Returns whether or not a given token is valid (meaning there is an associated user with the
+   * same password hash).
+   *
+   * @param token the token to verify
+   * @return true if the token is valid, false otherwise
+   */
   public boolean isValidToken(Token token) {
     String decryptedToken = getDecryptedText(token);
     String[] tokenParts = decryptedToken.split(",");
@@ -74,6 +81,12 @@ public final class AuthManager {
     return getTokenPartValidity(tokenParts);
   }
 
+  /**
+   * Returns whether or not a given token is an admin token, which also implies it is valid.
+   *
+   * @param token the token to verify
+   * @return true if the token is valid and is an admin token, false otherwise
+   */
   public boolean isAdminToken(Token token) {
     String decryptedToken = getDecryptedText(token);
     String[] tokenParts = decryptedToken.split(",");
@@ -115,8 +128,8 @@ public final class AuthManager {
   private void loadCrypto()
       throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
           InvalidAlgorithmParameterException {
-    Key key = new SecretKeySpec(privateKey.getBytes(), "AES");
-    IvParameterSpec iv = new IvParameterSpec(initializationVector.getBytes());
+    final Key key = new SecretKeySpec(privateKey.getBytes(), "AES");
+    final IvParameterSpec iv = new IvParameterSpec(initializationVector.getBytes());
 
     // Load the algorithms used, they shouldn't throw, but could because "NO/TYPE/SafetyLol".
     sha256 = MessageDigest.getInstance("SHA-256");
@@ -179,9 +192,11 @@ public final class AuthManager {
     try {
       file.delete();
     } catch (Exception e) {
+      // Do nothing, this is okay. The delete could have failed if the file didn't exist.
     }
 
-    // Try to create the database file, return if it fails.
+    // Try to create the database file, return if it fails. It will fail if the file still exists,
+    // covering the other cases of file deletion not working (eg it being in use).
     try {
       file.createNewFile();
     } catch (Exception e) {

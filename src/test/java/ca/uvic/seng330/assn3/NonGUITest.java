@@ -12,6 +12,8 @@ import ca.uvic.seng330.assn3.devices.Lightbulb;
 import ca.uvic.seng330.assn3.devices.SmartPlug;
 import ca.uvic.seng330.assn3.devices.Thermostat;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 import org.junit.Test;
 
 public class NonGUITest {
@@ -66,7 +68,7 @@ public class NonGUITest {
     assertEquals(c.getLightbulbConditions().containsKey(l.getIdentifier()), false);
 
     boolean before = l.getCondition();
-    c.toggleLightbulb(l.getIdentifier());
+    c.sendMessageToDevice(Command.LIGHTBULB_TOGGLE, l.getIdentifier());
     boolean after = l.getCondition();
 
     Lightbulb l2 = (Lightbulb) h.getDevices().get(l.getIdentifier());
@@ -75,13 +77,13 @@ public class NonGUITest {
     assertNotEquals(before, after);
 
     before = after;
-    c.toggleAllLightbulbs();
+    c.sendMessageToAllDevices(Command.LIGHTBULB_TOGGLE);
     after = l.getCondition();
 
     assertNotEquals(before, after);
 
     before = after;
-    c.retrieveLightbulbCondition(l.getIdentifier());
+    c.sendMessageToDevice(Command.LIGHTBULB_GET_CONDITION, l.getIdentifier());
 
     assertEquals(c.getLightbulbConditions().containsKey(l.getIdentifier()), true);
 
@@ -90,10 +92,117 @@ public class NonGUITest {
     assertEquals(before, after);
 
     l.toggle();
-    c.retrieveLightbulbCondition(l.getIdentifier());
+    c.sendMessageToDevice(Command.LIGHTBULB_GET_CONDITION, l.getIdentifier());
     after = c.getLightbulbConditions().get(l.getIdentifier());
 
     assertNotEquals(before, after);
+  }
+
+  @Test
+  public void testMultipleTargetAlerts() {
+    Hub h = new Hub();
+
+    Lightbulb l1 = new Lightbulb(h);
+    Lightbulb l2 = new Lightbulb(h);
+    Lightbulb l3 = new Lightbulb(h);
+
+    final boolean before = l1.getCondition();
+
+    AndroidClient c = new AndroidClient(h);
+
+    try {
+      h.register(l1);
+      h.register(l2);
+      h.register(l3);
+      h.register(c);
+    } catch (HubRegistrationException e) {
+      assertEquals(false, true);
+    }
+
+    List<UUID> lights = new ArrayList<UUID>();
+    lights.add(l1.getIdentifier());
+    lights.add(l2.getIdentifier());
+
+    // Test toggling 2 lights in a target list.
+    c.sendMessageToDevices(Command.LIGHTBULB_TOGGLE, lights);
+
+    // Test retrieving the lightbulb condition in a target list.
+    c.sendMessageToDevices(Command.LIGHTBULB_GET_CONDITION, lights);
+    assertEquals(c.getLightbulbConditions().get(l1.getIdentifier()), !before);
+    assertEquals(c.getLightbulbConditions().get(l2.getIdentifier()), !before);
+
+    // Test retrieving all the lightbulb conditions via a target list.
+    lights.add(l3.getIdentifier());
+    c.sendMessageToDevices(Command.LIGHTBULB_GET_CONDITION, lights);
+    assertEquals(c.getLightbulbConditions().get(l1.getIdentifier()), !before);
+    assertEquals(c.getLightbulbConditions().get(l2.getIdentifier()), !before);
+    assertEquals(c.getLightbulbConditions().get(l3.getIdentifier()), before);
+  }
+
+  @Test
+  public void testGetUUIDOfType() {
+    // Create objects.
+    Hub h = new Hub();
+
+    Lightbulb l1 = new Lightbulb(h);
+    Lightbulb l2 = new Lightbulb(h);
+    Lightbulb l3 = new Lightbulb(h);
+
+    SmartPlug s1 = new SmartPlug(h);
+    SmartPlug s2 = new SmartPlug(h);
+    SmartPlug s3 = new SmartPlug(h);
+
+    AndroidClient c1 = new AndroidClient(h);
+    AndroidClient c2 = new AndroidClient(h);
+
+    // Register objects with the hub for filtering.
+    try {
+      h.register(l1);
+      h.register(l2);
+      h.register(l3);
+
+      h.register(s1);
+      h.register(s2);
+      h.register(s3);
+
+      h.register(c1);
+      h.register(c2);
+    } catch (HubRegistrationException e) {
+      assertEquals(false, true);
+    }
+
+    // Get the lists of UUIDs from the hub.
+    final List<UUID> r1 = h.getUUIDOfType(l1.getClass().toString());
+    final List<UUID> r2 = h.getUUIDOfType(s1.getClass().toString());
+    final List<UUID> r3 = h.getUUIDOfType(c1.getClass().toString());
+    final List<UUID> r4 = h.getUUIDOfType(h.getClass().toString());
+    final List<UUID> r5 = h.getUUIDOfType("type");
+    final List<UUID> r6 = h.getUUIDOfType("");
+    final List<UUID> r7 = h.getUUIDOfType(null);
+
+    // Check to see that the result lists contain the UUIDs that they should (if any) and their
+    // size.
+    assertEquals(r1.contains(l1.getIdentifier()), true);
+    assertEquals(r1.contains(l2.getIdentifier()), true);
+    assertEquals(r1.contains(l3.getIdentifier()), true);
+    assertEquals(r1.size(), 3);
+
+    assertEquals(r2.contains(s1.getIdentifier()), true);
+    assertEquals(r2.contains(s2.getIdentifier()), true);
+    assertEquals(r2.contains(s3.getIdentifier()), true);
+    assertEquals(r2.size(), 3);
+
+    assertEquals(r3.contains(c1.getIdentifier()), true);
+    assertEquals(r3.contains(c2.getIdentifier()), true);
+    assertEquals(r3.size(), 2);
+
+    assertEquals(r4.size(), 0);
+
+    assertEquals(r5.size(), 0);
+
+    assertEquals(r6.size(), 0);
+
+    assertEquals(r7.size(), 0);
   }
 
   @Test

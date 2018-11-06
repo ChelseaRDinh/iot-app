@@ -73,18 +73,15 @@ public final class Camera extends Device {
         record();
       } catch (CameraFullException e) {
         // Alert the hub with the sender as the target.
-        alertHub(Hub.targetJSONMessage(jsonMessage.getString("node_id"), "CameraFullException"));
+        alertHub(jsonMessage.getString("node_id"), "CameraFullException");
       }
     } else if (message.equals("isRecording")) {
       alertHub(
-          Hub.targetJSONMessage(
-              jsonMessage.getString("node_id"),
-              "isRecording," + new Boolean(isRecording()).toString()));
+          jsonMessage.getString("node_id"), "isRecording," + new Boolean(isRecording()).toString());
     } else if (message.equals("getDiskPercentageUsed")) {
       alertHub(
-          Hub.targetJSONMessage(
-              jsonMessage.getString("node_id"),
-              "getDiskPercentageUsed," + new Integer(diskPercentageUsed).toString()));
+          jsonMessage.getString("node_id"),
+          "getDiskPercentageUsed," + new Integer(diskPercentageUsed).toString());
     }
   }
 }

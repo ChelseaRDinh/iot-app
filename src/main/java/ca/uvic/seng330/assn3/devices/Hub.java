@@ -2,9 +2,10 @@ package ca.uvic.seng330.assn3.devices;
 
 import ca.uvic.seng330.assn3.Client;
 import ca.uvic.seng330.assn3.JSONMessaging;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,78 +30,67 @@ public final class Hub extends Mediator {
   }
 
   /**
-   * Alerts all the clients with a message from a device.
+   * Gets all of the UUIDs of devices or clients with a given type (object.getClass().toString()).
    *
-   * @pre d isn't null
-   * @param d the device sending the message
-   * @param message the message the device wishes to send to the clients.
+   * @param type the type of the class as a string
+   * @return a list of UUIDs, which may be empty if there are no objects of the given type
    */
   @Override
-  public void alert(Device d, String message) {
-    assert d != null;
+  public List<UUID> getUUIDOfType(String type) {
+    ArrayList<UUID> uuids = new ArrayList<UUID>();
 
-    JSONMessaging jsonMessager = new JSONMessaging(d, message);
-    JSONObject json = jsonMessager.invoke();
-
-    // If the device has a target client then attempt to target it.
-    if (json.has("target_id")) {
-      UUID target = UUID.fromString(json.getString("target_id"));
-
-      // Check to see if the target exists. If not tell the client that it doesn't exist.
-      if (clients.containsKey(target)) {
-        log(LogSeverity.INFO, "Device sent message and it was forwarded to the target client.");
-        clients.get(target).notify(json);
-      } else {
-        log(LogSeverity.INFO, "Device sent message and its target was invalid.");
-        JSONMessaging jsonReply = new JSONMessaging(d, "InvalidObject");
-        d.notify(jsonReply.invoke());
+    for (HashMap.Entry<UUID, Device> entry : devices.entrySet()) {
+      if (entry.getValue().getClass().toString().equals(type)) {
+        uuids.add(entry.getKey());
       }
-    } else {
-      for (Client c : clients.values()) {
-        c.notify(jsonMessager.invoke());
-      }
-
-      log(LogSeverity.INFO, "Device sent message and it was forwarded to the clients.");
-      log(LogSeverity.DEBUG, "Device message that was sent: " + message);
-      log(LogSeverity.DEBUG, "Total clients notified: " + new Integer(clients.size()) + ".");
     }
+
+    // If UUIDs were found in devices, we definitely won't find any in clients.
+    if (uuids.size() > 0) {
+      return uuids;
+    }
+
+    for (HashMap.Entry<UUID, Client> entry : clients.entrySet()) {
+      if (entry.getValue().getClass().toString().equals(type)) {
+        uuids.add(entry.getKey());
+      }
+    }
+
+    return uuids;
   }
 
   /**
-   * Alerts all the devices with a message from a client.
+   * Notifies the targets of a message with the message as a JSONObject.
    *
-   * @pre c isn't null
-   * @param c the client sending the message
-   * @param message the message the client wishes to send to the devices.
+   * @param message the JSONMessaging message to send, with or without targets
    */
   @Override
-  public void alert(Client c, String message) {
-    assert c != null;
+  public void alert(JSONMessaging message) {
+    List<UUID> targets = message.getTargets();
 
-    JSONMessaging jsonMessager = new JSONMessaging(c, message);
-    JSONObject json = jsonMessager.invoke();
-
-    // If the device has a target client then attempt to target it.
-    if (json.has("target_id")) {
-      UUID target = UUID.fromString(json.getString("target_id"));
-
-      // Check to see if the target exists. If not tell the client that it doesn't exist.
-      if (devices.containsKey(target)) {
-        log(LogSeverity.INFO, "Client sent message and it was forwarded to the target device.");
-        devices.get(target).notify(json);
+    // If there was no target, forward message to every object.
+    if (targets.size() == 0) {
+      // If the message was sent from a client, forward it to devices, otherwise to clients.
+      if (message.getStatus().equals("client")) {
+        for (Device d : devices.values()) {
+          d.notify(message.invoke());
+        }
       } else {
-        log(LogSeverity.INFO, "Client sent message and its target was invalid.");
-        JSONMessaging jsonReply = new JSONMessaging(c, "InvalidObject");
-        c.notify(jsonReply.invoke());
-      }
-    } else {
-      for (Device d : devices.values()) {
-        d.notify(jsonMessager.invoke());
+        for (Client c : clients.values()) {
+          c.notify(message.invoke());
+        }
       }
 
-      log(LogSeverity.INFO, "Client sent message and it was forwarded to the devices.");
-      log(LogSeverity.DEBUG, "Client message that was sent: " + message);
-      log(LogSeverity.DEBUG, "Total devices notified: " + new Integer(devices.size()) + ".");
+      return;
+    }
+
+    // Invoke the message for valid targets.
+    for (UUID target : targets) {
+      if (devices.containsKey(target)) {
+        devices.get(target).notify(message.invoke());
+      } else if (clients.containsKey(target)) {
+        clients.get(target).notify(message.invoke());
+      }
     }
   }
 
@@ -270,24 +260,5 @@ public final class Hub extends Mediator {
         logger.debug(
             "Previous message logged as debug but severity wasn't handled in switch statement.");
     }
-  }
-
-  /**
-   * Adds a UUID target to a JSON message and returns it as the payload string.
-   *
-   * @pre no colons in the message
-   * @param target the UUID as a string of the intended target
-   * @param message the message to send (ie function call)
-   * @return payload string including the target (if the target wasn't null)
-   */
-  public static String targetJSONMessage(String target, String message) {
-    assert message.contains(":") == false;
-
-    // If there isn't a target just return the message.
-    if (target == null) {
-      return message;
-    }
-
-    return message + ", target_id: " + target;
   }
 }

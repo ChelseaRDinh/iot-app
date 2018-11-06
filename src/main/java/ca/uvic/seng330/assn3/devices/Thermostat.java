@@ -61,8 +61,7 @@ public final class Thermostat extends Device {
           temperature = Float.parseFloat(floatPortion);
           parsed = true;
         } catch (Exception e) {
-          alertHub(
-              Hub.targetJSONMessage(jsonMessage.getString("node_id"), "NumberFormatException"));
+          alertHub(jsonMessage.getString("node_id"), "NumberFormatException");
         }
 
         // If the temperature value wasn't parsed successfully then return.
@@ -73,15 +72,11 @@ public final class Thermostat extends Device {
         try {
           setTemp(new Temperature(temperature, Temperature.Unit.CELSIUS));
         } catch (TemperatureOutofBoundsException e) {
-          alertHub(
-              Hub.targetJSONMessage(
-                  jsonMessage.getString("node_id"), "TemperatureOutofBoundsException"));
+          alertHub(jsonMessage.getString("node_id"), "TemperatureOutofBoundsException");
         }
       }
     } else if (message.equals("getTemp")) {
-      alertHub(
-          Hub.targetJSONMessage(
-              jsonMessage.getString("node_id"), "getTemp." + new Float(getTemp()).toString()));
+      alertHub(jsonMessage.getString("node_id"), "getTemp." + new Float(getTemp()).toString());
     }
   }
 }
