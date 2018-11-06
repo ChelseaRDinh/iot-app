@@ -13,10 +13,12 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.ListView;
 
 public class ManageUsers {
   private GridPane view;
   private Text title;
+  private ListView usersList;
 
   public ManageUsers() {
     createAndConfigurePane();
@@ -45,6 +47,16 @@ public class ManageUsers {
   }
 
   private void createAndLayoutControls() {
+    title = new Text("Registered Users:");
+    title.setFont(new Font(20));
+
+    usersList = new ListView();
+    usersList.setPrefSize(10, 3);
+    usersList.setEditable(true);
+
+    view.addRow(0, title);
+    view.addRow(1, usersList);
+
   }
 
   private void updateControllerFromListeners() {}

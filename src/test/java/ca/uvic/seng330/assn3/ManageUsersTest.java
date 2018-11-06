@@ -18,4 +18,11 @@ public class ManageUsersTest extends ApplicationTest {
     primaryStage.setScene(scene);
     primaryStage.show();
   }
+
+  @Test
+  public void testUserInfo() {
+    //when:
+
+    //then:
+  }
 }
