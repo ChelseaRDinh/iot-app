@@ -95,4 +95,37 @@ public class NonGUITest {
 
     assertNotEquals(before, after);
   }
+
+  @Test
+  public void testAuthManager() {
+    try {
+      AuthManager auth = new AuthManager();
+
+      // Test admin token.
+      Token token = auth.getToken("admin", "admin");
+      assertEquals(auth.isValidToken(token), true);
+      assertEquals(auth.isAdminToken(token), true);
+
+      // Test user token.
+      token = auth.getToken("user", "user");
+      assertEquals(auth.isValidToken(token), true);
+      assertEquals(auth.isAdminToken(token), false);
+
+      // Test invalid token.
+      token = auth.getToken("user", "wrong");
+      assertEquals(auth.isValidToken(token), false);
+      assertEquals(auth.isAdminToken(token), false);
+
+      // Test empty token.
+      token = auth.getToken("", "");
+      assertEquals(auth.isValidToken(token), false);
+
+      // Test empty password, and valid password required for admin tokens.
+      token = auth.getToken("admin", "");
+      assertEquals(auth.isValidToken(token), false);
+      assertEquals(auth.isAdminToken(token), false);
+    } catch (Exception e) {
+      assertEquals(false, true);
+    }
+  }
 }

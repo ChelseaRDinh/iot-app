@@ -1,5 +1,10 @@
 package ca.uvic.seng330.assn3.home;
 
-public class HomeModel {
-  public HomeModel() {}
+import ca.uvic.seng330.assn3.Model;
+import ca.uvic.seng330.assn3.Token;
+
+public class HomeModel extends Model {
+  public HomeModel(Token token) {
+    super(token);
+  }
 }

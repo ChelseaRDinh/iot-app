@@ -2,7 +2,6 @@ package ca.uvic.seng330.assn3;
 
 import static org.junit.Assert.assertEquals;
 import static org.testfx.api.FxAssert.verifyThat;
-import static org.testfx.matcher.control.LabeledMatchers.hasText;
 
 import ca.uvic.seng330.assn3.login.LoginController;
 import ca.uvic.seng330.assn3.login.LoginModel;
@@ -96,14 +95,18 @@ public class IOTApplicationTest extends ApplicationTest {
     // to go to the main view.
     assertEquals(from, currentController);
     assertEquals(to, Views.MAIN);
+    assertEquals(authManager.isAdminToken(token), true);
   }
 
   @Test
-  public void testLoginButton() {
+  public void testLoginButtonFail() {
     // when:
+    clickOn("#usernameField").write("user");
+    clickOn("#passwordField").write("wrong");
     clickOn(".button");
 
     // then:
-    verifyThat(".button", hasText("processing..."));
+    // check if the login fail label is visible
+    assertEquals(false, true);
   }
 }

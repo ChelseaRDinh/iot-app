@@ -51,7 +51,7 @@ public class IOTApplication extends Application {
 
     switch (desiredView) {
       case MAIN:
-        HomeModel model = new HomeModel();
+        HomeModel model = new HomeModel(authToken);
         HomeController controller =
             new HomeController(
                 model,

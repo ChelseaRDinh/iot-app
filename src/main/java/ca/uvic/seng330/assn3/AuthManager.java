@@ -214,12 +214,17 @@ public final class AuthManager {
    */
   private void createDatabase() {
     assert users.isEmpty();
-    String password = "admin";
 
-    byte[] hash = sha256.digest(password.getBytes(StandardCharsets.UTF_8));
-    String hashedString = byteHashToString(hash);
+    String[][] defaultUsers = {{"admin", "admin"}, {"user", "user"}};
 
-    users.put("admin", hashedString);
+    for (String[] user : defaultUsers) {
+      String password = user[1];
+      byte[] hash = sha256.digest(password.getBytes(StandardCharsets.UTF_8));
+      String hashedString = byteHashToString(hash);
+
+      users.put(user[0], hashedString);
+    }
+
     saveDatabase();
     users.clear();
   }
