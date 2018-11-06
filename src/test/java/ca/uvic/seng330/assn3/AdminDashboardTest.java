@@ -19,14 +19,14 @@ public class AdminDashboardTest extends ApplicationTest {
   @Test
   public void testUsersDB() {
     // when:
-
+    clickOn("Manage Users");
     // then:
   }
 
   @Test
   public void testDevicesDB() {
     // when:
-
+    clickOn("Manage Devices");
     // then:
   }
 }

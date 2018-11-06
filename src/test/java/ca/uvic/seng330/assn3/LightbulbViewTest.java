@@ -19,8 +19,9 @@ public class LightbulbViewTest extends ApplicationTest {
   @Test
   public void testToggle() {
     // when:
-    clickOn(".button");
+    clickOn("ON");
 
     // then:
+    clickOn("OFF");
   }
 }

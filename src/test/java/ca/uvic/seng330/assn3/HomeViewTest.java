@@ -24,5 +24,19 @@ public class HomeViewTest extends ApplicationTest {
   @Test
   public void testDeviceSwitch() {
     // test each device icon here...
+    clickOn("Camera");
+
+    clickOn("Thermostat");
+
+    clickOn("Lightbulb");
+
+    clickOn("SmartPlug");
+  }
+
+  @Test
+  public void testLogout() {
+    
+    //when:
+    clickOn("Logout");
   }
 }
