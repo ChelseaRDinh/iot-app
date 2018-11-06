@@ -111,7 +111,7 @@ public class LoginView {
 
     //password validation (hardcoded for now)
     //Should use comparison with user/pwd DB kurt created
-    if (!passwordField.getText().equals("wrong")) {
+    if (passwordField.getText().equals("wrong")) {
       pwdInvalid.setText("Invalid password.");
       pwdInvalid.setTextFill(Color.rgb(210, 39, 30));
     } else {
