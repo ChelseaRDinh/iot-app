@@ -143,8 +143,8 @@ public class HomeViewTest extends ApplicationTest {
 
   @Test
   public void testLogout() {
-    
-    //when:
+
+    // when:
     clickOn("Logout");
   }
 

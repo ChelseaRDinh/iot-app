@@ -3,15 +3,14 @@ package ca.uvic.seng330.assn3.admin;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TableColumn;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 
 public class ManageUsers {
   private GridPane view;
@@ -58,7 +57,7 @@ public class ManageUsers {
     // be able to edit user info in table.
     userTable.setEditable(true);
 
-    //add colmuns to table for user DB
+    // add colmuns to table for user DB
     userName = new TableColumn("Username");
     firstName = new TableColumn("First");
     lastName = new TableColumn("Last");
@@ -68,13 +67,12 @@ public class ManageUsers {
     userTable.getColumns().addAll(userName, firstName, lastName, userRole, userDevices);
 
     addUser = new Button("Add");
-    removeUser =new Button("Remove");
+    removeUser = new Button("Remove");
 
-    view.addRow(0,title);
+    view.addRow(0, title);
     view.addRow(1, userTable);
     view.add(addUser, 1, 2);
     view.add(removeUser, 2, 2);
-
   }
 
   private void updateControllerFromListeners() {}

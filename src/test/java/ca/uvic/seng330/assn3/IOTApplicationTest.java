@@ -88,7 +88,7 @@ public class IOTApplicationTest extends ApplicationTest {
     clickOn("#passwordField").write("admin");
 
     // when:
-    clickOn(".button");
+    clickOn("Login");
 
     // expect:
     // The from controller should be the login controller and it should be asking
@@ -103,7 +103,7 @@ public class IOTApplicationTest extends ApplicationTest {
     // when:
     clickOn("#usernameField").write("user");
     clickOn("#passwordField").write("wrong");
-    clickOn(".button");
+    clickOn("Login");
 
     // then:
     // check if the login fail label is visible

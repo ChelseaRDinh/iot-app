@@ -12,6 +12,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
 /*
  * Code sample from https://stackoverflow.com/questions/36868391/using-javafx-controller-without-fxml/36873768
@@ -24,6 +26,7 @@ public class LoginView {
   private TextField usernameField;
   private TextField passwordField;
   private Button loginButton;
+  private final Label pwdInvalid = new Label("");
 
   private LoginController controller;
   private LoginModel model;
@@ -95,6 +98,7 @@ public class LoginView {
 
     usernameField = new TextField();
     usernameField.setId("usernameField");
+    usernameField.setPromptText("Username");
     view.add(usernameField, 1, 1);
 
     password = new Label("Password: ");
@@ -102,7 +106,16 @@ public class LoginView {
 
     passwordField = new PasswordField();
     passwordField.setId("passwordField");
+    passwordField.setPromptText("Password");
     view.add(passwordField, 1, 2);
+
+    //password validation (hardcoded for now)
+    //Should use comparison with user/pwd DB kurt created
+    if (!passwordField.getText().equals("wrong")) {
+      pwdInvalid.setText("Invalid password.");
+      pwdInvalid.setTextFill(Color.rgb(210, 39, 30));
+    } else {
+    }
 
     loginButton = new Button("Login");
 
@@ -117,6 +130,7 @@ public class LoginView {
     view.addRow(3, new Label(""), loginButton);
 
     title = new Label("Welcome!");
+    title.setFont(new Font(20));
     view.add(title, 1, 0);
   }
 }
