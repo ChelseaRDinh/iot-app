@@ -1,8 +1,5 @@
 package ca.uvic.seng330.assn3;
 
-import static org.testfx.api.FxAssert.verifyThat;
-import static org.testfx.matcher.control.LabeledMatchers.hasText;
-
 import ca.uvic.seng330.assn3.admin.AdminDashboard;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -21,15 +18,15 @@ public class AdminDashboardTest extends ApplicationTest {
 
   @Test
   public void testUsersDB() {
-    //when:
+    // when:
 
-    //then:
+    // then:
   }
 
   @Test
   public void testDevicesDB() {
-    //when:
+    // when:
 
-    //then:
+    // then:
   }
 }

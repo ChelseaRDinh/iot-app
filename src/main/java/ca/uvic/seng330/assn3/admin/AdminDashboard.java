@@ -4,11 +4,9 @@ import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
-import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
@@ -41,7 +39,6 @@ public class AdminDashboard {
     view.setAlignment(Pos.CENTER);
     view.setHgap(10);
     view.setVgap(10);
-
   }
 
   private void createAndLayoutControls() {
@@ -50,7 +47,6 @@ public class AdminDashboard {
 
     manageUsers = new Button("Manage Users");
     manageDevices = new Button("Manage Devices");
-
 
     view.addRow(0, title);
     view.addRow(1, manageUsers);
