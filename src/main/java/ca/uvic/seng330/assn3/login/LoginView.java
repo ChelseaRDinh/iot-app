@@ -14,6 +14,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 
 /*
  * Code sample from https://stackoverflow.com/questions/36868391/using-javafx-controller-without-fxml/36873768
@@ -26,7 +27,7 @@ public class LoginView {
   private TextField usernameField;
   private TextField passwordField;
   private Button loginButton;
-  private final Label pwdInvalid = new Label("");
+  private Text pwdInvalid;
 
   private LoginController controller;
   private LoginModel model;
@@ -92,45 +93,46 @@ public class LoginView {
   }
 
   private void createAndLayoutControls() {
-    // Testing with adding labels.
+    // Set-up login screen with appropriate fields and buttons.
     username = new Label("Username: ");
     view.add(username, 0, 1);
-
     usernameField = new TextField();
     usernameField.setId("usernameField");
-    usernameField.setPromptText("Username");
     view.add(usernameField, 1, 1);
 
     password = new Label("Password: ");
     view.add(password, 0, 2);
-
     passwordField = new PasswordField();
     passwordField.setId("passwordField");
     passwordField.setPromptText("Password");
     view.add(passwordField, 1, 2);
 
-    //password validation (hardcoded for now)
-    //Should use comparison with user/pwd DB kurt created
-    if (passwordField.getText().equals("wrong")) {
-      pwdInvalid.setText("Invalid password.");
-      pwdInvalid.setTextFill(Color.rgb(210, 39, 30));
-    } else {
-    }
-
     loginButton = new Button("Login");
-
-    loginButton.setOnAction(
-        new EventHandler<ActionEvent>() {
-          @Override
-          public void handle(ActionEvent e) {
-            controller.login();
-          }
-        });
-
-    view.addRow(3, new Label(""), loginButton);
+    pwdInvalid = new Text();
 
     title = new Label("Welcome!");
     title.setFont(new Font(20));
     view.add(title, 1, 0);
+    view.addRow(4, new Label(""), loginButton);
+    view.addRow(3, new Label(""), pwdInvalid);
+
+    /*
+     * If username and passphrase are in DB, switch to home view.
+     * Otherwise, show invalid password label.
+     */
+    loginButton.setOnAction(
+        new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent e) {
+            // This part should actually query the controller, get a token
+            // And confirm if it is valid or not.
+            if (controller.validLogin() == false) {
+              pwdInvalid.setFill(Color.rgb(210, 39, 30));
+              pwdInvalid.setText("Invalid password");
+            } else {
+              controller.login();
+            }
+          }
+        });
   }
 }

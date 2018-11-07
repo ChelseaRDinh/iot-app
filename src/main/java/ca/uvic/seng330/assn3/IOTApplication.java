@@ -35,7 +35,7 @@ public class IOTApplication extends Application {
             });
     LoginView view = new LoginView(controller, model);
 
-    scene = new Scene(view.asParent(), 960, 480);
+    scene = new Scene(view.asParent(), 500, 500);
     this.primaryStage.setScene(scene);
     this.primaryStage.show();
   }
