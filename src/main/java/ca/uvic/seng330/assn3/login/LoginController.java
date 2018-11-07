@@ -24,6 +24,16 @@ public class LoginController extends Controller {
     model.setPassword(password);
   }
 
+  /*
+   * If the user/pass combo is found in master DB, resolves to true.
+   * Otherwise, false.
+   */
+  public boolean isValidLogin() {
+    Token token = authManager.getToken(model.getUsername(), model.getPassword());
+    
+    return authManager.isValidToken(token);
+  }
+
   public void login() {
     // Check to see if the username and password are valid first.
     Token token = authManager.getToken(model.getUsername(), model.getPassword());

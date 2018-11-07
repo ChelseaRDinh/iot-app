@@ -88,7 +88,7 @@ public class IOTApplicationTest extends ApplicationTest {
     clickOn("#passwordField").write("admin");
 
     // when:
-    clickOn(".button");
+    clickOn("Login");
 
     // expect:
     // The from controller should be the login controller and it should be asking
@@ -103,10 +103,21 @@ public class IOTApplicationTest extends ApplicationTest {
     // when:
     clickOn("#usernameField").write("user");
     clickOn("#passwordField").write("wrong");
-    clickOn(".button");
+    clickOn("Login");
 
     // then:
     // check if the login fail label is visible
+    assertEquals(false, true);
+  }
+
+  public void testHomeView() {
+    // when:
+    // entering admin as username and password
+    clickOn("#usernameField").write("admin");
+    clickOn("#passwordField").write("admin");
+
+    // then:
+    // The view should redirect to the home screen.
     assertEquals(false, true);
   }
 }
