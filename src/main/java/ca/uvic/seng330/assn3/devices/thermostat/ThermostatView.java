@@ -16,6 +16,7 @@ public class ThermostatView {
   private Slider tempSlider;
   private Text title;
 
+  /** Default constructor for the Thermostat view. */
   public ThermostatView() {
     createAndConfigurePane();
     createAndLayoutControls();

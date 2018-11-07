@@ -10,6 +10,13 @@ public class LoginController extends Controller {
 
   private final LoginModel model;
 
+  /**
+   * Constructor for the Login Controller.
+   *
+   * @param model the model for the controller
+   * @param authManager the auth manager to manage authentication
+   * @param transitionNotifier a function that will allow the controller to invoke a view transition
+   */
   public LoginController(
       LoginModel model, AuthManager authManager, ViewTransition transitionNotifier) {
     super(authManager, transitionNotifier);
@@ -30,10 +37,14 @@ public class LoginController extends Controller {
    */
   public boolean isValidLogin() {
     Token token = authManager.getToken(model.getUsername(), model.getPassword());
-    
+
     return authManager.isValidToken(token);
   }
 
+  /**
+   * Try to perform the login action with the current username and password. Will try and switch
+   * views if the token is valid.
+   */
   public void login() {
     // Check to see if the username and password are valid first.
     Token token = authManager.getToken(model.getUsername(), model.getPassword());

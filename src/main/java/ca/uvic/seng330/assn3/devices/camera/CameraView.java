@@ -17,8 +17,8 @@ public class CameraView {
   private Text title;
   private Button recordButton;
 
+  /** Default constructor for the Camera view. */
   public CameraView() {
-
     createAndConfigurePane();
     createAndLayoutControls();
     updateControllerFromListeners();

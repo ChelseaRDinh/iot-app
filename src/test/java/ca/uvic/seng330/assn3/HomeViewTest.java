@@ -53,20 +53,20 @@ public class HomeViewTest extends ApplicationTest {
 
   /**
    * GIVEN I am logged in as a user to the Hub WHEN I open the app interface THEN I see the user
-   * interface
+   * interface.
    *
    * <p>GIVEN I want to use my Home Automation System as an admin WHEN I open the app interface THEN
-   * I see the user interface and an admin interface
+   * I see the user interface and an admin interface.
    *
    * <p>GIVEN I want to use my Home Automation System as an admin WHEN I open the admin interface
-   * THEN I can manage devices and users
+   * THEN I can manage devices and users.
    *
    * <p>GIVEN I want to use my Home Automation System as an admin WHEN I open the admin interface
-   * THEN I can assign device notifications to users (ALL, NONE, some selection)
+   * THEN I can assign device notifications to users (ALL, NONE, some selection).
    *
    * <p>GIVEN I want to boot my Home Automation System WHEN I log in as an admin AND I open the
    * app's admin interface THEN I need to see a blank screen AND the list of Devices found in my
-   * home
+   * home.
    */
   @Test
   public void testBothInterfaces() {

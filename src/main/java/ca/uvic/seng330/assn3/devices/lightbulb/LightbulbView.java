@@ -20,6 +20,7 @@ public class LightbulbView {
   private ToggleButton on;
   private ToggleButton off;
 
+  /** Default constructor for the Lightbulb view. */
   public LightbulbView() {
     createAndConfigurePane();
     createAndLayoutControls();

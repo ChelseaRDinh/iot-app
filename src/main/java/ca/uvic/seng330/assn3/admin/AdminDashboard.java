@@ -16,6 +16,7 @@ public class AdminDashboard {
   private Button manageUsers;
   private Button manageDevices;
 
+  /** Default constructor for the Admin Dashboard view. */
   public AdminDashboard() {
     createAndConfigurePane();
     createAndLayoutControls();

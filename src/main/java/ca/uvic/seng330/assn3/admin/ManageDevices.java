@@ -12,6 +12,7 @@ public class ManageDevices {
   private GridPane view;
   private Text title;
 
+  /** Default constructor for the Manage Devices view. */
   public ManageDevices() {
     createAndConfigurePane();
     createAndLayoutControls();

@@ -36,7 +36,7 @@ repositories {
 
 checkstyle {
   toolVersion = "${versions.checkstyle}"
-  config = resources.text.fromArchiveEntry(configurations.checkstyleConfig, 'google_checks.xml')
+  configFile file('google_checks.xml')
 }
 
 tasks.withType(Checkstyle) {

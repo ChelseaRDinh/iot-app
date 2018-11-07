@@ -23,6 +23,13 @@ public class IOTApplicationTest extends ApplicationTest {
   private Views to;
   private Token token;
 
+  /**
+   * Dummy transition function to verify that transitions are working.
+   *
+   * @param from the controller that is requesting a transition
+   * @param to the view that the controller is requesting
+   * @param token the auth token for the transition
+   */
   public void transition(Controller from, Views to, Token token) {
     this.from = from;
     this.to = to;

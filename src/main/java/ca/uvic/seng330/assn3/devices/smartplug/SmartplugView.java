@@ -20,6 +20,7 @@ public class SmartplugView {
   private ToggleButton on;
   private ToggleButton off;
 
+  /** Default constructor for the Smartplug view. */
   public SmartplugView() {
     createAndConfigurePane();
     createAndLayoutControls();
@@ -59,10 +60,10 @@ public class SmartplugView {
     off.setStyle("-fx-base: red;");
     off.setToggleGroup(group);
 
-    HBox SmartplugContainer = new HBox(on, off);
+    HBox smartplugContainer = new HBox(on, off);
 
     view.addRow(0, title);
-    view.addRow(2, new Label("Switch:"), SmartplugContainer);
+    view.addRow(2, new Label("Switch:"), smartplugContainer);
   }
 
   private void updateControllerFromListeners() {}
