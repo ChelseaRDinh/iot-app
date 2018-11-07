@@ -126,7 +126,7 @@ public class LoginView {
           public void handle(ActionEvent e) {
             // This part should actually query the controller, get a token
             // And confirm if it is valid or not.
-            if (controller.validLogin() == false) {
+            if (controller.isValidLogin() == null) {
               pwdInvalid.setFill(Color.rgb(210, 39, 30));
               pwdInvalid.setText("Invalid password");
             } else {
