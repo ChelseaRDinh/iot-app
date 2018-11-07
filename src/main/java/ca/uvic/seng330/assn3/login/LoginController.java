@@ -30,7 +30,7 @@ public class LoginController extends Controller {
    */
   public boolean isValidLogin() {
     Token token = authManager.getToken(model.getUsername(), model.getPassword());
-    if(authManager.isValidToken(token) != null) {
+    if(authManager.isValidToken(token) == true) {
       return true;
     } else {
       return false;
