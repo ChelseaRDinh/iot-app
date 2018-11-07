@@ -28,9 +28,13 @@ public class LoginController extends Controller {
    * If the user/pass combo is found in master DB, return token.
    * Otherwise, return null.
    */
-  public Token isValidLogin() {
+  public boolean isValidLogin() {
     Token token = authManager.getToken(model.getUsername(), model.getPassword());
-    return token;
+    if(token != null) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   public void login() {
