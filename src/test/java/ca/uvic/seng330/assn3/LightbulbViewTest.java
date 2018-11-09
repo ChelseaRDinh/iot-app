@@ -7,7 +7,6 @@ import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 
 public class LightbulbViewTest extends ApplicationTest {
-
   /*
   @Override
   public void start(Stage primaryStage) {
