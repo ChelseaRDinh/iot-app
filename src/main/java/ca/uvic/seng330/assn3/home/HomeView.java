@@ -12,6 +12,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.control.Label;
 
 public class HomeView {
   private GridPane view;
@@ -100,6 +101,8 @@ public class HomeView {
         new EventHandler<ActionEvent>() {
           @Override
           public void handle(ActionEvent e) {
+            //Text loggingOut = new Text("Logging out!");
+            //view.addRow(4, new Label(""), loggingOut);
             controller.logout();
           }
         });
