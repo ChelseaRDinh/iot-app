@@ -64,6 +64,7 @@ public class IOTApplication extends Application {
         this.primaryStage.setScene(scene);
         this.primaryStage.show();
         break;
+      //Not properly transitioning back to login screen here...
       case LOGIN:
         LoginModel model2 = new LoginModel();
         LoginController controller2 =
