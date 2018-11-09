@@ -104,5 +104,37 @@ public class HomeView {
             controller.logout();
           }
         });
+    
+    cameraButton.setOnAction(
+      new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent e) {
+          controller.cameraGUI();
+        }
+      });
+
+      thermostatButton.setOnAction(
+        new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent e) {
+            controller.logout();
+          }
+        });
+    
+      lightbulbButton.setOnAction(
+        new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent e) {
+            controller.logout();
+          }
+        });
+      
+      smartplugButton.setOnAction(
+        new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent e) {
+            controller.logout();
+          }
+        });
   }
 }

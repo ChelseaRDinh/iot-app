@@ -6,6 +6,9 @@ import ca.uvic.seng330.assn3.home.HomeView;
 import ca.uvic.seng330.assn3.login.LoginController;
 import ca.uvic.seng330.assn3.login.LoginModel;
 import ca.uvic.seng330.assn3.login.LoginView;
+import ca.uvic.seng330.assn3.devices.camera.CameraModel;
+import ca.uvic.seng330.assn3.devices.camera.CameraController;
+import ca.uvic.seng330.assn3.devices.camera.CameraView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -25,17 +28,17 @@ public class IOTApplication extends Application {
 
     this.primaryStage = primaryStage;
 
-    LoginModel model = new LoginModel();
-    LoginController controller =
+    LoginModel startModel = new LoginModel();
+    LoginController startController =
         new LoginController(
-            model,
+            startModel,
             authManager,
             (from, to, token) -> {
               this.transition(from, to, token);
             });
-    LoginView view = new LoginView(controller, model);
+    LoginView startView = new LoginView(startController, startModel);
 
-    scene = new Scene(view.asParent(), 960, 480);
+    scene = new Scene(startView.asParent(), 960, 480);
     this.primaryStage.setScene(scene);
     this.primaryStage.show();
   }
@@ -51,35 +54,52 @@ public class IOTApplication extends Application {
 
     switch (desiredView) {
       case MAIN:
-        HomeModel model = new HomeModel(authToken);
-        HomeController controller =
+        HomeModel homeModel = new HomeModel(authToken);
+        HomeController homeController =
             new HomeController(
-                model,
+                homeModel,
                 authManager,
                 (from, to, token) -> {
                   this.transition(from, to, token);
                 });
-        HomeView view = new HomeView(controller, model);
-        scene = new Scene(view.asParent(), 960, 480);
+        HomeView homeView = new HomeView(homeController, homeModel);
+        scene = new Scene(homeView.asParent(), 960, 480);
         this.primaryStage.setScene(scene);
         this.primaryStage.show();
         break;
-      //Not properly transitioning back to login screen here...
       case LOGIN:
-        LoginModel model2 = new LoginModel();
-        LoginController controller2 =
+        LoginModel loginModel = new LoginModel();
+        LoginController loginController =
             new LoginController(
-                model2,
+                loginModel,
                 authManager,
                 (from, to, token) -> {
                   this.transition(from, to, token);
                 });
-        LoginView view2 = new LoginView(controller2, model2);
-        scene = new Scene(view2.asParent(), 960, 480);
+        LoginView loginView = new LoginView(loginController, loginModel);
+        scene = new Scene(loginView.asParent(), 960, 480);
         this.primaryStage.setScene(scene);
         this.primaryStage.show();
         break;
-      case ADMIN:
+      case CAMERA:
+        CameraModel cameraModel = new CameraModel(authToken);
+        CameraController cameraController =
+            new CameraController(
+                cameraModel,
+                authManager,
+                (from, to, token) -> {
+                  this.transition(from, to, token);
+                });
+        CameraView cameraView = new CameraView(cameraController, cameraModel);
+        scene = new Scene(cameraView.asParent(), 960, 480);
+        this.primaryStage.setScene(scene);
+        this.primaryStage.show();
+        break;
+      case LIGHTBULB:
+        break;
+      case SMARTPLUG:
+        break;
+      case THERMOSTAT:
         break;
       default:
         break;

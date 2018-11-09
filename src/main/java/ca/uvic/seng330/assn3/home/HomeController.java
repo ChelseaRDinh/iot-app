@@ -20,6 +20,31 @@ public class HomeController extends Controller {
   public void logout() {
     //Get existing session token.
     Token token = model.getToken();
+    
     switchViews(this, Views.LOGIN, token);
+  }
+
+  public void cameraGUI() {
+    Token token = model.getToken();
+
+    switchViews(this, Views.CAMERA, token);
+  }
+
+  public void lightbulbGUI() {
+    Token token = model.getToken();
+
+    switchViews(this, Views.LIGHTBULB, token);
+  }
+
+  public void smartplugGUI() {
+    Token token = model.getToken();
+
+    switchViews(this, Views.SMARTPLUG, token);
+  }
+
+  public void thermostatGUI() {
+    Token token = model.getToken();
+
+    switchViews(this, Views.THERMOSTAT, token);
   }
 }

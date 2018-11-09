@@ -8,6 +8,7 @@ import org.testfx.framework.junit.ApplicationTest;
 
 public class AdminDashboardTest extends ApplicationTest {
 
+/*
   @Override
   public void start(Stage primaryStage) {
     AdminDashboard view = new AdminDashboard();
@@ -29,4 +30,5 @@ public class AdminDashboardTest extends ApplicationTest {
     clickOn("Manage Devices");
     // then:
   }
+*/
 }
