@@ -101,8 +101,6 @@ public class HomeView {
         new EventHandler<ActionEvent>() {
           @Override
           public void handle(ActionEvent e) {
-            //Text loggingOut = new Text("Logging out!");
-            //view.addRow(4, new Label(""), loggingOut);
             controller.logout();
           }
         });

@@ -18,8 +18,8 @@ public class HomeController extends Controller {
 
   //logout from home view, and return to login screen.
   public void logout() {
-
-    //token can be null because we are just returning to the login screen?
-    switchViews(this, Views.LOGIN, null);
+    //Get existing session token.
+    Token token = model.getToken();
+    switchViews(this, Views.LOGIN, token);
   }
 }
