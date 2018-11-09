@@ -11,6 +11,7 @@ import org.testfx.framework.junit.ApplicationTest;
 
 public class ThermostatViewTest extends ApplicationTest {
 
+  /*
   @Override
   public void start(Stage primaryStage) {
     ThermostatView view = new ThermostatView();
@@ -27,4 +28,5 @@ public class ThermostatViewTest extends ApplicationTest {
     // then:
     verifyThat(".button", hasText("ON"));
   }
+  */
 }

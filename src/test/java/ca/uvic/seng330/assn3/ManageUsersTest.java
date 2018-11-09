@@ -8,6 +8,7 @@ import org.testfx.framework.junit.ApplicationTest;
 
 public class ManageUsersTest extends ApplicationTest {
 
+  /*
   @Override
   public void start(Stage primaryStage) {
     ManageUsers view = new ManageUsers();
@@ -22,4 +23,5 @@ public class ManageUsersTest extends ApplicationTest {
     clickOn(".button");
     // then:
   }
+  */
 }

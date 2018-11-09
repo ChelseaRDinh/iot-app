@@ -7,6 +7,7 @@ import org.testfx.framework.junit.ApplicationTest;
 
 public class ManageDevicesTest extends ApplicationTest {
 
+  /*
   @Override
   public void start(Stage primaryStage) {
     ManageDevices view = new ManageDevices();
@@ -14,4 +15,5 @@ public class ManageDevicesTest extends ApplicationTest {
     primaryStage.setScene(scene);
     primaryStage.show();
   }
+  */
 }
