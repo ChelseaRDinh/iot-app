@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.Button;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -23,6 +24,7 @@ public class LightbulbView {
   private ToggleGroup group;
   private ToggleButton on;
   private ToggleButton off;
+  private Button home;
 
   /** Default constructor for the Lightbulb view. */
   public LightbulbView(LightbulbController controller, LightbulbModel model) {
@@ -69,8 +71,11 @@ public class LightbulbView {
 
     HBox lightbulbContainer = new HBox(on, off);
 
+    home = new Button("Home");
+
     view.addRow(0, title);
     view.addRow(2, new Label("Switch:"), lightbulbContainer);
+    view.addRow(3, new Label(""), home);
 
     on.setOnAction(
         new EventHandler<ActionEvent>() {

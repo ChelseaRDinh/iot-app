@@ -20,6 +20,7 @@ public class CameraView {
   private CameraModel model;
   private Text title;
   private Button recordButton;
+  private Button home;
 
   /** Default constructor for the Camera view. */
   public CameraView(CameraController controller, CameraModel model) {
@@ -63,8 +64,11 @@ public class CameraView {
     recordButton.setMinSize(2 * r, 2 * r);
     recordButton.setMaxSize(2 * r, 2 * r);
 
+    home = new Button("home");
+
     view.addRow(0, title);
     view.addRow(2, new Label("Record:"), recordButton);
+    view.addRow(3, new Label(""), home);
 
     // toggle record button.
     recordButton.setOnAction(
