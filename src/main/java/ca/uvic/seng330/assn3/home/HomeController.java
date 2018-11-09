@@ -2,7 +2,9 @@ package ca.uvic.seng330.assn3.home;
 
 import ca.uvic.seng330.assn3.AuthManager;
 import ca.uvic.seng330.assn3.Controller;
+import ca.uvic.seng330.assn3.Token;
 import ca.uvic.seng330.assn3.ViewTransition;
+import ca.uvic.seng330.assn3.Views;
 
 public class HomeController extends Controller {
 
@@ -12,5 +14,12 @@ public class HomeController extends Controller {
       HomeModel model, AuthManager authManager, ViewTransition transitionNotifier) {
     super(authManager, transitionNotifier);
     this.model = model;
+  }
+
+  //logout from home view, and return to login screen.
+  public void logout() {
+
+    //token can be null because we are just returning to the login screen?
+    switchViews(this, Views.LOGIN, null);
   }
 }

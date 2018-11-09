@@ -64,6 +64,22 @@ public class IOTApplication extends Application {
         this.primaryStage.setScene(scene);
         this.primaryStage.show();
         break;
+      case LOGIN:
+        LoginModel model2 = new LoginModel();
+        LoginController controller2 =
+            new LoginController(
+                model2,
+                authManager,
+                (from, to, token) -> {
+                  this.transition(from, to, token);
+                });
+        LoginView view2 = new LoginView(controller2, model2);
+        scene = new Scene(view2.asParent(), 960, 480);
+        this.primaryStage.setScene(scene);
+        this.primaryStage.show();
+        break;
+      case ADMIN:
+        break;
       default:
         break;
     }
