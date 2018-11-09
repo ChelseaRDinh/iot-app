@@ -1,5 +1,7 @@
 package ca.uvic.seng330.assn3.devices.lightbulb;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -26,7 +28,7 @@ public class LightbulbView {
   public LightbulbView(LightbulbController controller, LightbulbModel model) {
     this.controller = controller;
     this.model = model;
-    
+
     createAndConfigurePane();
     createAndLayoutControls();
     updateControllerFromListeners();
@@ -58,17 +60,35 @@ public class LightbulbView {
 
     // Lightbulb toggle.
     on = new ToggleButton("ON");
-    on.setStyle("-fx-base: green;");
+    on.setStyle("-fx-base: grey;");
     on.setToggleGroup(group);
 
     off = new ToggleButton("OFF");
-    off.setStyle("-fx-base: red;");
+    off.setStyle("-fx-base: grey;");
     off.setToggleGroup(group);
 
     HBox lightbulbContainer = new HBox(on, off);
 
     view.addRow(0, title);
     view.addRow(2, new Label("Switch:"), lightbulbContainer);
+
+    on.setOnAction(
+        new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent e) {
+            on.setStyle("-fx-base: green;");
+            off.setStyle("-fx-base: grey;");
+          }
+        });
+
+    off.setOnAction(
+          new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+              on.setStyle("-fx-base: grey;");
+              off.setStyle("-fx-base: red;");
+            }
+          });
   }
 
   private void updateControllerFromListeners() {}

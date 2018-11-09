@@ -1,14 +1,17 @@
 package ca.uvic.seng330.assn3;
 
+import ca.uvic.seng330.assn3.devices.camera.CameraController;
+import ca.uvic.seng330.assn3.devices.camera.CameraModel;
+import ca.uvic.seng330.assn3.devices.camera.CameraView;
+import ca.uvic.seng330.assn3.devices.lightbulb.LightbulbModel;
+import ca.uvic.seng330.assn3.devices.lightbulb.LightbulbView;
+import ca.uvic.seng330.assn3.devices.lightbulb.LightbulbController;
 import ca.uvic.seng330.assn3.home.HomeController;
 import ca.uvic.seng330.assn3.home.HomeModel;
 import ca.uvic.seng330.assn3.home.HomeView;
 import ca.uvic.seng330.assn3.login.LoginController;
 import ca.uvic.seng330.assn3.login.LoginModel;
 import ca.uvic.seng330.assn3.login.LoginView;
-import ca.uvic.seng330.assn3.devices.camera.CameraModel;
-import ca.uvic.seng330.assn3.devices.camera.CameraController;
-import ca.uvic.seng330.assn3.devices.camera.CameraView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -96,6 +99,18 @@ public class IOTApplication extends Application {
         this.primaryStage.show();
         break;
       case LIGHTBULB:
+        LightbulbModel lightbulbModel = new LightbulbModel(authToken);
+        LightbulbController lightbulbController =
+            new LightbulbController(
+                lightbulbModel,
+                authManager,
+                (from, to, token) -> {
+                  this.transition(from, to, token);
+                });
+        LightbulbView lightbulbView = new LightbulbView(lightbulbController, lightbulbModel);
+        scene = new Scene(lightbulbView.asParent(), 960, 480);
+        this.primaryStage.setScene(scene);
+        this.primaryStage.show();
         break;
       case SMARTPLUG:
         break;
