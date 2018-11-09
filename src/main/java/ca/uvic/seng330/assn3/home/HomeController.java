@@ -16,11 +16,11 @@ public class HomeController extends Controller {
     this.model = model;
   }
 
-  //logout from home view, and return to login screen.
+  // logout from home view, and return to login screen.
   public void logout() {
-    //Get existing session token.
+    // Get existing session token.
     Token token = model.getToken();
-    
+
     switchViews(this, Views.LOGIN, token);
   }
 

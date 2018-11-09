@@ -54,7 +54,7 @@ public class CameraView {
     title = new Text("Camera Settings");
     title.setFont(new Font(20));
 
-    //By default, recording is 'off'.
+    // By default, recording is 'off'.
     recordButton = new Button("OFF");
     recordButton.setStyle("-fx-base: red;");
 
@@ -66,12 +66,12 @@ public class CameraView {
     view.addRow(0, title);
     view.addRow(2, new Label("Record:"), recordButton);
 
-    //toggle record button.
+    // toggle record button.
     recordButton.setOnAction(
         new EventHandler<ActionEvent>() {
           @Override
           public void handle(ActionEvent e) {
-            if(recordButton.getText() == "OFF") {
+            if (recordButton.getText() == "OFF") {
               recordButton.setText("ON");
               recordButton.setStyle("-fx-base: green;");
             } else {

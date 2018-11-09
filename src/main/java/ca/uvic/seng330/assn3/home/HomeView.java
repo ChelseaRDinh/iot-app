@@ -12,7 +12,6 @@ import javafx.scene.layout.Priority;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.control.Label;
 
 public class HomeView {
   private GridPane view;
@@ -104,32 +103,32 @@ public class HomeView {
             controller.logout();
           }
         });
-    
-    cameraButton.setOnAction(
-      new EventHandler<ActionEvent>() {
-        @Override
-        public void handle(ActionEvent e) {
-          controller.cameraGUI();
-        }
-      });
 
-      thermostatButton.setOnAction(
+    cameraButton.setOnAction(
+        new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent e) {
+            controller.cameraGUI();
+          }
+        });
+
+    thermostatButton.setOnAction(
         new EventHandler<ActionEvent>() {
           @Override
           public void handle(ActionEvent e) {
             controller.logout();
           }
         });
-    
-      lightbulbButton.setOnAction(
+
+    lightbulbButton.setOnAction(
         new EventHandler<ActionEvent>() {
           @Override
           public void handle(ActionEvent e) {
-            controller.logout();
+            controller.lightbulbGUI();
           }
         });
-      
-      smartplugButton.setOnAction(
+
+    smartplugButton.setOnAction(
         new EventHandler<ActionEvent>() {
           @Override
           public void handle(ActionEvent e) {

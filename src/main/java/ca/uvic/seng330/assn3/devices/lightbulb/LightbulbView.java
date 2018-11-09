@@ -15,13 +15,18 @@ import javafx.scene.text.Text;
 
 public class LightbulbView {
   private GridPane view;
+  private LightbulbController controller;
+  private LightbulbModel model;
   private Text title;
   private ToggleGroup group;
   private ToggleButton on;
   private ToggleButton off;
 
   /** Default constructor for the Lightbulb view. */
-  public LightbulbView() {
+  public LightbulbView(LightbulbController controller, LightbulbModel model) {
+    this.controller = controller;
+    this.model = model;
+    
     createAndConfigurePane();
     createAndLayoutControls();
     updateControllerFromListeners();
