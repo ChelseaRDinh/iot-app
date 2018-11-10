@@ -6,6 +6,9 @@ import ca.uvic.seng330.assn3.devices.camera.CameraView;
 import ca.uvic.seng330.assn3.devices.lightbulb.LightbulbModel;
 import ca.uvic.seng330.assn3.devices.lightbulb.LightbulbView;
 import ca.uvic.seng330.assn3.devices.lightbulb.LightbulbController;
+import ca.uvic.seng330.assn3.devices.smartplug.SmartplugModel;
+import ca.uvic.seng330.assn3.devices.smartplug.SmartplugView;
+import ca.uvic.seng330.assn3.devices.smartplug.SmartplugController;
 import ca.uvic.seng330.assn3.home.HomeController;
 import ca.uvic.seng330.assn3.home.HomeModel;
 import ca.uvic.seng330.assn3.home.HomeView;
@@ -113,6 +116,18 @@ public class IOTApplication extends Application {
         this.primaryStage.show();
         break;
       case SMARTPLUG:
+        SmartplugModel smartplugModel = new SmartplugModel(authToken);
+        SmartplugController smartplugController =
+            new SmartplugController(
+                smartplugModel,
+                authManager,
+                (from, to, token) -> {
+                  this.transition(from, to, token);
+                });
+        SmartplugView smartplugView = new SmartplugView(smartplugController, smartplugModel);
+        scene = new Scene(smartplugView.asParent(), 960, 480);
+        this.primaryStage.setScene(scene);
+        this.primaryStage.show();
         break;
       case THERMOSTAT:
         break;

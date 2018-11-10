@@ -15,13 +15,18 @@ import javafx.scene.text.Text;
 
 public class SmartplugView {
   private GridPane view;
+  private SmartplugController controller;
+  private SmartplugModel model;
   private Text title;
   private ToggleGroup group;
   private ToggleButton on;
   private ToggleButton off;
 
   /** Default constructor for the Smartplug view. */
-  public SmartplugView() {
+  public SmartplugView(SmartplugController controller, SmartplugModel model) {
+    this.controller = controller;
+    this.model = model;
+    
     createAndConfigurePane();
     createAndLayoutControls();
     updateControllerFromListeners();
