@@ -1,5 +1,17 @@
 package ca.uvic.seng330.assn3;
 
+import ca.uvic.seng330.assn3.devices.camera.CameraController;
+import ca.uvic.seng330.assn3.devices.camera.CameraModel;
+import ca.uvic.seng330.assn3.devices.camera.CameraView;
+import ca.uvic.seng330.assn3.devices.lightbulb.LightbulbModel;
+import ca.uvic.seng330.assn3.devices.lightbulb.LightbulbView;
+import ca.uvic.seng330.assn3.devices.lightbulb.LightbulbController;
+import ca.uvic.seng330.assn3.devices.smartplug.SmartplugModel;
+import ca.uvic.seng330.assn3.devices.smartplug.SmartplugView;
+import ca.uvic.seng330.assn3.devices.smartplug.SmartplugController;
+import ca.uvic.seng330.assn3.devices.thermostat.ThermostatModel;
+import ca.uvic.seng330.assn3.devices.thermostat.ThermostatView;
+import ca.uvic.seng330.assn3.devices.thermostat.ThermostatController;
 import ca.uvic.seng330.assn3.home.HomeController;
 import ca.uvic.seng330.assn3.home.HomeModel;
 import ca.uvic.seng330.assn3.home.HomeView;
@@ -25,17 +37,17 @@ public class IOTApplication extends Application {
 
     this.primaryStage = primaryStage;
 
-    LoginModel model = new LoginModel();
-    LoginController controller =
+    LoginModel startModel = new LoginModel();
+    LoginController startController =
         new LoginController(
-            model,
+            startModel,
             authManager,
             (from, to, token) -> {
               this.transition(from, to, token);
             });
-    LoginView view = new LoginView(controller, model);
+    LoginView startView = new LoginView(startController, startModel);
 
-    scene = new Scene(view.asParent(), 960, 480);
+    scene = new Scene(startView.asParent(), 960, 480);
     this.primaryStage.setScene(scene);
     this.primaryStage.show();
   }
@@ -51,16 +63,86 @@ public class IOTApplication extends Application {
 
     switch (desiredView) {
       case MAIN:
-        HomeModel model = new HomeModel(authToken);
-        HomeController controller =
+        HomeModel homeModel = new HomeModel(authToken);
+        HomeController homeController =
             new HomeController(
-                model,
+                homeModel,
                 authManager,
                 (from, to, token) -> {
                   this.transition(from, to, token);
                 });
-        HomeView view = new HomeView(controller, model);
-        scene = new Scene(view.asParent(), 960, 480);
+        HomeView homeView = new HomeView(homeController, homeModel);
+        scene = new Scene(homeView.asParent(), 960, 480);
+        this.primaryStage.setScene(scene);
+        this.primaryStage.show();
+        break;
+      case LOGIN:
+        LoginModel loginModel = new LoginModel();
+        LoginController loginController =
+            new LoginController(
+                loginModel,
+                authManager,
+                (from, to, token) -> {
+                  this.transition(from, to, token);
+                });
+        LoginView loginView = new LoginView(loginController, loginModel);
+        scene = new Scene(loginView.asParent(), 960, 480);
+        this.primaryStage.setScene(scene);
+        this.primaryStage.show();
+        break;
+      case CAMERA:
+        CameraModel cameraModel = new CameraModel(authToken);
+        CameraController cameraController =
+            new CameraController(
+                cameraModel,
+                authManager,
+                (from, to, token) -> {
+                  this.transition(from, to, token);
+                });
+        CameraView cameraView = new CameraView(cameraController, cameraModel);
+        scene = new Scene(cameraView.asParent(), 960, 480);
+        this.primaryStage.setScene(scene);
+        this.primaryStage.show();
+        break;
+      case LIGHTBULB:
+        LightbulbModel lightbulbModel = new LightbulbModel(authToken);
+        LightbulbController lightbulbController =
+            new LightbulbController(
+                lightbulbModel,
+                authManager,
+                (from, to, token) -> {
+                  this.transition(from, to, token);
+                });
+        LightbulbView lightbulbView = new LightbulbView(lightbulbController, lightbulbModel);
+        scene = new Scene(lightbulbView.asParent(), 960, 480);
+        this.primaryStage.setScene(scene);
+        this.primaryStage.show();
+        break;
+      case SMARTPLUG:
+        SmartplugModel smartplugModel = new SmartplugModel(authToken);
+        SmartplugController smartplugController =
+            new SmartplugController(
+                smartplugModel,
+                authManager,
+                (from, to, token) -> {
+                  this.transition(from, to, token);
+                });
+        SmartplugView smartplugView = new SmartplugView(smartplugController, smartplugModel);
+        scene = new Scene(smartplugView.asParent(), 960, 480);
+        this.primaryStage.setScene(scene);
+        this.primaryStage.show();
+        break;
+      case THERMOSTAT:
+        ThermostatModel thermostatModel = new ThermostatModel(authToken);
+        ThermostatController thermostatController =
+            new ThermostatController(
+              thermostatModel,
+                authManager,
+                (from, to, token) -> {
+                  this.transition(from, to, token);
+                });
+        ThermostatView thermostatView = new ThermostatView(thermostatController, thermostatModel);
+        scene = new Scene(thermostatView.asParent(), 960, 480);
         this.primaryStage.setScene(scene);
         this.primaryStage.show();
         break;

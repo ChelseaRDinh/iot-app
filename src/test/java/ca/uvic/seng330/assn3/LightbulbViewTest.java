@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 
 public class LightbulbViewTest extends ApplicationTest {
-
+  /*
   @Override
   public void start(Stage primaryStage) {
     LightbulbView view = new LightbulbView();
@@ -24,4 +24,5 @@ public class LightbulbViewTest extends ApplicationTest {
     // then:
     clickOn("OFF");
   }
+  */
 }

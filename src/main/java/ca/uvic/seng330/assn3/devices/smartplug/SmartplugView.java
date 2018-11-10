@@ -1,11 +1,14 @@
 package ca.uvic.seng330.assn3.devices.smartplug;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.Button;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -15,13 +18,19 @@ import javafx.scene.text.Text;
 
 public class SmartplugView {
   private GridPane view;
+  private SmartplugController controller;
+  private SmartplugModel model;
   private Text title;
   private ToggleGroup group;
   private ToggleButton on;
   private ToggleButton off;
+  private Button homeButton;
 
   /** Default constructor for the Smartplug view. */
-  public SmartplugView() {
+  public SmartplugView(SmartplugController controller, SmartplugModel model) {
+    this.controller = controller;
+    this.model = model;
+    
     createAndConfigurePane();
     createAndLayoutControls();
     updateControllerFromListeners();
@@ -53,17 +62,46 @@ public class SmartplugView {
 
     // Lightbulb toggle.
     on = new ToggleButton("ON");
-    on.setStyle("-fx-base: green;");
+    on.setStyle("-fx-base: grey;");
     on.setToggleGroup(group);
 
     off = new ToggleButton("OFF");
-    off.setStyle("-fx-base: red;");
+    off.setStyle("-fx-base: grey;");
     off.setToggleGroup(group);
+
+    homeButton = new Button("Home");
 
     HBox smartplugContainer = new HBox(on, off);
 
     view.addRow(0, title);
     view.addRow(2, new Label("Switch:"), smartplugContainer);
+    view.addRow(3, homeButton);
+
+    on.setOnAction(
+        new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent e) {
+            on.setStyle("-fx-base: green;");
+            off.setStyle("-fx-base: grey;");
+          }
+        });
+
+    off.setOnAction(
+          new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+              on.setStyle("-fx-base: grey;");
+              off.setStyle("-fx-base: red;");
+            }
+          });
+
+    homeButton.setOnAction(
+      new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent e) {
+            controller.home();
+          }
+      });
   }
 
   private void updateControllerFromListeners() {}

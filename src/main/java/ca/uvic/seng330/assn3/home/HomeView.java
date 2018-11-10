@@ -1,5 +1,7 @@
 package ca.uvic.seng330.assn3.home;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -33,6 +35,23 @@ public class HomeView {
 
   public Parent asParent() {
     return view;
+  }
+
+  private void createAndConfigurePane() {
+    view = new GridPane();
+
+    ColumnConstraints leftCol = new ColumnConstraints();
+    leftCol.setHalignment(HPos.RIGHT);
+    leftCol.setHgrow(Priority.NEVER);
+
+    ColumnConstraints rightCol = new ColumnConstraints();
+    rightCol.setHgrow(Priority.NEVER);
+
+    view.getColumnConstraints().addAll(leftCol, rightCol);
+
+    view.setAlignment(Pos.CENTER);
+    view.setHgap(5);
+    view.setVgap(10);
   }
 
   private void createAndLayoutControls() {
@@ -77,22 +96,44 @@ public class HomeView {
      * Depending on which device button is clicked will determine which
      * view will be displayed.
      */
-  }
+    logoutButton.setOnAction(
+        new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent e) {
+            controller.logout();
+          }
+        });
 
-  private void createAndConfigurePane() {
-    view = new GridPane();
+    cameraButton.setOnAction(
+        new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent e) {
+            controller.cameraGUI();
+          }
+        });
 
-    ColumnConstraints leftCol = new ColumnConstraints();
-    leftCol.setHalignment(HPos.RIGHT);
-    leftCol.setHgrow(Priority.NEVER);
+    thermostatButton.setOnAction(
+        new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent e) {
+            controller.thermostatGUI();
+          }
+        });
 
-    ColumnConstraints rightCol = new ColumnConstraints();
-    rightCol.setHgrow(Priority.NEVER);
+    lightbulbButton.setOnAction(
+        new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent e) {
+            controller.lightbulbGUI();
+          }
+        });
 
-    view.getColumnConstraints().addAll(leftCol, rightCol);
-
-    view.setAlignment(Pos.CENTER);
-    view.setHgap(5);
-    view.setVgap(10);
+    smartplugButton.setOnAction(
+        new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent e) {
+            controller.smartplugGUI();
+          }
+        });
   }
 }

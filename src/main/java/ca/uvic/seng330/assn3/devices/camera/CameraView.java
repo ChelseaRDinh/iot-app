@@ -1,5 +1,7 @@
 package ca.uvic.seng330.assn3.devices.camera;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -14,11 +16,17 @@ import javafx.scene.text.Text;
 
 public class CameraView {
   private GridPane view;
+  private CameraController controller;
+  private CameraModel model;
   private Text title;
   private Button recordButton;
+  private Button homeButton;
 
   /** Default constructor for the Camera view. */
-  public CameraView() {
+  public CameraView(CameraController controller, CameraModel model) {
+    this.controller = controller;
+    this.model = model;
+
     createAndConfigurePane();
     createAndLayoutControls();
     updateControllerFromListeners();
@@ -47,22 +55,43 @@ public class CameraView {
     title = new Text("Camera Settings");
     title.setFont(new Font(20));
 
+    // By default, recording is 'off'.
     recordButton = new Button("OFF");
+    recordButton.setStyle("-fx-base: red;");
 
     double r = 30;
     recordButton.setShape(new Circle(r));
     recordButton.setMinSize(2 * r, 2 * r);
     recordButton.setMaxSize(2 * r, 2 * r);
-    recordButton.setStyle("-fx-base: red;");
 
-    recordButton.setOnAction(actionEvent -> recordButton.setText("ON"));
-    recordButton.setOnAction(actionEvent -> recordButton.setStyle("-fx-base: green;"));
+    homeButton = new Button("home");
 
     view.addRow(0, title);
     view.addRow(2, new Label("Record:"), recordButton);
+    view.addRow(3, new Label(""), homeButton);
 
-    // Camera Disk Space bar to go here.
-
+    // toggle record button.
+    recordButton.setOnAction(
+        new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent e) {
+            if (recordButton.getText() == "OFF") {
+              recordButton.setText("ON");
+              recordButton.setStyle("-fx-base: green;");
+            } else {
+              recordButton.setText("OFF");
+              recordButton.setStyle("-fx-base: red;");
+            }
+          }
+        });
+    
+    homeButton.setOnAction(
+      new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent e) {
+            controller.home();
+          }
+      });
   }
 
   private void updateControllerFromListeners() {}
