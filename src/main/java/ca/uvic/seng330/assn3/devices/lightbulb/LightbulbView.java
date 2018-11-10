@@ -24,7 +24,7 @@ public class LightbulbView {
   private ToggleGroup group;
   private ToggleButton on;
   private ToggleButton off;
-  private Button home;
+  private Button homeButton;
 
   /** Default constructor for the Lightbulb view. */
   public LightbulbView(LightbulbController controller, LightbulbModel model) {
@@ -71,11 +71,11 @@ public class LightbulbView {
 
     HBox lightbulbContainer = new HBox(on, off);
 
-    home = new Button("Home");
+    homeButton = new Button("Home");
 
     view.addRow(0, title);
     view.addRow(2, new Label("Switch:"), lightbulbContainer);
-    view.addRow(3, new Label(""), home);
+    view.addRow(3, new Label(""), homeButton);
 
     on.setOnAction(
         new EventHandler<ActionEvent>() {
@@ -93,6 +93,14 @@ public class LightbulbView {
               on.setStyle("-fx-base: grey;");
               off.setStyle("-fx-base: red;");
             }
+          });
+    
+    homeButton.setOnAction(
+          new EventHandler<ActionEvent>() {
+              @Override
+              public void handle(ActionEvent e) {
+                controller.home();
+              }
           });
   }
 

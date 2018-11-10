@@ -116,7 +116,7 @@ public class HomeView {
         new EventHandler<ActionEvent>() {
           @Override
           public void handle(ActionEvent e) {
-            controller.logout();
+            controller.thermostatGUI();
           }
         });
 
