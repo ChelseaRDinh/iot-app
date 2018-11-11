@@ -5,10 +5,10 @@ import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.control.Button;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -30,7 +30,7 @@ public class SmartplugView {
   public SmartplugView(SmartplugController controller, SmartplugModel model) {
     this.controller = controller;
     this.model = model;
-    
+
     createAndConfigurePane();
     createAndLayoutControls();
     updateControllerFromListeners();
@@ -87,21 +87,21 @@ public class SmartplugView {
         });
 
     off.setOnAction(
-          new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-              on.setStyle("-fx-base: grey;");
-              off.setStyle("-fx-base: red;");
-            }
-          });
+        new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent e) {
+            on.setStyle("-fx-base: grey;");
+            off.setStyle("-fx-base: red;");
+          }
+        });
 
     homeButton.setOnAction(
-      new EventHandler<ActionEvent>() {
+        new EventHandler<ActionEvent>() {
           @Override
           public void handle(ActionEvent e) {
             controller.home();
           }
-      });
+        });
   }
 
   private void updateControllerFromListeners() {}

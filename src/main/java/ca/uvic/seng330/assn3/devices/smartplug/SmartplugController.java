@@ -20,5 +20,4 @@ public class SmartplugController extends Controller {
     Token token = model.getToken();
     switchViews(this, Views.MAIN, token);
   }
-
 }

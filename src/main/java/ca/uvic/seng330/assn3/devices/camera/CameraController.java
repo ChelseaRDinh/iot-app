@@ -16,7 +16,7 @@ public class CameraController extends Controller {
     this.model = model;
   }
 
-  //return to home dashboard
+  // return to home dashboard
   public void home() {
     Token token = model.getToken();
     switchViews(this, Views.MAIN, token);

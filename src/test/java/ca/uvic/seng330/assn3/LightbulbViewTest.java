@@ -1,9 +1,5 @@
 package ca.uvic.seng330.assn3;
 
-import ca.uvic.seng330.assn3.devices.lightbulb.LightbulbView;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 
 public class LightbulbViewTest extends ApplicationTest {

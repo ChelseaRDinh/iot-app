@@ -84,14 +84,14 @@ public class CameraView {
             }
           }
         });
-    
+
     homeButton.setOnAction(
-      new EventHandler<ActionEvent>() {
+        new EventHandler<ActionEvent>() {
           @Override
           public void handle(ActionEvent e) {
             controller.home();
           }
-      });
+        });
   }
 
   private void updateControllerFromListeners() {}

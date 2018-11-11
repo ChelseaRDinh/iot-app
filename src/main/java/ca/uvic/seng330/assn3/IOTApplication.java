@@ -1,17 +1,20 @@
 package ca.uvic.seng330.assn3;
 
+import ca.uvic.seng330.assn3.devices.Hub;
+import ca.uvic.seng330.assn3.devices.Lightbulb;
+import ca.uvic.seng330.assn3.devices.MasterHub;
 import ca.uvic.seng330.assn3.devices.camera.CameraController;
 import ca.uvic.seng330.assn3.devices.camera.CameraModel;
 import ca.uvic.seng330.assn3.devices.camera.CameraView;
+import ca.uvic.seng330.assn3.devices.lightbulb.LightbulbController;
 import ca.uvic.seng330.assn3.devices.lightbulb.LightbulbModel;
 import ca.uvic.seng330.assn3.devices.lightbulb.LightbulbView;
-import ca.uvic.seng330.assn3.devices.lightbulb.LightbulbController;
+import ca.uvic.seng330.assn3.devices.smartplug.SmartplugController;
 import ca.uvic.seng330.assn3.devices.smartplug.SmartplugModel;
 import ca.uvic.seng330.assn3.devices.smartplug.SmartplugView;
-import ca.uvic.seng330.assn3.devices.smartplug.SmartplugController;
+import ca.uvic.seng330.assn3.devices.thermostat.ThermostatController;
 import ca.uvic.seng330.assn3.devices.thermostat.ThermostatModel;
 import ca.uvic.seng330.assn3.devices.thermostat.ThermostatView;
-import ca.uvic.seng330.assn3.devices.thermostat.ThermostatController;
 import ca.uvic.seng330.assn3.home.HomeController;
 import ca.uvic.seng330.assn3.home.HomeModel;
 import ca.uvic.seng330.assn3.home.HomeView;
@@ -24,16 +27,34 @@ import javafx.stage.Stage;
 
 public class IOTApplication extends Application {
   private AuthManager authManager;
+  private MasterHub allHubs;
   private Scene scene;
   private Stage primaryStage;
 
   @Override
   public void start(Stage primaryStage) {
+    Hub allDevices = new Hub();
+    Lightbulb l1 = new Lightbulb(allDevices);
+    Lightbulb l2 = new Lightbulb(allDevices);
+    Lightbulb l3 = new Lightbulb(allDevices);
+    Lightbulb l4 = new Lightbulb(allDevices);
+    Lightbulb l5 = new Lightbulb(allDevices);
+    Lightbulb l6 = new Lightbulb(allDevices);
+
     try {
       authManager = new AuthManager();
+
+      allDevices.register(l1);
+      allDevices.register(l2);
+      allDevices.register(l3);
+      allDevices.register(l4);
+      allDevices.register(l5);
+      allDevices.register(l6);
     } catch (Exception e) {
       return;
     }
+
+    allHubs = new MasterHub(authManager, authManager.getUsers(), allDevices);
 
     this.primaryStage = primaryStage;
 
@@ -63,7 +84,7 @@ public class IOTApplication extends Application {
 
     switch (desiredView) {
       case MAIN:
-        HomeModel homeModel = new HomeModel(authToken);
+        HomeModel homeModel = new HomeModel(authToken, allHubs);
         HomeController homeController =
             new HomeController(
                 homeModel,
@@ -91,7 +112,7 @@ public class IOTApplication extends Application {
         this.primaryStage.show();
         break;
       case CAMERA:
-        CameraModel cameraModel = new CameraModel(authToken);
+        CameraModel cameraModel = new CameraModel(authToken, allHubs);
         CameraController cameraController =
             new CameraController(
                 cameraModel,
@@ -105,7 +126,7 @@ public class IOTApplication extends Application {
         this.primaryStage.show();
         break;
       case LIGHTBULB:
-        LightbulbModel lightbulbModel = new LightbulbModel(authToken);
+        LightbulbModel lightbulbModel = new LightbulbModel(authToken, allHubs);
         LightbulbController lightbulbController =
             new LightbulbController(
                 lightbulbModel,
@@ -119,7 +140,7 @@ public class IOTApplication extends Application {
         this.primaryStage.show();
         break;
       case SMARTPLUG:
-        SmartplugModel smartplugModel = new SmartplugModel(authToken);
+        SmartplugModel smartplugModel = new SmartplugModel(authToken, allHubs);
         SmartplugController smartplugController =
             new SmartplugController(
                 smartplugModel,
@@ -133,10 +154,10 @@ public class IOTApplication extends Application {
         this.primaryStage.show();
         break;
       case THERMOSTAT:
-        ThermostatModel thermostatModel = new ThermostatModel(authToken);
+        ThermostatModel thermostatModel = new ThermostatModel(authToken, allHubs);
         ThermostatController thermostatController =
             new ThermostatController(
-              thermostatModel,
+                thermostatModel,
                 authManager,
                 (from, to, token) -> {
                   this.transition(from, to, token);

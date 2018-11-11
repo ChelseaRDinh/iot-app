@@ -1,5 +1,7 @@
 package ca.uvic.seng330.assn3;
 
+import ca.uvic.seng330.assn3.devices.Hub;
+import ca.uvic.seng330.assn3.devices.MasterHub;
 import ca.uvic.seng330.assn3.home.HomeController;
 import ca.uvic.seng330.assn3.home.HomeModel;
 import ca.uvic.seng330.assn3.home.HomeView;
@@ -13,6 +15,7 @@ public class HomeViewTest extends ApplicationTest {
   private Stage primaryStage;
 
   private AuthManager authManager;
+  private MasterHub hub;
   private Views to;
   private Token token;
 
@@ -27,11 +30,15 @@ public class HomeViewTest extends ApplicationTest {
       return;
     }
 
+    Hub deviceHub = new Hub();
+
+    hub = new MasterHub(authManager, authManager.getUsers(), deviceHub);
+
     // Default to admin token for tests.
     Token adminToken = authManager.getToken("admin", "admin");
 
     // Create here the scene as the IOTApplication would.
-    HomeModel model = new HomeModel(adminToken);
+    HomeModel model = new HomeModel(adminToken, hub);
     HomeController controller =
         new HomeController(
             model,
@@ -85,7 +92,7 @@ public class HomeViewTest extends ApplicationTest {
     Token adminToken = authManager.getToken("admin", "admin");
 
     // Create just the admin interface.
-    HomeModel model = new HomeModel(adminToken);
+    HomeModel model = new HomeModel(adminToken, hub);
     HomeController controller =
         new HomeController(
             model,
@@ -110,7 +117,7 @@ public class HomeViewTest extends ApplicationTest {
     Token userToken = authManager.getToken("user", "user");
 
     // Create just the user interface.
-    HomeModel model = new HomeModel(userToken);
+    HomeModel model = new HomeModel(userToken, hub);
     HomeController controller =
         new HomeController(
             model,

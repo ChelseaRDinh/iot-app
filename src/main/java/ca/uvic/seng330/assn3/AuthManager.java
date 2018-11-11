@@ -68,6 +68,27 @@ public final class AuthManager {
   }
 
   /**
+   * Gets the username from a given token.
+   *
+   * @param token the token to extract the username from
+   * @return the username as a string from the token
+   */
+  public String getUsernameFromToken(Token token) {
+    String decryptedToken = getDecryptedText(token);
+    String[] tokenParts = decryptedToken.split(",");
+
+    if (tokenParts.length != 2) {
+      return null;
+    }
+
+    if (!users.containsKey(tokenParts[0])) {
+      return null;
+    }
+
+    return tokenParts[0];
+  }
+
+  /**
    * Returns whether or not a given token is valid (meaning there is an associated user with the
    * same password hash).
    *
@@ -96,6 +117,10 @@ public final class AuthManager {
     }
 
     return tokenParts[0].equals("admin");
+  }
+
+  public String[] getUsers() {
+    return (String[]) users.keySet().toArray();
   }
 
   private String getDecryptedText(Token token) {
