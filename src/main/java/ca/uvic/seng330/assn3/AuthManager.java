@@ -120,7 +120,7 @@ public final class AuthManager {
   }
 
   public String[] getUsers() {
-    return (String[]) users.keySet().toArray();
+    return users.keySet().toArray(new String[users.size()]);
   }
 
   private String getDecryptedText(Token token) {
