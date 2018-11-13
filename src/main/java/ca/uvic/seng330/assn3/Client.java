@@ -34,6 +34,16 @@ public abstract class Client {
     return uuid;
   }
 
+  /**
+   * Gets the list of UUIDs from the mediator of a given type.
+   *
+   * @param type the type of the class you wish to get the UUIDs of
+   * @return the list of UUIDs who belong to objects of type
+   */
+  public final List<UUID> getUUIDOfType(String type) {
+    return mediator.getUUIDOfType(type);
+  }
+
   public final void sendMessageToDevice(Command command, UUID device) {
     mediator.alert(new JSONMessaging(this, CommandsToMessages.get(command), device));
   }

@@ -16,6 +16,10 @@ public class LightbulbController extends Controller {
     this.model = model;
   }
 
+  public void updateLightbulbConditionAt(int index, Boolean value) {
+    model.setLightbulbConditionAt(index, value);
+  }
+
   public void home() {
     Token token = model.getToken();
     switchViews(this, Views.MAIN, token);

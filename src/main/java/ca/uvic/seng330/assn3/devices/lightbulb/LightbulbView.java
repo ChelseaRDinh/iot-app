@@ -59,11 +59,8 @@ public class LightbulbView {
     title.setFont(new Font(20));
     view.addRow(0, title);
 
-    // TODO: get the light UUID list from the model, then use the UUIDs to get the light sts=atus
-    // and init with that. Also will need to bind that value to the model getting and sending
-    // notifcations to the bulbs.
-    for (int i = 0; i < 4; i++) {
-      OnOffToggle toggle = new OnOffToggle();
+    for (int i = 0; i < model.getLightbulbCount(); i++) {
+      OnOffToggle toggle = new OnOffToggle(model, controller, i);
 
       lightbulbSwitches.add(toggle);
 
@@ -81,7 +78,7 @@ public class LightbulbView {
             controller.home();
           }
         });
-    view.addRow(2 + 4 + 1, new Label(""), homeButton);
+    view.addRow(2 + model.getLightbulbCount() + 1, new Label(""), homeButton);
   }
 
   // The model will get the UUIDs, make a list of boolean properties, and we will bind to that. The

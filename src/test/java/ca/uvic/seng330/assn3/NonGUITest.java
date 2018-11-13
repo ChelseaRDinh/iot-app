@@ -172,10 +172,10 @@ public class NonGUITest {
     }
 
     // Get the lists of UUIDs from the hub.
-    final List<UUID> r1 = h.getUUIDOfType(l1.getClass().toString());
-    final List<UUID> r2 = h.getUUIDOfType(s1.getClass().toString());
-    final List<UUID> r3 = h.getUUIDOfType(c1.getClass().toString());
-    final List<UUID> r4 = h.getUUIDOfType(h.getClass().toString());
+    final List<UUID> r1 = h.getUUIDOfType(l1.getClass().getName());
+    final List<UUID> r2 = h.getUUIDOfType(s1.getClass().getName());
+    final List<UUID> r3 = h.getUUIDOfType(c1.getClass().getName());
+    final List<UUID> r4 = h.getUUIDOfType(h.getClass().getName());
     final List<UUID> r5 = h.getUUIDOfType("type");
     final List<UUID> r6 = h.getUUIDOfType("");
     final List<UUID> r7 = h.getUUIDOfType(null);

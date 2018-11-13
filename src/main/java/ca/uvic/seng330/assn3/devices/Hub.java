@@ -40,7 +40,7 @@ public final class Hub extends Mediator {
     ArrayList<UUID> uuids = new ArrayList<UUID>();
 
     for (HashMap.Entry<UUID, Device> entry : devices.entrySet()) {
-      if (entry.getValue().getClass().toString().equals(type)) {
+      if (entry.getValue().getClass().getName().equals(type)) {
         uuids.add(entry.getKey());
       }
     }
@@ -51,7 +51,7 @@ public final class Hub extends Mediator {
     }
 
     for (HashMap.Entry<UUID, Client> entry : clients.entrySet()) {
-      if (entry.getValue().getClass().toString().equals(type)) {
+      if (entry.getValue().getClass().getName().equals(type)) {
         uuids.add(entry.getKey());
       }
     }
