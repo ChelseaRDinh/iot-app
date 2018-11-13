@@ -66,8 +66,9 @@ public class SmartplugView {
     on.setToggleGroup(group);
 
     off = new ToggleButton("OFF");
-    off.setStyle("-fx-base: grey;");
+    off.setStyle("-fx-base: red;");
     off.setToggleGroup(group);
+    off.setSelected(true);
 
     homeButton = new Button("Home");
 
