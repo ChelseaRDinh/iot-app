@@ -6,6 +6,9 @@ import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.HBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
@@ -22,8 +25,8 @@ public class ThermostatView {
   private ThermostatModel model;
   private Text title;
   private Button homeButton;
-  private Button fahrenheit;
-  private Button celsius;
+  private ToggleButton fahrenheitMode;
+  private ToggleButton celsiusMode;
   private TextField temperatureField;
   private Text errorMsg;
 
@@ -64,14 +67,41 @@ public class ThermostatView {
     title.setFont(new Font(20));
 
     homeButton = new Button("Home");
+
+    //Temperature modes
+    fahrenheitMode = new ToggleButton("Fahrenheit");
+    fahrenheitMode.setStyle("-fx-base: grey;");
+    celsiusMode = new ToggleButton("Celsius");
+    celsiusMode.setStyle("-fx-base: grey;");
+    HBox thermostatContainer = new HBox(fahrenheitMode, celsiusMode);
+
     temperatureField = new TextField();
     temperatureField.setMaxWidth(80);
     //Configure text field to take in double values for temperature.
     configTextFieldForDoubles(temperatureField);
 
     view.addRow(0, title);
-    view.addRow(1, new Label("Set Temperature: "), temperatureField);
-    view.addRow(2, new Label(""), homeButton);
+    view.addRow(1, new Label("Mode: "), thermostatContainer);
+    view.addRow(2, new Label("Temperature: "), temperatureField);
+    view.addRow(3, new Label(""), homeButton);
+
+    //Set buttons to blue when selected; opposite button is set back to default grey.
+    fahrenheitMode.setOnAction(
+        new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent e) {
+            fahrenheitMode.setStyle("-fx-base: blue;");
+            celsiusMode.setStyle("-fx-base: grey;");
+          }
+        });
+    celsiusMode.setOnAction(
+      new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent e) {
+          fahrenheitMode.setStyle("-fx-base: grey;");
+          celsiusMode.setStyle("-fx-base: blue;");
+        }
+      });
 
     homeButton.setOnAction(
         new EventHandler<ActionEvent>() {
@@ -80,6 +110,9 @@ public class ThermostatView {
             controller.home();
           }
         });
+      
+     //By default, set mode to be celsius.
+     celsiusMode.setSelected(true);
   }
 
   private void updateControllerFromListeners() {}
