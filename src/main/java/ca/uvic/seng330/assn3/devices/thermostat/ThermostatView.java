@@ -7,20 +7,25 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.control.TextFormatter;
+import javafx.scene.control.TextFormatter.Change;
 
 public class ThermostatView {
   private GridPane view;
   private ThermostatController controller;
   private ThermostatModel model;
-  private Slider tempSlider;
   private Text title;
   private Button homeButton;
+  private Button fahrenheit;
+  private Button celsius;
+  private TextField temperatureField;
+  private Text errorMsg;
 
   /** Default constructor for the Thermostat view. */
   public ThermostatView(ThermostatController controller, ThermostatModel model) {
@@ -58,15 +63,14 @@ public class ThermostatView {
     title = new Text("Thermostat Settings");
     title.setFont(new Font(20));
 
-    // Slider for changing temperature.
-    tempSlider = new Slider(0.0, 50.0, 100.0);
-    tempSlider.setShowTickMarks(true);
-    tempSlider.setShowTickLabels(true);
-
     homeButton = new Button("Home");
+    temperatureField = new TextField();
+    temperatureField.setMaxWidth(80);
+    //Configure text field to take in double values for temperature.
+    configTextFieldForDoubles(temperatureField);
 
     view.addRow(0, title);
-    view.addRow(1, new Label("Temperature:"), tempSlider);
+    view.addRow(1, new Label("Set Temperature: "), temperatureField);
     view.addRow(2, new Label(""), homeButton);
 
     homeButton.setOnAction(
@@ -81,4 +85,20 @@ public class ThermostatView {
   private void updateControllerFromListeners() {}
 
   private void observeModelAndUpdateControls() {}
+
+  /*
+  * Adapted from AdditionView.java in Examples folder for starter code repo.
+  * Source: https://www.github.com/seng330
+  */
+  private void configTextFieldForDoubles(TextField field) {
+    field.setTextFormatter(
+        new TextFormatter<Double>(
+            (Change c) -> {
+              //Change regex to allow decimal values.
+              if (c.getControlNewText().matches("\\d*(\\.\\d*)?")) {
+                return c;
+              }
+              return null;
+            }));
+  }
 }
