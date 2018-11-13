@@ -28,6 +28,7 @@ public class ThermostatView {
   private ToggleButton fahrenheitMode;
   private ToggleButton celsiusMode;
   private TextField temperatureField;
+  private ToggleGroup group;
   private Text errorMsg;
 
   /** Default constructor for the Thermostat view. */
@@ -69,50 +70,55 @@ public class ThermostatView {
     homeButton = new Button("Home");
 
     //Temperature modes
+    group = new ToggleGroup();
+
     fahrenheitMode = new ToggleButton("Fahrenheit");
     fahrenheitMode.setStyle("-fx-base: grey;");
+    fahrenheitMode.setToggleGroup(group);
+
     celsiusMode = new ToggleButton("Celsius");
-    celsiusMode.setStyle("-fx-base: grey;");
+    celsiusMode.setStyle("-fx-base: blue;");
+    celsiusMode.setToggleGroup(group);
+    //By default, set mode to be celsius.
+    celsiusMode.setSelected(true);
+
     HBox thermostatContainer = new HBox(fahrenheitMode, celsiusMode);
 
     temperatureField = new TextField();
     temperatureField.setMaxWidth(80);
     //Configure text field to take in double values for temperature.
     configTextFieldForDoubles(temperatureField);
-
-    view.addRow(0, title);
-    view.addRow(1, new Label("Mode: "), thermostatContainer);
-    view.addRow(2, new Label("Temperature: "), temperatureField);
-    view.addRow(3, new Label(""), homeButton);
-
-    //Set buttons to blue when selected; opposite button is set back to default grey.
-    fahrenheitMode.setOnAction(
-        new EventHandler<ActionEvent>() {
-          @Override
-          public void handle(ActionEvent e) {
-            fahrenheitMode.setStyle("-fx-base: blue;");
-            celsiusMode.setStyle("-fx-base: grey;");
-          }
-        });
-    celsiusMode.setOnAction(
+  
+    homeButton.setOnAction(
       new EventHandler<ActionEvent>() {
         @Override
+        public void handle(ActionEvent e) {
+          controller.home();
+        }
+      });
+      
+    //Set buttons to blue when selected; opposite button is set back to default grey.
+    fahrenheitMode.setOnAction(
+      new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent e) {
+          fahrenheitMode.setStyle("-fx-base: blue;");
+          celsiusMode.setStyle("-fx-base: grey;");
+        }
+      });
+    celsiusMode.setOnAction(
+      new EventHandler<ActionEvent>() {
+      @Override
         public void handle(ActionEvent e) {
           fahrenheitMode.setStyle("-fx-base: grey;");
           celsiusMode.setStyle("-fx-base: blue;");
         }
       });
 
-    homeButton.setOnAction(
-        new EventHandler<ActionEvent>() {
-          @Override
-          public void handle(ActionEvent e) {
-            controller.home();
-          }
-        });
-      
-     //By default, set mode to be celsius.
-     celsiusMode.setSelected(true);
+    view.addRow(0, title);
+    view.addRow(1, new Label("Mode: "), thermostatContainer);
+    view.addRow(2, new Label("Temperature: "), temperatureField);
+    view.addRow(3, new Label(""), homeButton);
   }
 
   private void updateControllerFromListeners() {}
