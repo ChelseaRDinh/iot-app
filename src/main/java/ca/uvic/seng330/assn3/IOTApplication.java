@@ -21,9 +21,12 @@ import ca.uvic.seng330.assn3.home.HomeView;
 import ca.uvic.seng330.assn3.login.LoginController;
 import ca.uvic.seng330.assn3.login.LoginModel;
 import ca.uvic.seng330.assn3.login.LoginView;
+import ca.uvic.seng330.assn3.admin.AdminDashboard;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 
 public class IOTApplication extends Application {
   private AuthManager authManager;
@@ -167,6 +170,25 @@ public class IOTApplication extends Application {
         this.primaryStage.setScene(scene);
         this.primaryStage.show();
         break;
+      case ADMIN:
+      HomeModel adminModel = new HomeModel(authToken, allHubs);
+      HomeController adminController =
+          new HomeController(
+              adminModel,
+              authManager,
+              (from, to, token) -> {
+                this.transition(from, to, token);
+              });
+      HomeView adminView = new HomeView(adminController, adminModel);
+      scene = new Scene(adminView.asParent(), 960, 480);
+      this.primaryStage.setScene(scene);
+      this.primaryStage.show();
+
+      //Show admin dashboard as secondary window
+      Stage secondStage = new Stage();
+      AdminDashboard adminHomeView = new AdminDashboard();
+      secondStage.setScene(new Scene(adminHomeView.asParent(), 960, 480));
+      secondStage.show();
       default:
         break;
     }
