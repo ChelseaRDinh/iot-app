@@ -10,14 +10,14 @@ import javafx.scene.layout.Priority;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-public class AdminDashboard {
+public class AdminView {
   private GridPane view;
   private Text title;
   private Button manageUsers;
   private Button manageDevices;
 
   /** Default constructor for the Admin Dashboard view. */
-  public AdminDashboard() {
+  public AdminView() {
     createAndConfigurePane();
     createAndLayoutControls();
     updateControllerFromListeners();

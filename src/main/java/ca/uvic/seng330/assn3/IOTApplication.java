@@ -21,7 +21,7 @@ import ca.uvic.seng330.assn3.home.HomeView;
 import ca.uvic.seng330.assn3.login.LoginController;
 import ca.uvic.seng330.assn3.login.LoginModel;
 import ca.uvic.seng330.assn3.login.LoginView;
-import ca.uvic.seng330.assn3.admin.AdminDashboard;
+import ca.uvic.seng330.assn3.admin.AdminView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -186,7 +186,7 @@ public class IOTApplication extends Application {
 
       //Show admin dashboard as secondary window
       Stage secondStage = new Stage();
-      AdminDashboard adminHomeView = new AdminDashboard();
+      AdminView adminHomeView = new AdminView();
       secondStage.setScene(new Scene(adminHomeView.asParent(), 960, 480));
       secondStage.show();
       default:
