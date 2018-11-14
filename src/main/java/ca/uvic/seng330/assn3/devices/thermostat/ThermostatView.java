@@ -18,6 +18,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.TextFormatter.Change;
+import javafx.scene.paint.Color;
 
 public class ThermostatView {
   private GridPane view;
@@ -25,6 +26,7 @@ public class ThermostatView {
   private ThermostatModel model;
   private Text title;
   private Button homeButton;
+  private Button setTemperature;
   private ToggleButton fahrenheitMode;
   private ToggleButton celsiusMode;
   private TextField temperatureField;
@@ -81,8 +83,13 @@ public class ThermostatView {
     celsiusMode.setToggleGroup(group);
     //By default, set mode to be celsius.
     celsiusMode.setSelected(true);
+    model.setMode(TempMode.CELSIUS);
 
     HBox thermostatContainer = new HBox(fahrenheitMode, celsiusMode);
+
+    setTemperature = new Button("Set");
+
+    errorMsg = new Text();
 
     temperatureField = new TextField();
     temperatureField.setMaxWidth(80);
@@ -104,6 +111,7 @@ public class ThermostatView {
         public void handle(ActionEvent e) {
           fahrenheitMode.setStyle("-fx-base: blue;");
           celsiusMode.setStyle("-fx-base: grey;");
+          model.setMode(TempMode.FAHRENHEIT);
         }
       });
     celsiusMode.setOnAction(
@@ -112,29 +120,59 @@ public class ThermostatView {
         public void handle(ActionEvent e) {
           fahrenheitMode.setStyle("-fx-base: grey;");
           celsiusMode.setStyle("-fx-base: blue;");
+          model.setMode(TempMode.CELSIUS);
         }
       });
+
+      setTemperature.setOnAction(
+        new EventHandler<ActionEvent>() {
+        @Override
+          public void handle(ActionEvent e) {
+            if((model.getTemperatureValue() >= 37) && (model.getMode()==TempMode.CELSIUS) || (model.getTemperatureValue() >= 100) && (model.getMode()==TempMode.FAHRENHEIT)) {
+              errorMsg.setFill(Color.rgb(210, 39, 30));
+              errorMsg.setText("Temperature exceeds max value.");
+            } else {
+              errorMsg.setFill(Color.rgb(16, 152, 0));
+              errorMsg.setText("New temperature set.");
+            }
+          }
+        });
 
     view.addRow(0, title);
     view.addRow(1, new Label("Mode: "), thermostatContainer);
     view.addRow(2, new Label("Temperature: "), temperatureField);
-    view.addRow(3, new Label(""), homeButton);
+    view.add(setTemperature, 2, 2);
+    view.addRow(3, new Label(""), errorMsg);
+    view.addRow(4, new Label(""), homeButton);
+
   }
 
-  private void updateControllerFromListeners() {}
+  private void observeModelAndUpdateControls() {
+    model.temperatureValueProperty().addListener((obs, oldTemperatureValue, newTemperatureValue) -> updateIfNeeded(newTemperatureValue, temperatureField));
+  }
 
-  private void observeModelAndUpdateControls() {}
+  private void updateIfNeeded(Number value, TextField field) {
+    String s = value.toString();
+    if (!field.getText().equals(s)) {
+      field.setText(s);
+    }
+  }
+
+  private void updateControllerFromListeners() {
+    temperatureField.textProperty().addListener((obs, oldText, newText) -> controller.updateTemperatureValue(newText));
+  }
 
   /*
   * Adapted from AdditionView.java in Examples folder for starter code repo.
   * Source: https://www.github.com/seng330
+  * Decimal keeps being added prematurely. Changing to to an integer field for now.
   */
   private void configTextFieldForDoubles(TextField field) {
     field.setTextFormatter(
         new TextFormatter<Double>(
             (Change c) -> {
               //Change regex to allow decimal values.
-              if (c.getControlNewText().matches("\\d*(\\.\\d*)?")) {
+              if (c.getControlNewText().matches("-?\\d*")) {
                 return c;
               }
               return null;
