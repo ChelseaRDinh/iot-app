@@ -1,5 +1,8 @@
 package ca.uvic.seng330.assn3.devices.smartplug;
 
+import ca.uvic.seng330.assn3.OnOffToggle;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
@@ -11,7 +14,6 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -25,6 +27,7 @@ public class SmartplugView {
   private ToggleButton on;
   private ToggleButton off;
   private Button homeButton;
+  private List<OnOffToggle> smartplugSwitches;
 
   /** Default constructor for the Smartplug view. */
   public SmartplugView(SmartplugController controller, SmartplugModel model) {
@@ -56,46 +59,22 @@ public class SmartplugView {
   }
 
   private void createAndLayoutControls() {
+    smartplugSwitches = new ArrayList<OnOffToggle>();
     title = new Text("Smartplug Settings");
     title.setFont(new Font(20));
-    group = new ToggleGroup();
+    view.addRow(0, title);
 
-    // Lightbulb toggle.
-    on = new ToggleButton("ON");
-    on.setStyle("-fx-base: grey;");
-    on.setToggleGroup(group);
+    for (int i = 0; i < model.getCount(); i++) {
+      OnOffToggle toggle = new OnOffToggle(model, controller, i);
+      smartplugSwitches.add(toggle);
 
-    off = new ToggleButton("OFF");
-    off.setStyle("-fx-base: red;");
-    off.setToggleGroup(group);
-    off.setSelected(true);
+      view.addRow(
+          2 + i,
+          new Label("Switch " + new Integer(i + 1).toString() + ": "),
+          toggle.getContainer());
+    }
 
     homeButton = new Button("Home");
-
-    HBox smartplugContainer = new HBox(on, off);
-
-    view.addRow(0, title);
-    view.addRow(2, new Label("Switch:"), smartplugContainer);
-    view.addRow(3, homeButton);
-
-    on.setOnAction(
-        new EventHandler<ActionEvent>() {
-          @Override
-          public void handle(ActionEvent e) {
-            on.setStyle("-fx-base: green;");
-            off.setStyle("-fx-base: grey;");
-          }
-        });
-
-    off.setOnAction(
-        new EventHandler<ActionEvent>() {
-          @Override
-          public void handle(ActionEvent e) {
-            on.setStyle("-fx-base: grey;");
-            off.setStyle("-fx-base: red;");
-          }
-        });
-
     homeButton.setOnAction(
         new EventHandler<ActionEvent>() {
           @Override
@@ -103,6 +82,7 @@ public class SmartplugView {
             controller.home();
           }
         });
+    view.addRow(2 + model.getCount() + 1, new Label(""), homeButton);
   }
 
   private void updateControllerFromListeners() {}

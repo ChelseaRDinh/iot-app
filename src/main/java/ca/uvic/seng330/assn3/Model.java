@@ -1,6 +1,7 @@
 package ca.uvic.seng330.assn3;
 
 import ca.uvic.seng330.assn3.devices.MasterHub;
+import javafx.beans.property.SimpleBooleanProperty;
 import org.json.JSONObject;
 
 public abstract class Model extends Client {
@@ -24,4 +25,18 @@ public abstract class Model extends Client {
   }
 
   public abstract void notify(JSONObject message);
+
+  /*
+  * Default method, created so that it can be overriden by lightbulb and smartplug classes.
+  */
+  public Boolean getConditionAt(int index) {
+    return true;
+  }
+
+  /*
+  * Default method, created so that it can be overriden by lightbulb and smartplug classes.
+  */
+  public SimpleBooleanProperty ConditionPropertyAt(int index) {
+    return new SimpleBooleanProperty();
+  }
 }

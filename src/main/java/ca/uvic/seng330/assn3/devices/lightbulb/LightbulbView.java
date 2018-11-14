@@ -59,9 +59,8 @@ public class LightbulbView {
     title.setFont(new Font(20));
     view.addRow(0, title);
 
-    for (int i = 0; i < model.getLightbulbCount(); i++) {
+    for (int i = 0; i < model.getCount(); i++) {
       OnOffToggle toggle = new OnOffToggle(model, controller, i);
-
       lightbulbSwitches.add(toggle);
 
       view.addRow(
@@ -78,7 +77,7 @@ public class LightbulbView {
             controller.home();
           }
         });
-    view.addRow(2 + model.getLightbulbCount() + 1, new Label(""), homeButton);
+    view.addRow(2 + model.getCount() + 1, new Label(""), homeButton);
   }
 
   // The model will get the UUIDs, make a list of boolean properties, and we will bind to that. The

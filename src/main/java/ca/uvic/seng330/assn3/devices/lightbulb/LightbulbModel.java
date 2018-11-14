@@ -28,20 +28,20 @@ public class LightbulbModel extends Model {
     }
   }
 
-  public int getLightbulbCount() {
+  public int getCount() {
     return lightbulbs.size();
   }
 
-  public final SimpleBooleanProperty lightbulbConditionPropertyAt(int index) {
+  public final SimpleBooleanProperty ConditionPropertyAt(int index) {
     return lightbulbConditions.get(lightbulbs.get(index));
   }
 
-  public Boolean getLightbulbConditionAt(int index) {
+  public Boolean getConditionAt(int index) {
     return lightbulbConditions.get(lightbulbs.get(index)).get();
   }
 
-  public void setLightbulbConditionAt(int index, Boolean value) {
-    if (getLightbulbConditionAt(index) != value) {
+  public void setConditionAt(int index, Boolean value) {
+    if (getConditionAt(index) != value) {
       lightbulbConditions.get(lightbulbs.get(index)).set(value);
       sendMessageToDevice(Command.LIGHTBULB_TOGGLE, lightbulbs.get(index));
     }

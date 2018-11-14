@@ -1,7 +1,5 @@
 package ca.uvic.seng330.assn3;
 
-import ca.uvic.seng330.assn3.devices.lightbulb.LightbulbController;
-import ca.uvic.seng330.assn3.devices.lightbulb.LightbulbModel;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.ToggleButton;
@@ -19,11 +17,12 @@ public class OnOffToggle {
     createButtons();
   }
 
-  public OnOffToggle(LightbulbModel model, LightbulbController controller, int index) {
+  // public OnOffToggle(LightbulbModel model, LightbulbController controller, int index) {
+  public OnOffToggle(Model model, Controller controller, int index) {
     createButtons();
 
     // Fire the event of the selected button so it gets its color.
-    if (model.getLightbulbConditionAt(index)) {
+    if (model.getConditionAt(index)) {
       on.fire();
     } else {
       off.fire();
@@ -31,13 +30,11 @@ public class OnOffToggle {
 
     // Only watch for the on button. Since it's a toggle group, this will trigger no matter which
     // button is clicked.
-    model
-        .lightbulbConditionPropertyAt(index)
+    model.ConditionPropertyAt(index)
         .addListener((obs, oldValue, newValue) -> updateIfNeeded(newValue, on));
 
     on.selectedProperty()
-        .addListener(
-            (obs, oldValue, newValue) -> controller.updateLightbulbConditionAt(index, newValue));
+        .addListener((obs, oldValue, newValue) -> controller.updateConditionAt(index, newValue));
   }
 
   public HBox getContainer() {
