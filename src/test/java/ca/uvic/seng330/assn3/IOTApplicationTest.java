@@ -114,17 +114,6 @@ public class IOTApplicationTest extends ApplicationTest {
 
     // then:
     // check if the login fail label is visible
-    assertEquals(false, true);
-  }
-
-  public void testHomeView() {
-    // when:
-    // entering admin as username and password
-    clickOn("#usernameField").write("admin");
-    clickOn("#passwordField").write("admin");
-
-    // then:
-    // The view should redirect to the home screen.
-    assertEquals(false, true);
+    verifyThat("#invalidPWField", TextInputControlMatchers.hasText("Invalid password"));
   }
 }

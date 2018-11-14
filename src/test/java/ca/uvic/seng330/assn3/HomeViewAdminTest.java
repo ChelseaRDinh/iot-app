@@ -11,7 +11,7 @@ import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 
 // Tests covered: 1
-public class HomeViewTest extends ApplicationTest {
+public class HomeViewAdminTest extends ApplicationTest {
   private Scene scene;
   private Stage primaryStage;
 
@@ -36,10 +36,10 @@ public class HomeViewTest extends ApplicationTest {
     hub = new MasterHub(authManager, authManager.getUsers(), deviceHub);
 
     // Default to admin token for tests.
-    Token userToken = authManager.getToken("user", "user");
+    Token adminToken = authManager.getToken("admin", "admin");
 
     // Create here the scene as the IOTApplication would.
-    HomeModel model = new HomeModel(userToken, hub);
+    HomeModel model = new HomeModel(adminToken, hub);
     HomeController controller =
         new HomeController(
             model,
@@ -59,21 +59,22 @@ public class HomeViewTest extends ApplicationTest {
     this.token = token;
   }
 
-  // GIVEN I am logged in as a user to the Hub WHEN I open the app interface THEN I see the user
-  // interface.
+  // GIVEN I want to use my Home Automation System as an admin WHEN I open the app interface THEN
+  // I see the user interface and an admin interface.
   @Test
-  public void testSeeUserInterface() {
-    // given:
-    // Already logged in as user from start()
-
+  public void testBothInterfaces() {
+    // given: I log in as admin (test by default does this)
     // then:
     // See user interface.
     testUserInterface();
+
+    // See admin interface.
+    testAdminInterface();
   }
 
   @Test
-  public void testLogout() {
-    // given: logged in as user
+  public void testAdminLogout() {
+    // given: logged in as admin
     // when:
     clickOn("Logout");
   }
@@ -85,5 +86,10 @@ public class HomeViewTest extends ApplicationTest {
     clickOn("Lightbulb");
     clickOn("SmartPlug");
     clickOn("Logout");
+  }
+
+  private void testAdminInterface() {
+    // then: I should see admin interface
+    clickOn("Admin");
   }
 }

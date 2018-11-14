@@ -11,8 +11,8 @@ import javafx.scene.layout.HBox;
 public class OnOffToggle {
   private HBox container;
   private ToggleGroup group;
-  public ToggleButton on;
-  public ToggleButton off;
+  private ToggleButton on;
+  private ToggleButton off;
 
   /** Default constructor for the on off toggle button. */
   public OnOffToggle() {
@@ -21,6 +21,8 @@ public class OnOffToggle {
 
   public OnOffToggle(LightbulbModel model, LightbulbController controller, int index) {
     createButtons();
+    on.setId("lightbulbOn" + new Integer(index).toString());
+    off.setId("lightbulbOff" + new Integer(index).toString());
 
     // Fire the event of the selected button so it gets its color.
     if (model.getLightbulbConditionAt(index)) {

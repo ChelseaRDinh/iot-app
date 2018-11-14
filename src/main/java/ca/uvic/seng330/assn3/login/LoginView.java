@@ -109,6 +109,7 @@ public class LoginView {
 
     loginButton = new Button("Login");
     pwdInvalid = new Text();
+    pwdInvalid.setId("invalidPWField");
 
     title = new Label("Welcome!");
     title.setFont(new Font(20));
