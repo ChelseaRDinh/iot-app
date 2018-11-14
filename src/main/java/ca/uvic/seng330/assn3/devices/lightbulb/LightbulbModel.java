@@ -51,22 +51,12 @@ public class LightbulbModel extends Model {
   public void notify(JSONObject jsonMessage) {
     String message = jsonMessage.getString("payload");
 
-    int separator = message.indexOf('.');
-
-    // Return if the separator doesn't exist or there isn't any data afterwards.
-    if (separator == -1 || separator == message.length()) {
-      return;
-    }
-
-    String before = message.substring(0, separator);
-    String after = message.substring(separator + 1);
-
     // Try to find a match from the commands that this model handles.
     String match = "";
     String[] commandsToCheck = {CommandsToMessages.get(Command.LIGHTBULB_GET_CONDITION)};
 
     for (String check : commandsToCheck) {
-      if (!before.equals(check)) {
+      if (!message.equals(check)) {
         continue;
       }
 
@@ -75,19 +65,7 @@ public class LightbulbModel extends Model {
     }
 
     if (match.equals(CommandsToMessages.get(Command.LIGHTBULB_GET_CONDITION))) {
-      boolean handled = false;
-      Boolean bulbCondition = false;
-
-      try {
-        bulbCondition = Boolean.parseBoolean(after);
-        handled = true;
-      } catch (Exception e) {
-        // Catch block intentionally left blank.
-      }
-
-      if (!handled) {
-        return;
-      }
+      Boolean bulbCondition = jsonMessage.getBoolean("data");
 
       UUID sender = UUID.fromString(jsonMessage.getString("node_id"));
 

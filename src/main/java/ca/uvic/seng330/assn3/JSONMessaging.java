@@ -12,6 +12,7 @@ public final class JSONMessaging {
   private String identifier;
   private String status;
   private String message;
+  private String data = "null";
   private List<UUID> targets = new ArrayList<UUID>();
 
   /**
@@ -80,6 +81,10 @@ public final class JSONMessaging {
     targets.add(target);
   }
 
+  public void addData(String data) {
+    this.data = data;
+  }
+
   /**
    * Gets the targets of the message. Could be an empty list or a list with one element.
    *
@@ -117,6 +122,8 @@ public final class JSONMessaging {
             + status
             + ", payload: "
             + message
+            + ", data: "
+            + data
             + ", created_at: "
             + date.format(calendar.getTime())
             + " }");
