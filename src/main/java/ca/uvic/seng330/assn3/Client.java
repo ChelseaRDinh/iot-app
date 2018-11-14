@@ -15,6 +15,10 @@ public abstract class Client {
     Map<Command, String> commandMap = new HashMap<Command, String>();
     commandMap.put(Command.LIGHTBULB_GET_CONDITION, "getCondition");
     commandMap.put(Command.LIGHTBULB_TOGGLE, "toggle");
+    commandMap.put(Command.THERMOSTAT_SET_TEMP, "setTemp");
+    commandMap.put(Command.THERMOSTAT_GET_TEMP, "getTemp");
+    commandMap.put(Command.THERMOSTAT_SET_UNIT, "setUnit");
+    commandMap.put(Command.THERMOSTAT_GET_UNIT, "getUnit");
 
     // Make sure all Command are in the map.
     assert commandMap.size() == Command.values().length;

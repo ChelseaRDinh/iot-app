@@ -1,6 +1,7 @@
 package ca.uvic.seng330.assn3.devices;
 
 import ca.uvic.seng330.assn3.devices.Temperature.TemperatureOutofBoundsException;
+import ca.uvic.seng330.assn3.devices.Temperature.Unit;
 import org.json.JSONObject;
 
 public final class Thermostat extends Device {
@@ -51,32 +52,40 @@ public final class Thermostat extends Device {
 
     // If this was targeted then carry out the action if the action is applicable to this device.
     if (message.equals("setTemp")) {
-      // 8 is "setTemp."
-      if (message.length() > 8) {
-        String floatPortion = message.substring(8);
-        float temperature = 0.0f;
-        boolean parsed = false;
+      Float temperature = jsonMessage.getFloat("data");
 
-        try {
-          temperature = Float.parseFloat(floatPortion);
-          parsed = true;
-        } catch (Exception e) {
-          alertHub(jsonMessage.getString("node_id"), "NumberFormatException");
-        }
-
-        // If the temperature value wasn't parsed successfully then return.
-        if (!parsed) {
-          return;
-        }
-
-        try {
-          setTemp(new Temperature(temperature, Temperature.Unit.CELSIUS));
-        } catch (TemperatureOutofBoundsException e) {
-          alertHub(jsonMessage.getString("node_id"), "TemperatureOutofBoundsException");
-        }
-      }
+      trySetTempWithReponse(jsonMessage, temperature, desiredTemperature.getUnit());
     } else if (message.equals("getTemp")) {
-      alertHub(jsonMessage.getString("node_id"), "getTemp." + new Float(getTemp()).toString());
+      alertHub(jsonMessage.getString("node_id"), "getTemp", new Float(getTemp()).toString());
+    } else if (message.equals("setUnit")) {
+      String unit = jsonMessage.getString("data");
+      Unit currentUnit = desiredTemperature.getUnit();
+      float currentTemp = desiredTemperature.getTemperature();
+
+      // Set the current temp to the other unit, converting its current value.
+      if (unit.equals("celsius") && currentUnit != Unit.CELSIUS) {
+        float temperature = Unit.convertUnits(currentTemp, currentUnit, Unit.CELSIUS);
+
+        trySetTempWithReponse(jsonMessage, temperature, Unit.CELSIUS);
+      } else if (unit.equals("fahrenheit") && currentUnit != Unit.FAHRENHEIT) {
+        float temperature = Unit.convertUnits(currentTemp, currentUnit, Unit.FAHRENHEIT);
+
+        trySetTempWithReponse(jsonMessage, temperature, Unit.FAHRENHEIT);
+      }
+    } else if (message.equals("getUnit")) {
+      if (desiredTemperature.getUnit() == Unit.CELSIUS) {
+        alertHub(jsonMessage.getString("node_id"), "getUnit", "celsius");
+      } else {
+        alertHub(jsonMessage.getString("node_id"), "getUnit", "fahrenheit");
+      }
+    }
+  }
+
+  private void trySetTempWithReponse(JSONObject jsonMessage, float temperature, Unit unit) {
+    try {
+      setTemp(new Temperature(temperature, unit));
+    } catch (TemperatureOutofBoundsException e) {
+      alertHub(jsonMessage.getString("node_id"), "TemperatureOutofBoundsException");
     }
   }
 }
