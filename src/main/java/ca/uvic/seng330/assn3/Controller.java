@@ -12,9 +12,4 @@ public class Controller {
   protected void switchViews(Controller from, Views to, Token token) {
     transitionNotifier.transition(from, to, token);
   }
-
-  /*
-  * Default method, created so that it can be overriden by lightbulb and smartplug classes.
-  */
-  public void updateConditionAt(int index, Boolean newValue) {}
 }
