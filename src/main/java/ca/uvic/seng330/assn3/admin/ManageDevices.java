@@ -1,5 +1,7 @@
 package ca.uvic.seng330.assn3.admin;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import java.util.Arrays;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
@@ -16,9 +18,9 @@ import javafx.scene.text.Text;
 public class ManageDevices {
   private GridPane view;
   private Text title;
-  private TableView<String> deviceTable;
-  private TableColumn<String, String> userName;
-  private TableColumn<String, String> device;
+  private TableView deviceTable;
+  private TableColumn userName;
+  private TableColumn device;
   private Button addDevice;
   private Button removeDevice;
 
@@ -52,17 +54,17 @@ public class ManageDevices {
     title = new Text("Registered Devices:");
     title.setFont(new Font(20));
 
-    deviceTable = new TableView<String>();
+    deviceTable = new TableView();
     // be able to edit device info in table.
     deviceTable.setEditable(true);
 
     // add columns to table for device DB
-    userName = new TableColumn<String, String>("Username");
-    device = new TableColumn<String, String>("Device");
+    userName = new TableColumn("Username");
+    device = new TableColumn("Device");
 
     deviceTable
         .getColumns()
-        .addAll(Arrays.asList(userName, device));
+        .addAll(userName, device);
 
     addDevice = new Button("Add Device");
     removeDevice = new Button("Remove Device");

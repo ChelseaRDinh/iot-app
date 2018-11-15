@@ -19,8 +19,6 @@ public class AdminController extends Controller {
   }
 
   public void manageUsersGUI() {
-    //Token token = model.getToken();
-    //switchViews(this, Views.MANAGE_USERS, token);
     Stage manageUsersStage = new Stage();
     ManageUsers manageUsersView = new ManageUsers();
     manageUsersStage.setScene(new Scene(manageUsersView.asParent(), 960, 480));
