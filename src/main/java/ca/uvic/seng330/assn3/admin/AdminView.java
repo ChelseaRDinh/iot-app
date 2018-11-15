@@ -1,5 +1,7 @@
 package ca.uvic.seng330.assn3.admin;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -12,12 +14,17 @@ import javafx.scene.text.Text;
 
 public class AdminView {
   private GridPane view;
+  private AdminController controller;
+  private AdminModel model;
   private Text title;
-  private Button manageUsers;
-  private Button manageDevices;
+  private Button manageUsersButton;
+  private Button manageDevicesButton;
 
   /** Default constructor for the Admin Dashboard view. */
-  public AdminView() {
+  public AdminView(AdminController controller, AdminModel model) {
+    this.controller = controller;
+    this.model = model;
+
     createAndConfigurePane();
     createAndLayoutControls();
     updateControllerFromListeners();
@@ -46,12 +53,20 @@ public class AdminView {
     title = new Text("Admin console");
     title.setFont(new Font(20));
 
-    manageUsers = new Button("Manage Users");
-    manageDevices = new Button("Manage Devices");
+    manageUsersButton = new Button("Manage Users");
+    manageDevicesButton = new Button("Manage Devices");
 
     view.addRow(0, title);
-    view.addRow(1, manageUsers);
-    view.addRow(2, manageDevices);
+    view.addRow(1, manageUsersButton);
+    view.addRow(2, manageDevicesButton);
+
+    manageUsersButton.setOnAction(
+        new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent e) {
+            controller.manageUsersGUI();
+          }
+        });
   }
 
   private void updateControllerFromListeners() {}
