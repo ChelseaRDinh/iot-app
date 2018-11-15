@@ -1,16 +1,26 @@
 package ca.uvic.seng330.assn3.admin;
 
+import java.util.Arrays;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 public class ManageDevices {
   private GridPane view;
   private Text title;
+  private TableView<String> deviceTable;
+  private TableColumn<String, String> userName;
+  private TableColumn<String, String> device;
+  private Button addDevice;
+  private Button removeDevice;
 
   /** Default constructor for the Manage Devices view. */
   public ManageDevices() {
@@ -38,7 +48,30 @@ public class ManageDevices {
     view.setVgap(10);
   }
 
-  private void createAndLayoutControls() {}
+  private void createAndLayoutControls() {
+    title = new Text("Registered Devices:");
+    title.setFont(new Font(20));
+
+    deviceTable = new TableView<String>();
+    // be able to edit device info in table.
+    deviceTable.setEditable(true);
+
+    // add columns to table for device DB
+    userName = new TableColumn<String, String>("Username");
+    device = new TableColumn<String, String>("Device");
+
+    deviceTable
+        .getColumns()
+        .addAll(Arrays.asList(userName, device));
+
+    addDevice = new Button("Add Device");
+    removeDevice = new Button("Remove Device");
+
+    view.addRow(0, title);
+    view.addRow(1, deviceTable);
+    view.add(addDevice, 1, 2);
+    view.add(removeDevice, 2, 2);
+  }
 
   private void updateControllerFromListeners() {}
 

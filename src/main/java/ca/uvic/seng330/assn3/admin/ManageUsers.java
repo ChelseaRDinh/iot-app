@@ -70,8 +70,8 @@ public class ManageUsers {
         .getColumns()
         .addAll(Arrays.asList(userName, firstName, lastName, userRole, userDevices));
 
-    addUser = new Button("Add");
-    removeUser = new Button("Remove");
+    addUser = new Button("Add User");
+    removeUser = new Button("Remove User");
 
     view.addRow(0, title);
     view.addRow(1, userTable);
