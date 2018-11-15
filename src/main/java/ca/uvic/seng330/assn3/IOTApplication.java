@@ -3,6 +3,7 @@ package ca.uvic.seng330.assn3;
 import ca.uvic.seng330.assn3.devices.Hub;
 import ca.uvic.seng330.assn3.devices.Lightbulb;
 import ca.uvic.seng330.assn3.devices.MasterHub;
+import ca.uvic.seng330.assn3.devices.SmartPlug;
 import ca.uvic.seng330.assn3.devices.camera.CameraController;
 import ca.uvic.seng330.assn3.devices.camera.CameraModel;
 import ca.uvic.seng330.assn3.devices.camera.CameraView;
@@ -41,6 +42,10 @@ public class IOTApplication extends Application {
     Lightbulb l5 = new Lightbulb(allDevices);
     Lightbulb l6 = new Lightbulb(allDevices);
 
+    SmartPlug p1 = new SmartPlug(allDevices);
+    SmartPlug p2 = new SmartPlug(allDevices);
+    SmartPlug p3 = new SmartPlug(allDevices);
+
     try {
       authManager = new AuthManager();
 
@@ -50,6 +55,10 @@ public class IOTApplication extends Application {
       allDevices.register(l4);
       allDevices.register(l5);
       allDevices.register(l6);
+
+      allDevices.register(p1);
+      allDevices.register(p2);
+      allDevices.register(p3);
     } catch (Exception e) {
       return;
     }

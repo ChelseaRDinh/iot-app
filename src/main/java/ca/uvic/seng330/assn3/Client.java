@@ -19,6 +19,8 @@ public abstract class Client {
     commandMap.put(Command.THERMOSTAT_GET_TEMP, "getTemp");
     commandMap.put(Command.THERMOSTAT_SET_UNIT, "setUnit");
     commandMap.put(Command.THERMOSTAT_GET_UNIT, "getUnit");
+    commandMap.put(Command.SMARTPLUG_GET_CONDITION, "getCondition");
+    commandMap.put(Command.SMARTPLUG_TOGGLE, "toggle");
 
     // Make sure all Command are in the map.
     assert commandMap.size() == Command.values().length;

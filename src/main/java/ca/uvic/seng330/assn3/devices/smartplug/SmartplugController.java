@@ -16,6 +16,10 @@ public class SmartplugController extends Controller {
     this.model = model;
   }
 
+  public void updateSmartplugConditionAt(int index, Boolean value) {
+    model.setSmartplugConditionAt(index, value);
+  }
+
   public void home() {
     Token token = model.getToken();
     switchViews(this, Views.MAIN, token);

@@ -8,7 +8,6 @@ import ca.uvic.seng330.assn3.devices.MasterHub;
 import ca.uvic.seng330.assn3.devices.lightbulb.LightbulbController;
 import ca.uvic.seng330.assn3.devices.lightbulb.LightbulbModel;
 import ca.uvic.seng330.assn3.devices.lightbulb.LightbulbView;
-import java.util.ArrayList;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.junit.Test;
@@ -63,12 +62,12 @@ public class LightbulbViewTest extends ApplicationTest {
   // that the light bulb is turned "Off".
   @Test
   public void testToggle() {
-      boolean before = bulb.getCondition();
-      clickOn("ON");
-      assertNotEquals(before, bulb.getCondition());
+    boolean before = bulb.getCondition();
+    clickOn("ON");
+    assertNotEquals(before, bulb.getCondition());
 
-      before = bulb.getCondition();
-      clickOn("OFF");
-      assertNotEquals(before, bulb.getCondition());
+    before = bulb.getCondition();
+    clickOn("OFF");
+    assertNotEquals(before, bulb.getCondition());
   }
 }
