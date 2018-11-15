@@ -82,9 +82,13 @@ public class ManageUsers {
     userRole = new TableColumn("Role");
     userRole.setMinWidth(100);
     userRole.setCellValueFactory(new PropertyValueFactory<User, String>("Role"));
+    //figure out if a list needs to go in for this.
     userDevices = new TableColumn("Devices");
 
-    data.add(new User("Admin", "Admin", "Admin", "Admin"));
+    User adminUser = new User("admin", "John", "Smith", "Admin");
+    User basicUser = new User("User", "Nancy", "Walsh", "User");
+    data.add(adminUser);
+    data.add(basicUser);
     userTable.setItems(data);
 
     userTable
@@ -93,6 +97,22 @@ public class ManageUsers {
 
     addUser = new Button("Add User");
     removeUser = new Button("Remove User");
+
+    addUser.setOnAction(
+        new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent e) {
+            data.add(adminUser);
+          }
+        });
+    
+    removeUser.setOnAction(
+      new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent e) {
+          data.remove(adminUser);
+        }
+      });
 
     view.addRow(0, title);
     view.addRow(1, userTable);
