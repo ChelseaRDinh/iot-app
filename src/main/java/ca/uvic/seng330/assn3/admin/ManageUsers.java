@@ -19,6 +19,11 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+
 
 public class ManageUsers {
   private GridPane view;
@@ -32,6 +37,10 @@ public class ManageUsers {
   private TableColumn userDevices;
   private Button addUser;
   private Button removeUser;
+  private TextField userNameField;
+  private TextField firstNameField;
+  private TextField lastNameField;
+  private TextField roleField;
 
   /** Default constructor for the Manage Users view. */
   public ManageUsers() {
@@ -72,22 +81,22 @@ public class ManageUsers {
     // add columns to table for user DB
     userName = new TableColumn("Username");
     userName.setMinWidth(100);
-    userName.setCellValueFactory(new PropertyValueFactory<User, String>("Username"));
+    userName.setCellValueFactory(new PropertyValueFactory<User, String>("userName"));
     firstName = new TableColumn("First");
     firstName.setMinWidth(100);
-    firstName.setCellValueFactory(new PropertyValueFactory<User, String>("First"));
+    firstName.setCellValueFactory(new PropertyValueFactory<User, String>("firstName"));
     lastName = new TableColumn("Last");
     lastName.setMinWidth(100);
-    lastName.setCellValueFactory(new PropertyValueFactory<User, String>("Last"));
+    lastName.setCellValueFactory(new PropertyValueFactory<User, String>("lastName"));
     userRole = new TableColumn("Role");
     userRole.setMinWidth(100);
-    userRole.setCellValueFactory(new PropertyValueFactory<User, String>("Role"));
+    userRole.setCellValueFactory(new PropertyValueFactory<User, String>("role"));
     //figure out if a list needs to go in for this.
     //userDevices = new TableColumn("Devices");
 
     //test adding users
     User adminUser = new User("admin", "John", "Smith", "Admin");
-    User basicUser = new User("User", "Nancy", "Walsh", "User");
+    User basicUser = new User("user", "Nancy", "Walsh", "Basic User");
     data.add(adminUser);
     data.add(basicUser);
     userTable.setItems(data);
@@ -99,12 +108,25 @@ public class ManageUsers {
     addUser = new Button("Add User");
     removeUser = new Button("Remove User");
 
+    /** Text fields for adding a user. */
+    userNameField = new TextField();
+    userNameField.setPromptText("Username");
+
+    firstNameField = new TextField();
+    firstNameField.setPromptText("First");
+
+    lastNameField = new TextField();
+    lastNameField.setPromptText("Last");
+
+    roleField = new TextField();
+    roleField.setPromptText("Role");
+
     //add user based on inputting username, first, last, and role params.
     addUser.setOnAction(
         new EventHandler<ActionEvent>() {
           @Override
           public void handle(ActionEvent e) {
-            data.add(adminUser);
+            data.add(new User(userNameField.getText(),firstNameField.getText(),lastNameField.getText(),roleField.getText()));
           }
         });
     
@@ -120,8 +142,12 @@ public class ManageUsers {
 
     view.addRow(0, title);
     view.addRow(1, userTable);
-    view.add(addUser, 1, 2);
-    view.add(removeUser, 2, 2);
+    view.addRow(2, userNameField);
+    view.addRow(3, firstNameField);
+    view.addRow(4, lastNameField);
+    view.addRow(5, roleField);
+    view.add(addUser, 5, 5);
+    view.add(removeUser, 5, 6);
   }
 
   private void updateControllerFromListeners() {}
