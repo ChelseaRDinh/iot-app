@@ -101,7 +101,7 @@ public class IOTApplicationTest extends ApplicationTest {
     // The from controller should be the login controller and it should be asking
     // to go to the main view.
     assertEquals(from, currentController);
-    assertEquals(to, Views.MAIN);
+    assertEquals(to, Views.ADMIN);
     assertEquals(authManager.isAdminToken(token), true);
   }
 

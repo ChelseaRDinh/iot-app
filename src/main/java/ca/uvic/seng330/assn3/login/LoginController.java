@@ -41,6 +41,11 @@ public class LoginController extends Controller {
     return authManager.isValidToken(token);
   }
 
+  public boolean isAdminUser() {
+    Token token = authManager.getToken(model.getUsername(), model.getPassword());
+    return authManager.isAdminToken(token);
+  }
+
   /**
    * Try to perform the login action with the current username and password. Will try and switch
    * views if the token is valid.
@@ -51,6 +56,13 @@ public class LoginController extends Controller {
 
     if (token != null) {
       switchViews(this, Views.MAIN, token);
+    }
+  }
+
+  public void adminLogin() {
+    Token token = authManager.getToken(model.getUsername(), model.getPassword());
+    if (token != null) {
+      switchViews(this, Views.ADMIN, token);
     }
   }
 }

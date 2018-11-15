@@ -22,9 +22,17 @@ import ca.uvic.seng330.assn3.home.HomeView;
 import ca.uvic.seng330.assn3.login.LoginController;
 import ca.uvic.seng330.assn3.login.LoginModel;
 import ca.uvic.seng330.assn3.login.LoginView;
+import ca.uvic.seng330.assn3.admin.AdminController;
+import ca.uvic.seng330.assn3.admin.AdminModel;
+import ca.uvic.seng330.assn3.admin.AdminView;
+import ca.uvic.seng330.assn3.admin.ManageUsers;
+import ca.uvic.seng330.assn3.admin.ManageDevices;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 
 public class IOTApplication extends Application {
   private AuthManager authManager;
@@ -176,6 +184,33 @@ public class IOTApplication extends Application {
         this.primaryStage.setScene(scene);
         this.primaryStage.show();
         break;
+      case ADMIN:
+        HomeModel adminModel = new HomeModel(authToken, allHubs);
+        HomeController adminController =
+          new HomeController(
+              adminModel,
+              authManager,
+              (from, to, token) -> {
+                this.transition(from, to, token);
+              });
+        HomeView adminView = new HomeView(adminController, adminModel);
+        scene = new Scene(adminView.asParent(), 960, 480);
+        this.primaryStage.setScene(scene);
+        this.primaryStage.show();
+
+        //Show admin dashboard as secondary window of same size.
+        Stage secondStage = new Stage();
+        AdminModel adminHomeModel = new AdminModel(authToken, allHubs);
+        AdminController adminHomeController =
+          new AdminController(
+              adminHomeModel,
+              authManager,
+              (from, to, token) -> {
+                this.transition(from, to, token);
+              });
+        AdminView adminHomeView = new AdminView(adminHomeController, adminHomeModel);
+        secondStage.setScene(new Scene(adminHomeView.asParent(), 960, 480));
+        secondStage.show();
       default:
         break;
     }
