@@ -94,7 +94,7 @@ public class ThermostatView {
     temperatureField = new TextField();
     temperatureField.setMaxWidth(80);
     //Configure text field to take in double values for temperature.
-    configTextFieldForDoubles(temperatureField);
+    configTextFieldForFloats(temperatureField);
   
     homeButton.setOnAction(
       new EventHandler<ActionEvent>() {
