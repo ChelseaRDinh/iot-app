@@ -2,9 +2,9 @@ package ca.uvic.seng330.assn3.devices.thermostat;
 
 import ca.uvic.seng330.assn3.Model;
 import ca.uvic.seng330.assn3.Token;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.beans.property.FloatProperty;
+import javafx.beans.property.SimpleFloatProperty;
+import javafx.beans.property.ReadOnlyFloatProperty;
 import ca.uvic.seng330.assn3.devices.MasterHub;
 import org.json.JSONObject;
 
@@ -15,14 +15,14 @@ import org.json.JSONObject;
 */
 
 public class ThermostatModel extends Model {
-  private final DoubleProperty temperatureValue = new SimpleDoubleProperty();
+  private final FloatProperty temperatureValue = new SimpleFloatProperty();
   private TempMode temperatureMode = TempMode.CELSIUS;
 
   public ThermostatModel(Token token, MasterHub h) {
     super(token, h);
   }
 
-  public final DoubleProperty temperatureValueProperty() {
+  public final FloatProperty temperatureValueProperty() {
     return this.temperatureValue;
   }
 
@@ -30,7 +30,7 @@ public class ThermostatModel extends Model {
     return this.temperatureValueProperty().get();
   }
 
-  public final void setTemperatureValueProperty(final double x) {
+  public final void setTemperatureValueProperty(final float x) {
     this.temperatureValueProperty().set(x);
   }
 

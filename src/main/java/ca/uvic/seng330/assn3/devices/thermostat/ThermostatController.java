@@ -30,13 +30,13 @@ public class ThermostatController extends Controller {
   * This may already be covered in original text field declaration
   * but making this anyway for good measure.
   */
-  private double convertStringToDouble(String s) {
+  private float convertStringToDouble(String s) {
     if (s == null || s.isEmpty()) {
-      return 0.0;
+      return 0;
     }
     if ("-".equals(s)) {
-      return 0.0;
+      return 0;
     }
-    return Double.parseDouble(s);
+    return Float.parseFloat(s);
   }
 }
