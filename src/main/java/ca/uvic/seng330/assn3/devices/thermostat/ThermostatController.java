@@ -22,7 +22,7 @@ public class ThermostatController extends Controller {
   }
 
   public void updateTemperatureValue(String s) {
-    model.setTemperatureValueProperty(convertStringToDouble(s));
+    model.setTemperatureValueProperty(convertStringToFloat(s));
   }
 
   /*
@@ -30,7 +30,7 @@ public class ThermostatController extends Controller {
   * This may already be covered in original text field declaration
   * but making this anyway for good measure.
   */
-  private float convertStringToDouble(String s) {
+  private float convertStringToFloat(String s) {
     if (s == null || s.isEmpty()) {
       return 0;
     }

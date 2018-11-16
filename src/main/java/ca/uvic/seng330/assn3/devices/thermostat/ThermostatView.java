@@ -167,9 +167,9 @@ public class ThermostatView {
   * Source: https://www.github.com/seng330
   * Decimal keeps being added prematurely. Changing to to an integer field for now.
   */
-  private void configTextFieldForDoubles(TextField field) {
+  private void configTextFieldForFloats(TextField field) {
     field.setTextFormatter(
-        new TextFormatter<Double>(
+        new TextFormatter<Float>(
             (Change c) -> {
               //Change regex to allow decimal values.
               if (c.getControlNewText().matches("-?\\d*")) {
