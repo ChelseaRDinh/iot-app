@@ -57,6 +57,12 @@ public abstract class Device implements IOTDevice {
     hub.alert(new JSONMessaging(this, message, UUID.fromString(target)));
   }
 
+  protected final void alertHub(String target, String message, String data) {
+    JSONMessaging m = new JSONMessaging(this, message, UUID.fromString(target));
+    m.addData(data);
+    hub.alert(m);
+  }
+
   /**
    * This function receives notifications from the hub which are sent from the clients. The device
    * implementation should filter based on target UUID/message.

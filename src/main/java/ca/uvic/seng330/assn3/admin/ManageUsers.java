@@ -1,5 +1,8 @@
 package ca.uvic.seng330.assn3.admin;
 
+import ca.uvic.seng330.assn3.User;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import java.util.Arrays;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
@@ -12,18 +15,32 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.collections.ObservableList;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+
 
 public class ManageUsers {
   private GridPane view;
   private Text title;
-  private TableView<String> userTable;
-  private TableColumn<String, String> userName;
-  private TableColumn<String, String> firstName;
-  private TableColumn<String, String> lastName;
-  private TableColumn<String, String> userRole;
-  private TableColumn<String, String> userDevices;
+  private TableView<User> userTable;
+  private ObservableList<User> data;
+  private TableColumn userName;
+  private TableColumn firstName;
+  private TableColumn lastName;
+  private TableColumn userRole;
+  private TableColumn userDevices;
   private Button addUser;
   private Button removeUser;
+  private TextField userNameField;
+  private TextField firstNameField;
+  private TextField lastNameField;
+  private TextField roleField;
 
   /** Default constructor for the Manage Users view. */
   public ManageUsers() {
@@ -55,28 +72,82 @@ public class ManageUsers {
     title = new Text("Registered Users:");
     title.setFont(new Font(20));
 
-    userTable = new TableView<String>();
+    userTable = new TableView<User>();
     // be able to edit user info in table.
     userTable.setEditable(true);
+    //Create observable list of users
+    data = FXCollections.observableArrayList();
 
-    // add colmuns to table for user DB
-    userName = new TableColumn<String, String>("Username");
-    firstName = new TableColumn<String, String>("First");
-    lastName = new TableColumn<String, String>("Last");
-    userRole = new TableColumn<String, String>("Role");
-    userDevices = new TableColumn<String, String>("Devices");
+    // add columns to table for user DB
+    userName = new TableColumn("Username");
+    userName.setMinWidth(100);
+    userName.setCellValueFactory(new PropertyValueFactory<User, String>("userName"));
+    firstName = new TableColumn("First");
+    firstName.setMinWidth(100);
+    firstName.setCellValueFactory(new PropertyValueFactory<User, String>("firstName"));
+    lastName = new TableColumn("Last");
+    lastName.setMinWidth(100);
+    lastName.setCellValueFactory(new PropertyValueFactory<User, String>("lastName"));
+    userRole = new TableColumn("Role");
+    userRole.setMinWidth(100);
+    userRole.setCellValueFactory(new PropertyValueFactory<User, String>("role"));
+    //figure out if a list needs to go in for this.
+    //userDevices = new TableColumn("Devices");
+
+    //test adding users
+    User adminUser = new User("admin", "John", "Smith", "Admin");
+    User basicUser = new User("user", "Nancy", "Walsh", "Basic User");
+    data.add(adminUser);
+    data.add(basicUser);
+    userTable.setItems(data);
 
     userTable
         .getColumns()
-        .addAll(Arrays.asList(userName, firstName, lastName, userRole, userDevices));
+        .addAll(userName, firstName, lastName, userRole);
 
-    addUser = new Button("Add");
-    removeUser = new Button("Remove");
+    addUser = new Button("Add User");
+    removeUser = new Button("Remove User");
+
+    /** Text fields for adding a user. */
+    userNameField = new TextField();
+    userNameField.setPromptText("Username");
+
+    firstNameField = new TextField();
+    firstNameField.setPromptText("First");
+
+    lastNameField = new TextField();
+    lastNameField.setPromptText("Last");
+
+    roleField = new TextField();
+    roleField.setPromptText("Role");
+
+    //add user based on inputting username, first, last, and role params.
+    addUser.setOnAction(
+        new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent e) {
+            data.add(new User(userNameField.getText(),firstNameField.getText(),lastNameField.getText(),roleField.getText()));
+          }
+        });
+    
+    //remove user based on selected row.
+    removeUser.setOnAction(
+      new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent e) {
+          User selectedItem = userTable.getSelectionModel().getSelectedItem();
+          userTable.getItems().remove(selectedItem);
+        }
+      });
 
     view.addRow(0, title);
     view.addRow(1, userTable);
-    view.add(addUser, 1, 2);
-    view.add(removeUser, 2, 2);
+    view.addRow(2, userNameField);
+    view.addRow(3, firstNameField);
+    view.addRow(4, lastNameField);
+    view.addRow(5, roleField);
+    view.add(addUser, 5, 5);
+    view.add(removeUser, 5, 6);
   }
 
   private void updateControllerFromListeners() {}

@@ -1,10 +1,8 @@
 package ca.uvic.seng330.assn3.devices;
 
 public final class Temperature {
-  // A double really isn't necessary. No thermostat will be able to control
-  // let alone measure the temperature to that level of accuracy. The temperature
-  // is always stored in celsius interally.
   private float temperature;
+  private Unit unit;
 
   public enum Unit {
     CELSIUS,
@@ -44,27 +42,7 @@ public final class Temperature {
   }
 
   /**
-   * Constructor for temperature of a given unit that gets its useless sig figs for a temperature
-   * double converted to a float in celsius.
-   *
-   * @param waste the double of the temperature that's about to get converted to a float
-   * @param unit the unit of the temperature
-   * @throws TemperatureOutofBoundsException throws when the unit is above 1000 for no specified
-   *     reason in particular other than it's pretty hot.
-   */
-  public Temperature(double waste, Unit unit) throws TemperatureOutofBoundsException {
-    // Always convert the temperature to a float and then to celsius.
-    float temperature = (float) waste;
-    this.temperature = Unit.convertUnits(temperature, unit, Unit.CELSIUS);
-
-    // The converted temperature isn't checked, actually just the value passed in.
-    if (temperature > 1000.0f) {
-      throw new TemperatureOutofBoundsException("Temperature too hot.");
-    }
-  }
-
-  /**
-   * Constructor for temperature for a given unit that gets converted to celsius.
+   * Constructor for temperature for a given unit
    *
    * @param temperature the temperature value
    * @param unit the temperature unit
@@ -72,8 +50,8 @@ public final class Temperature {
    *     reason in particular other than it's pretty hot.
    */
   public Temperature(float temperature, Unit unit) throws TemperatureOutofBoundsException {
-    // Convert the temperature to celcius before storing it.
-    this.temperature = Unit.convertUnits(temperature, unit, Unit.CELSIUS);
+    this.temperature = temperature;
+    this.unit = unit;
 
     if (temperature > 1000.0f) {
       throw new TemperatureOutofBoundsException("Temperature too hot.");
@@ -81,11 +59,15 @@ public final class Temperature {
   }
 
   /**
-   * Gets the temperature in celsius.
+   * Gets the temperature.
    *
-   * @return the temperature in celsius
+   * @return the temperature in the Unit measurement
    */
   public float getTemperature() {
     return temperature;
+  }
+
+  public Unit getUnit() {
+    return unit;
   }
 }

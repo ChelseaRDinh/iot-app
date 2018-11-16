@@ -101,7 +101,7 @@ public class IOTApplicationTest extends ApplicationTest {
     // The from controller should be the login controller and it should be asking
     // to go to the main view.
     assertEquals(from, currentController);
-    assertEquals(to, Views.MAIN);
+    assertEquals(to, Views.ADMIN);
     assertEquals(authManager.isAdminToken(token), true);
   }
 
@@ -114,17 +114,6 @@ public class IOTApplicationTest extends ApplicationTest {
 
     // then:
     // check if the login fail label is visible
-    assertEquals(false, true);
-  }
-
-  public void testHomeView() {
-    // when:
-    // entering admin as username and password
-    clickOn("#usernameField").write("admin");
-    clickOn("#passwordField").write("admin");
-
-    // then:
-    // The view should redirect to the home screen.
-    assertEquals(false, true);
+    verifyThat("#invalidPWField", TextInputControlMatchers.hasText("Invalid password"));
   }
 }

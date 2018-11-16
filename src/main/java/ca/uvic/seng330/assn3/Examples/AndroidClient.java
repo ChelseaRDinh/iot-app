@@ -29,29 +29,11 @@ public final class AndroidClient extends Client {
   public void notify(JSONObject jsonMessage) {
     String message = jsonMessage.getString("payload");
 
-    // Needs to be at least this long to check if the message is getCondition.
-    if (message.length() < 13) {
-      return;
-    }
-
     // If this was targeted then carry out the action if the action is applicable to this device.
     // Don't care about toggle result but we care about the reply from getting the condition.
-    if (message.substring(0, 13).equals("getCondition.")) {
+    if (message.equals("getCondition")) {
       UUID bulb = UUID.fromString(jsonMessage.getString("node_id"));
-      Boolean bulbCondition = false;
-      boolean handled = false;
-
-      // Try and parse a boolean from the reply, just ignore if it's not valid.
-      try {
-        bulbCondition = Boolean.parseBoolean(message.substring(13));
-        handled = true;
-      } catch (Exception e) {
-        // Catch block intentionally left blank.
-      }
-
-      if (!handled) {
-        return;
-      }
+      Boolean bulbCondition = jsonMessage.getBoolean("data");
 
       // Add the bulb if it's not currently tracked and set its value.
       lightbulbConditions.putIfAbsent(bulb, bulbCondition);

@@ -109,6 +109,7 @@ public class LoginView {
 
     loginButton = new Button("Login");
     pwdInvalid = new Text();
+    pwdInvalid.setId("invalidPWField");
 
     title = new Label("Welcome!");
     title.setFont(new Font(20));
@@ -129,6 +130,9 @@ public class LoginView {
             if (controller.isValidLogin() == false) {
               pwdInvalid.setFill(Color.rgb(210, 39, 30));
               pwdInvalid.setText("Invalid password");
+            } else if (controller.isAdminUser() == true) {
+              //show admin dashboard along with home dashboard.
+              controller.adminLogin();
             } else {
               controller.login();
             }
