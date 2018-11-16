@@ -83,7 +83,7 @@ public class ThermostatView {
     celsiusMode.setToggleGroup(group);
     //By default, set mode to be celsius.
     celsiusMode.setSelected(true);
-    model.setMode(TempMode.CELSIUS);
+    //model.setMode(TempMode.CELSIUS);
 
     HBox thermostatContainer = new HBox(fahrenheitMode, celsiusMode);
 
@@ -111,7 +111,7 @@ public class ThermostatView {
         public void handle(ActionEvent e) {
           fahrenheitMode.setStyle("-fx-base: blue;");
           celsiusMode.setStyle("-fx-base: grey;");
-          model.setMode(TempMode.FAHRENHEIT);
+          model.setFahrenheit();
         }
       });
     celsiusMode.setOnAction(
@@ -120,7 +120,7 @@ public class ThermostatView {
         public void handle(ActionEvent e) {
           fahrenheitMode.setStyle("-fx-base: grey;");
           celsiusMode.setStyle("-fx-base: blue;");
-          model.setMode(TempMode.CELSIUS);
+          model.setCelsius();
         }
       });
 
@@ -128,7 +128,7 @@ public class ThermostatView {
         new EventHandler<ActionEvent>() {
         @Override
           public void handle(ActionEvent e) {
-            if((model.getTemperatureValue() >= 37) && (model.getMode()==TempMode.CELSIUS) || (model.getTemperatureValue() >= 100) && (model.getMode()==TempMode.FAHRENHEIT)) {
+            if((model.getTemperatureValue() >= 37) && (model.isCelsius() == true) || (model.getTemperatureValue() >= 100) && (model.isCelsius() == false)) {
               errorMsg.setFill(Color.rgb(210, 39, 30));
               errorMsg.setText("Temperature exceeds max value.");
             } else {

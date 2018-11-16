@@ -16,7 +16,8 @@ import org.json.JSONObject;
 
 public class ThermostatModel extends Model {
   private final FloatProperty temperatureValue = new SimpleFloatProperty();
-  private TempMode temperatureMode = TempMode.CELSIUS;
+  //private TempMode temperatureMode = TempMode.CELSIUS;
+  private boolean isCelsius = true;
 
   public ThermostatModel(Token token, MasterHub h) {
     super(token, h);
@@ -34,12 +35,16 @@ public class ThermostatModel extends Model {
     this.temperatureValueProperty().set(x);
   }
 
-  public void setMode(TempMode mode) {
-    this.temperatureMode = mode;
+  public void setFahrenheit() {
+    this.isCelsius = false;
   }
 
-  public TempMode getMode() {
-    return this.temperatureMode;
+  public void setCelsius() {
+    this.isCelsius = true;
+  }
+
+  public boolean isCelsius() {
+    return this.isCelsius;
   }
 
   @Override
