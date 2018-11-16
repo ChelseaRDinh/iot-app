@@ -20,4 +20,23 @@ public class ThermostatController extends Controller {
     Token token = model.getToken();
     switchViews(this, Views.MAIN, token);
   }
+
+  public void updateTemperatureValue(String s) {
+    model.setTemperatureValueProperty(convertStringToFloat(s));
+  }
+
+  /*
+  * Convert string value in text field to double.
+  * This may already be covered in original text field declaration
+  * but making this anyway for good measure.
+  */
+  private float convertStringToFloat(String s) {
+    if (s == null || s.isEmpty()) {
+      return 0;
+    }
+    if ("-".equals(s)) {
+      return 0;
+    }
+    return Float.parseFloat(s);
+  }
 }
