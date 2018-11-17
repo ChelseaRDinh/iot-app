@@ -131,7 +131,7 @@ public class LoginView {
               pwdInvalid.setFill(Color.rgb(210, 39, 30));
               pwdInvalid.setText("Invalid password");
             } else if (controller.isAdminUser() == true) {
-              //show admin dashboard along with home dashboard.
+              // show admin dashboard along with home dashboard.
               controller.adminLogin();
             } else {
               controller.login();

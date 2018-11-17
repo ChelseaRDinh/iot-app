@@ -2,9 +2,7 @@ package ca.uvic.seng330.assn3.admin;
 
 import ca.uvic.seng330.assn3.AuthManager;
 import ca.uvic.seng330.assn3.Controller;
-import ca.uvic.seng330.assn3.Token;
 import ca.uvic.seng330.assn3.ViewTransition;
-import ca.uvic.seng330.assn3.Views;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 

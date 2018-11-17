@@ -1,8 +1,5 @@
 package ca.uvic.seng330.assn3.admin;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import java.util.Arrays;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -62,9 +59,7 @@ public class ManageDevices {
     userName = new TableColumn("Username");
     device = new TableColumn("Device");
 
-    deviceTable
-        .getColumns()
-        .addAll(userName, device);
+    deviceTable.getColumns().addAll(userName, device);
 
     addDevice = new Button("Add Device");
     removeDevice = new Button("Remove Device");

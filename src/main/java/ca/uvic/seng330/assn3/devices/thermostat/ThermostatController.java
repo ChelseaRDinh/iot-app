@@ -21,15 +21,24 @@ public class ThermostatController extends Controller {
     switchViews(this, Views.MAIN, token);
   }
 
-  public void updateTemperatureValue(String s) {
-    model.setTemperatureValueProperty(convertStringToFloat(s));
+  public void updateTemperatureValue(int index, float value) {
+    model.setThermostatValueAt(index, value);
+  }
+
+  public void updateTemperatureUnit(int index, boolean isCelsius) {
+    model.setThermostatIsCelsiusAt(index, isCelsius);
+  }
+
+  public void updateThermostatConditionAt(int index, boolean value) {
+    // setIndexDisabled(index, value);
+    model.setThermostaConditionAt(index, value);
   }
 
   /*
-  * Convert string value in text field to double.
-  * This may already be covered in original text field declaration
-  * but making this anyway for good measure.
-  */
+   * Convert string value in text field to double.
+   * This may already be covered in original text field declaration
+   * but making this anyway for good measure.
+   */
   private float convertStringToFloat(String s) {
     if (s == null || s.isEmpty()) {
       return 0;

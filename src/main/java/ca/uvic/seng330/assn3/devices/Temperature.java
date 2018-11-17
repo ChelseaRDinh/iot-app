@@ -23,7 +23,7 @@ public final class Temperature {
         }
       } else if (from == CELSIUS) {
         if (to == FAHRENHEIT) {
-          return (temperature * 9.0f / 5.0f) - 32;
+          return (temperature * 9.0f / 5.0f) + 32;
         }
       }
 
@@ -39,6 +39,7 @@ public final class Temperature {
 
   public Temperature() {
     temperature = 0.0f;
+    unit = Unit.CELSIUS;
   }
 
   /**

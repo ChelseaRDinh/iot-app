@@ -1,24 +1,25 @@
 package ca.uvic.seng330.assn3.devices.thermostat;
 
+import ca.uvic.seng330.assn3.OnOffToggle;
+import ca.uvic.seng330.assn3.devices.Temperature.Unit;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
-import javafx.scene.layout.HBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
+import javafx.scene.control.TextFormatter.Change;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.control.TextFormatter;
-import javafx.scene.control.TextFormatter.Change;
-import javafx.scene.paint.Color;
 
 public class ThermostatView {
   private GridPane view;
@@ -26,12 +27,11 @@ public class ThermostatView {
   private ThermostatModel model;
   private Text title;
   private Button homeButton;
-  private Button setTemperature;
-  private ToggleButton fahrenheitMode;
-  private ToggleButton celsiusMode;
-  private TextField temperatureField;
-  private ToggleGroup group;
-  private Text errorMsg;
+  private List<Button> setTemperatureButtons;
+  private List<OnOffToggle> thermostatUnitSwitches;
+  private List<OnOffToggle> thermostatPowerSwitches;
+  private List<TextField> temperatureFields;
+  private List<Text> errorMsgs;
 
   /** Default constructor for the Thermostat view. */
   public ThermostatView(ThermostatController controller, ThermostatModel model) {
@@ -45,6 +45,21 @@ public class ThermostatView {
 
   public Parent asParent() {
     return view;
+  }
+
+  // Public since listeners don't always fire for this so the on off toggle needs to call this too.
+  public void setIndexDisabled(int index, boolean value) {
+    if (temperatureFields.get(index).isDisabled() != value) {
+      temperatureFields.get(index).setDisable(value);
+    }
+
+    if (thermostatUnitSwitches.get(index).isDisabled() != value) {
+      thermostatUnitSwitches.get(index).setDisable(value);
+    }
+
+    if (setTemperatureButtons.get(index).isDisabled() != value) {
+      setTemperatureButtons.get(index).setDisable(value);
+    }
   }
 
   private void createAndConfigurePane() {
@@ -65,91 +80,125 @@ public class ThermostatView {
   }
 
   private void createAndLayoutControls() {
+    thermostatUnitSwitches = new ArrayList<OnOffToggle>();
+    thermostatPowerSwitches = new ArrayList<OnOffToggle>();
+    setTemperatureButtons = new ArrayList<Button>();
+    errorMsgs = new ArrayList<Text>();
+    temperatureFields = new ArrayList<TextField>();
 
     title = new Text("Thermostat Settings");
     title.setFont(new Font(20));
 
+    view.addRow(0, title);
+
+    // This thousand line for loop really has to go if there's time.
+    for (int i = 0; i < model.getThermostatCount(); i++) {
+      OnOffToggle toggle = new OnOffToggle(model, controller, i, true);
+
+      thermostatUnitSwitches.add(toggle);
+
+      // Set buttons to blue when selected; opposite button is set back to default grey.
+      Button setTemperature = new Button("Set");
+      Text errorMsg = new Text();
+
+      TextField temperatureField = new TextField();
+      temperatureField.setMaxWidth(80);
+      temperatureField.setText(model.getThermostatValueAt(i).toString());
+      temperatureField.setId("temperatureField" + new Integer(i + 1).toString());
+
+      // Configure text field to take in double values for temperature.
+      configTextFieldForFloats(temperatureField);
+
+      setupTemperatureSet(setTemperature, temperatureField, errorMsg, i);
+
+      setTemperatureButtons.add(setTemperature);
+      errorMsgs.add(errorMsg);
+      temperatureFields.add(temperatureField);
+
+      OnOffToggle powerToggle = new OnOffToggle(model, controller, i, false);
+
+      thermostatPowerSwitches.add(toggle);
+
+      // Set the button state on init.
+      setIndexDisabled(i, !model.getThermostatConditionAt(i));
+
+      int startRow = 1 + (i * 4);
+
+      view.addRow(
+          startRow,
+          new Label("Thermostat " + new Integer(i + 1).toString()),
+          powerToggle.getContainer());
+      view.addRow(startRow + 1, new Label("Unit: "), toggle.getContainer());
+      view.addRow(startRow + 2, new Label("Temperature: "), temperatureField);
+      view.add(setTemperature, 2, startRow + 2);
+      view.addRow(startRow + 3, new Label(""), errorMsg);
+    }
+
     homeButton = new Button("Home");
 
-    //Temperature modes
-    group = new ToggleGroup();
-
-    fahrenheitMode = new ToggleButton("Fahrenheit");
-    fahrenheitMode.setStyle("-fx-base: grey;");
-    fahrenheitMode.setToggleGroup(group);
-
-    celsiusMode = new ToggleButton("Celsius");
-    celsiusMode.setStyle("-fx-base: blue;");
-    celsiusMode.setToggleGroup(group);
-    //By default, set mode to be celsius.
-    celsiusMode.setSelected(true);
-    //model.setMode(TempMode.CELSIUS);
-
-    HBox thermostatContainer = new HBox(fahrenheitMode, celsiusMode);
-
-    setTemperature = new Button("Set");
-
-    errorMsg = new Text();
-
-    temperatureField = new TextField();
-    temperatureField.setMaxWidth(80);
-    //Configure text field to take in double values for temperature.
-    configTextFieldForFloats(temperatureField);
-  
     homeButton.setOnAction(
-      new EventHandler<ActionEvent>() {
-        @Override
-        public void handle(ActionEvent e) {
-          controller.home();
-        }
-      });
-      
-    //Set buttons to blue when selected; opposite button is set back to default grey.
-    fahrenheitMode.setOnAction(
-      new EventHandler<ActionEvent>() {
-        @Override
-        public void handle(ActionEvent e) {
-          fahrenheitMode.setStyle("-fx-base: blue;");
-          celsiusMode.setStyle("-fx-base: grey;");
-          model.setFahrenheit();
-        }
-      });
-    celsiusMode.setOnAction(
-      new EventHandler<ActionEvent>() {
-      @Override
-        public void handle(ActionEvent e) {
-          fahrenheitMode.setStyle("-fx-base: grey;");
-          celsiusMode.setStyle("-fx-base: blue;");
-          model.setCelsius();
-        }
-      });
-
-      setTemperature.setOnAction(
         new EventHandler<ActionEvent>() {
-        @Override
+          @Override
           public void handle(ActionEvent e) {
-            if((model.getTemperatureValue() >= 37) && (model.isCelsius() == true) || (model.getTemperatureValue() >= 100) && (model.isCelsius() == false)) {
+            controller.home();
+          }
+        });
+
+    view.addRow(1 + model.getThermostatCount() * 4, new Label(""), homeButton);
+  }
+
+  private void setupTemperatureSet(
+      Button setTemperature, TextField temperatureField, Text errorMsg, int i) {
+    setTemperature.setOnAction(
+        new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent e) {
+            float currentValue = model.getThermostatValueAt(i);
+
+            boolean isFloat = false;
+            float setValue = currentValue;
+            try {
+              setValue = Float.parseFloat(temperatureField.getText());
+              isFloat = true;
+            } catch (Exception ex) {
+              // Make sure the value is reset.
+              setValue = currentValue;
+            }
+
+            if (!isFloat) {
+              errorMsg.setFill(Color.rgb(210, 39, 30));
+              errorMsg.setText("Value entered isn't a number.");
+            } else if ((setValue >= 37 && model.getThermostatIsCelsiusAt(i))
+                || (setValue >= Unit.convertUnits(37, Unit.CELSIUS, Unit.FAHRENHEIT)
+                    && !model.getThermostatIsCelsiusAt(i))) {
+              setValue = currentValue;
               errorMsg.setFill(Color.rgb(210, 39, 30));
               errorMsg.setText("Temperature exceeds max value.");
             } else {
               errorMsg.setFill(Color.rgb(16, 152, 0));
-              errorMsg.setText("New temperature set.");
+              errorMsg.setText(" ");
             }
+
+            // Always set the value based on the known valid value and rese the text field to that.
+            controller.updateTemperatureValue(i, setValue);
+            temperatureField.setText(model.getThermostatValueAt(i).toString());
           }
         });
 
-    view.addRow(0, title);
-    view.addRow(1, new Label("Mode: "), thermostatContainer);
-    view.addRow(2, new Label("Temperature: "), temperatureField);
-    view.add(setTemperature, 2, 2);
-    view.addRow(3, new Label(""), errorMsg);
-    view.addRow(4, new Label(""), homeButton);
+    // Only update the model when the model value changes.
+    model
+        .thermostatValuePropertyAt(i)
+        .addListener(
+            (obs, oldTemperatureValue, newTemperatureValue) ->
+                updateIfNeeded(newTemperatureValue, temperatureField));
 
+    // Disable/enable buttons based on if the thermostat is on or not.
+    model
+        .thermostatConditionPropertyAt(i)
+        .addListener((obs, oldValue, newValue) -> setIndexDisabled(i, !newValue));
   }
 
-  private void observeModelAndUpdateControls() {
-    model.temperatureValueProperty().addListener((obs, oldTemperatureValue, newTemperatureValue) -> updateIfNeeded(newTemperatureValue, temperatureField));
-  }
+  private void observeModelAndUpdateControls() {}
 
   private void updateIfNeeded(Number value, TextField field) {
     String s = value.toString();
@@ -158,21 +207,14 @@ public class ThermostatView {
     }
   }
 
-  private void updateControllerFromListeners() {
-    temperatureField.textProperty().addListener((obs, oldText, newText) -> controller.updateTemperatureValue(newText));
-  }
+  private void updateControllerFromListeners() {}
 
-  /*
-  * Adapted from AdditionView.java in Examples folder for starter code repo.
-  * Source: https://www.github.com/seng330
-  * Decimal keeps being added prematurely. Changing to to an integer field for now.
-  */
   private void configTextFieldForFloats(TextField field) {
     field.setTextFormatter(
         new TextFormatter<Float>(
             (Change c) -> {
-              //Change regex to allow decimal values.
-              if (c.getControlNewText().matches("-?\\d*")) {
+              // Change regex to allow decimal values.
+              if (c.getControlNewText().matches("-?\\d*\\.?\\d*")) {
                 return c;
               }
               return null;

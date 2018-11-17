@@ -1,9 +1,13 @@
 package ca.uvic.seng330.assn3;
 
+import ca.uvic.seng330.assn3.admin.AdminController;
+import ca.uvic.seng330.assn3.admin.AdminModel;
+import ca.uvic.seng330.assn3.admin.AdminView;
 import ca.uvic.seng330.assn3.devices.Hub;
 import ca.uvic.seng330.assn3.devices.Lightbulb;
 import ca.uvic.seng330.assn3.devices.MasterHub;
 import ca.uvic.seng330.assn3.devices.SmartPlug;
+import ca.uvic.seng330.assn3.devices.Thermostat;
 import ca.uvic.seng330.assn3.devices.camera.CameraController;
 import ca.uvic.seng330.assn3.devices.camera.CameraModel;
 import ca.uvic.seng330.assn3.devices.camera.CameraView;
@@ -22,17 +26,9 @@ import ca.uvic.seng330.assn3.home.HomeView;
 import ca.uvic.seng330.assn3.login.LoginController;
 import ca.uvic.seng330.assn3.login.LoginModel;
 import ca.uvic.seng330.assn3.login.LoginView;
-import ca.uvic.seng330.assn3.admin.AdminController;
-import ca.uvic.seng330.assn3.admin.AdminModel;
-import ca.uvic.seng330.assn3.admin.AdminView;
-import ca.uvic.seng330.assn3.admin.ManageUsers;
-import ca.uvic.seng330.assn3.admin.ManageDevices;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 
 public class IOTApplication extends Application {
   private AuthManager authManager;
@@ -54,6 +50,9 @@ public class IOTApplication extends Application {
     SmartPlug p2 = new SmartPlug(allDevices);
     SmartPlug p3 = new SmartPlug(allDevices);
 
+    Thermostat t1 = new Thermostat(allDevices);
+    Thermostat t2 = new Thermostat(allDevices);
+
     try {
       authManager = new AuthManager();
 
@@ -67,6 +66,9 @@ public class IOTApplication extends Application {
       allDevices.register(p1);
       allDevices.register(p2);
       allDevices.register(p3);
+
+      allDevices.register(t1);
+      allDevices.register(t2);
     } catch (Exception e) {
       return;
     }
@@ -187,27 +189,27 @@ public class IOTApplication extends Application {
       case ADMIN:
         HomeModel adminModel = new HomeModel(authToken, allHubs);
         HomeController adminController =
-          new HomeController(
-              adminModel,
-              authManager,
-              (from, to, token) -> {
-                this.transition(from, to, token);
-              });
+            new HomeController(
+                adminModel,
+                authManager,
+                (from, to, token) -> {
+                  this.transition(from, to, token);
+                });
         HomeView adminView = new HomeView(adminController, adminModel);
         scene = new Scene(adminView.asParent(), 960, 480);
         this.primaryStage.setScene(scene);
         this.primaryStage.show();
 
-        //Show admin dashboard as secondary window of same size.
+        // Show admin dashboard as secondary window of same size.
         Stage secondStage = new Stage();
         AdminModel adminHomeModel = new AdminModel(authToken, allHubs);
         AdminController adminHomeController =
-          new AdminController(
-              adminHomeModel,
-              authManager,
-              (from, to, token) -> {
-                this.transition(from, to, token);
-              });
+            new AdminController(
+                adminHomeModel,
+                authManager,
+                (from, to, token) -> {
+                  this.transition(from, to, token);
+                });
         AdminView adminHomeView = new AdminView(adminHomeController, adminHomeModel);
         secondStage.setScene(new Scene(adminHomeView.asParent(), 960, 480));
         secondStage.show();

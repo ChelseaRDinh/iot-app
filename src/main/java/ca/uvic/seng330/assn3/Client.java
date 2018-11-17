@@ -15,6 +15,8 @@ public abstract class Client {
     Map<Command, String> commandMap = new HashMap<Command, String>();
     commandMap.put(Command.LIGHTBULB_GET_CONDITION, "getCondition");
     commandMap.put(Command.LIGHTBULB_TOGGLE, "toggle");
+    commandMap.put(Command.THERMOSTAT_GET_CONDITION, "getCondition");
+    commandMap.put(Command.THERMOSTAT_TOGGLE, "toggle");
     commandMap.put(Command.THERMOSTAT_SET_TEMP, "setTemp");
     commandMap.put(Command.THERMOSTAT_GET_TEMP, "getTemp");
     commandMap.put(Command.THERMOSTAT_SET_UNIT, "setUnit");
@@ -48,6 +50,12 @@ public abstract class Client {
    */
   public final List<UUID> getUUIDOfType(String type) {
     return mediator.getUUIDOfType(type);
+  }
+
+  public final void sendMessageToDevice(Command command, UUID device, String data) {
+    JSONMessaging message = new JSONMessaging(this, CommandsToMessages.get(command), device);
+    message.addData(data);
+    mediator.alert(message);
   }
 
   public final void sendMessageToDevice(Command command, UUID device) {

@@ -61,9 +61,9 @@ public class AdminView {
     view.addRow(2, manageDevicesButton);
 
     /*
-    * Open new window from admin console when 
-    * Manage Users button is selected.
-    */
+     * Open new window from admin console when
+     * Manage Users button is selected.
+     */
     manageUsersButton.setOnAction(
         new EventHandler<ActionEvent>() {
           @Override
@@ -71,18 +71,18 @@ public class AdminView {
             controller.manageUsersGUI();
           }
         });
-    
+
     /*
      * Open new window from admin console when
      * Manage Devices button is selected.
      */
     manageDevicesButton.setOnAction(
-      new EventHandler<ActionEvent>() {
-        @Override
-        public void handle(ActionEvent e) {
-          controller.manageDevicesGUI();
-        }
-      });
+        new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent e) {
+            controller.manageDevicesGUI();
+          }
+        });
   }
 
   private void updateControllerFromListeners() {}

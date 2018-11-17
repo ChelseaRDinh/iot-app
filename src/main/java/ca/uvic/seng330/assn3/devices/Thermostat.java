@@ -6,6 +6,7 @@ import org.json.JSONObject;
 
 public final class Thermostat extends Device {
   private Temperature desiredTemperature;
+  private boolean isOn;
 
   /**
    * Constructor for thermostat that takes a hub.
@@ -16,6 +17,7 @@ public final class Thermostat extends Device {
     super(h);
 
     desiredTemperature = new Temperature();
+    isOn = false;
   }
 
   /**
@@ -41,6 +43,18 @@ public final class Thermostat extends Device {
     return desiredTemperature.getTemperature();
   }
 
+  public boolean getUnit() {
+    return desiredTemperature.getUnit() == Unit.CELSIUS;
+  }
+
+  public boolean getCondition() {
+    return isOn;
+  }
+
+  public void toggle() {
+    isOn = !isOn;
+  }
+
   /**
    * Notify the thermostat of some message sent to it.
    *
@@ -58,26 +72,34 @@ public final class Thermostat extends Device {
     } else if (message.equals("getTemp")) {
       alertHub(jsonMessage.getString("node_id"), "getTemp", new Float(getTemp()).toString());
     } else if (message.equals("setUnit")) {
-      String unit = jsonMessage.getString("data");
+      Boolean isCelsius = jsonMessage.getBoolean("data");
       Unit currentUnit = desiredTemperature.getUnit();
       float currentTemp = desiredTemperature.getTemperature();
 
       // Set the current temp to the other unit, converting its current value.
-      if (unit.equals("celsius") && currentUnit != Unit.CELSIUS) {
+      if (isCelsius && currentUnit != Unit.CELSIUS) {
         float temperature = Unit.convertUnits(currentTemp, currentUnit, Unit.CELSIUS);
 
         trySetTempWithReponse(jsonMessage, temperature, Unit.CELSIUS);
-      } else if (unit.equals("fahrenheit") && currentUnit != Unit.FAHRENHEIT) {
+        alertHub(jsonMessage.getString("node_id"), "getTemp", new Float(getTemp()).toString());
+      } else if (!isCelsius && currentUnit != Unit.FAHRENHEIT) {
         float temperature = Unit.convertUnits(currentTemp, currentUnit, Unit.FAHRENHEIT);
 
         trySetTempWithReponse(jsonMessage, temperature, Unit.FAHRENHEIT);
+        alertHub(jsonMessage.getString("node_id"), "getTemp", new Float(getTemp()).toString());
       }
     } else if (message.equals("getUnit")) {
+      // Return if it's in celsius or not.
       if (desiredTemperature.getUnit() == Unit.CELSIUS) {
-        alertHub(jsonMessage.getString("node_id"), "getUnit", "celsius");
+        alertHub(jsonMessage.getString("node_id"), "getUnit", "true");
       } else {
-        alertHub(jsonMessage.getString("node_id"), "getUnit", "fahrenheit");
+        alertHub(jsonMessage.getString("node_id"), "getUnit", "false");
       }
+    } else if (message.equals("getCondition")) {
+      alertHub(
+          jsonMessage.getString("node_id"), "getCondition", new Boolean(getCondition()).toString());
+    } else if (message.equals("toggle")) {
+      toggle();
     }
   }
 
