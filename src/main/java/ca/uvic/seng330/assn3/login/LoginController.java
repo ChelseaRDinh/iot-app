@@ -58,11 +58,4 @@ public class LoginController extends Controller {
       switchViews(this, Views.MAIN, token);
     }
   }
-
-  public void adminLogin() {
-    Token token = authManager.getToken(model.getUsername(), model.getPassword());
-    if (token != null) {
-      switchViews(this, Views.ADMIN, token);
-    }
-  }
 }

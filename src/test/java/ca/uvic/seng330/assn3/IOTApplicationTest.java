@@ -101,19 +101,7 @@ public class IOTApplicationTest extends ApplicationTest {
     // The from controller should be the login controller and it should be asking
     // to go to the main view.
     assertEquals(from, currentController);
-    assertEquals(to, Views.ADMIN);
+    assertEquals(to, Views.MAIN);
     assertEquals(authManager.isAdminToken(token), true);
-  }
-
-  @Test
-  public void testLoginButtonFail() {
-    // when:
-    clickOn("#usernameField").write("user");
-    clickOn("#passwordField").write("wrong");
-    clickOn("Login");
-
-    // then:
-    // check if the login fail label is visible
-    verifyThat("#invalidPWField", TextInputControlMatchers.hasText("Invalid password"));
   }
 }

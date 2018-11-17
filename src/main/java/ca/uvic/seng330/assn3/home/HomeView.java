@@ -18,6 +18,8 @@ public class HomeView {
   private HomeController controller;
   private HomeModel model;
   private Text title;
+  private Button homeButton;
+  private Button adminButton;
 
   /**
    * Constructor for Home view.
@@ -84,12 +86,18 @@ public class HomeView {
 
     Button logoutButton = new Button("Logout");
 
+    adminButton = new Button("Admin");
+
     view.add(title, 1, 0);
     view.add(cameraButton, 1, 1);
     view.add(thermostatButton, 2, 1);
     view.add(lightbulbButton, 1, 2);
     view.add(smartplugButton, 2, 2);
     view.add(logoutButton, 1, 3);
+    /** Check if user is admin, then add button to go to to admin console if evaluates to true. */
+    if (controller.isAdmin() == true) {
+      view.add(adminButton, 2, 3);
+    }
 
     /*
      * Actions for the buttons can be done here.
@@ -133,6 +141,14 @@ public class HomeView {
           @Override
           public void handle(ActionEvent e) {
             controller.smartplugGUI();
+          }
+        });
+
+    adminButton.setOnAction(
+        new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent e) {
+            controller.adminGUI();
           }
         });
   }

@@ -9,11 +9,17 @@ import ca.uvic.seng330.assn3.Views;
 public class HomeController extends Controller {
 
   private final HomeModel model;
+  private AuthManager authManager;
 
   public HomeController(
       HomeModel model, AuthManager authManager, ViewTransition transitionNotifier) {
     super(authManager, transitionNotifier);
     this.model = model;
+    this.authManager = authManager;
+  }
+
+  public boolean isAdmin() {
+    return authManager.isAdminToken(model.getToken());
   }
 
   // logout from home view, and return to login screen.
@@ -46,5 +52,11 @@ public class HomeController extends Controller {
     Token token = model.getToken();
 
     switchViews(this, Views.THERMOSTAT, token);
+  }
+
+  public void adminGUI() {
+    Token token = model.getToken();
+
+    switchViews(this, Views.ADMIN, token);
   }
 }

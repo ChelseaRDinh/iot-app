@@ -19,6 +19,7 @@ public class AdminView {
   private Text title;
   private Button manageUsersButton;
   private Button manageDevicesButton;
+  private Button backButton;
 
   /** Default constructor for the Admin Dashboard view. */
   public AdminView(AdminController controller, AdminModel model) {
@@ -55,10 +56,23 @@ public class AdminView {
 
     manageUsersButton = new Button("Manage Users");
     manageDevicesButton = new Button("Manage Devices");
+    backButton = new Button("Back");
 
     view.addRow(0, title);
     view.addRow(1, manageUsersButton);
     view.addRow(2, manageDevicesButton);
+    view.addRow(3, backButton);
+
+    /*
+     * Go back to home dashboard.
+     */
+    backButton.setOnAction(
+        new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent e) {
+            controller.homeGUI();
+          }
+        });
 
     /*
      * Open new window from admin console when

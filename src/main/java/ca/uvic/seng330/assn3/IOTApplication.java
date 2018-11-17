@@ -187,32 +187,18 @@ public class IOTApplication extends Application {
         this.primaryStage.show();
         break;
       case ADMIN:
-        HomeModel adminModel = new HomeModel(authToken, allHubs);
-        HomeController adminController =
-            new HomeController(
+        AdminModel adminModel = new AdminModel(authToken, allHubs);
+        AdminController adminController =
+            new AdminController(
                 adminModel,
                 authManager,
                 (from, to, token) -> {
                   this.transition(from, to, token);
                 });
-        HomeView adminView = new HomeView(adminController, adminModel);
+        AdminView adminView = new AdminView(adminController, adminModel);
         scene = new Scene(adminView.asParent(), 960, 480);
         this.primaryStage.setScene(scene);
         this.primaryStage.show();
-
-        // Show admin dashboard as secondary window of same size.
-        Stage secondStage = new Stage();
-        AdminModel adminHomeModel = new AdminModel(authToken, allHubs);
-        AdminController adminHomeController =
-            new AdminController(
-                adminHomeModel,
-                authManager,
-                (from, to, token) -> {
-                  this.transition(from, to, token);
-                });
-        AdminView adminHomeView = new AdminView(adminHomeController, adminHomeModel);
-        secondStage.setScene(new Scene(adminHomeView.asParent(), 960, 480));
-        secondStage.show();
       default:
         break;
     }

@@ -2,7 +2,9 @@ package ca.uvic.seng330.assn3.admin;
 
 import ca.uvic.seng330.assn3.AuthManager;
 import ca.uvic.seng330.assn3.Controller;
+import ca.uvic.seng330.assn3.Token;
 import ca.uvic.seng330.assn3.ViewTransition;
+import ca.uvic.seng330.assn3.Views;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -28,5 +30,11 @@ public class AdminController extends Controller {
     ManageDevices manageDevicesView = new ManageDevices();
     manageDevicesStage.setScene(new Scene(manageDevicesView.asParent(), 960, 480));
     manageDevicesStage.show();
+  }
+
+  public void homeGUI() {
+    Token token = model.getToken();
+
+    switchViews(this, Views.MAIN, token);
   }
 }
