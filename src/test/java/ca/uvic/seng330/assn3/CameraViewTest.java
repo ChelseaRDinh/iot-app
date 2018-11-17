@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 
-// Tests covered: 2
+// Tests covered: 4
 public class CameraViewTest extends ApplicationTest {
   private AuthManager authManager;
   private MasterHub allHubs;
@@ -56,12 +56,19 @@ public class CameraViewTest extends ApplicationTest {
 
   public void transition(Controller from, Views to, Token token) {}
 
+  // GIVEN a camera WHEN I click "Start" on the Client camera control THEN the camera turns on and I
+  // see the data from the Camera
   // GIVEN a functioning camera And I am able to see the data from the Camera WHEN I click on record
   // on the Client Camera control THEN my Camera starts recording
   // GIVEN a functioning Camera is recording WHEN I click on stop recording on the Client Camera
   // control THEN my Camera stops recording
+  // GIVEN a functioning camera WHEN I click "Turn Off" on the Client camera control THEN the camera
+  // shuts down and I do not see the data from the Camera
   @Test
   public void testToggle() {
+    // when I click ON then the camera turns on and I see the feed:
+    clickOn("ON");
+    clickOn("FEED SHOWN");
     // given: functioning camera that is not full
     assertNotEquals(camera.getDiskPercentageUsed(), 100);
     camera.toggle();
@@ -77,5 +84,8 @@ public class CameraViewTest extends ApplicationTest {
     // when: click stop
     clickOn("Stop");
     assertNotEquals(before, camera.isRecording());
+
+    clickOn("OFF");
+    clickOn("NO FEED");
   }
 }

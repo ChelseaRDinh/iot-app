@@ -3,6 +3,7 @@ package ca.uvic.seng330.assn3;
 import ca.uvic.seng330.assn3.admin.AdminController;
 import ca.uvic.seng330.assn3.admin.AdminModel;
 import ca.uvic.seng330.assn3.admin.AdminView;
+import ca.uvic.seng330.assn3.devices.Camera;
 import ca.uvic.seng330.assn3.devices.Hub;
 import ca.uvic.seng330.assn3.devices.Lightbulb;
 import ca.uvic.seng330.assn3.devices.MasterHub;
@@ -53,6 +54,9 @@ public class IOTApplication extends Application {
     Thermostat t1 = new Thermostat(allDevices);
     Thermostat t2 = new Thermostat(allDevices);
 
+    Camera c1 = new Camera(allDevices);
+    Camera c2 = new Camera(allDevices);
+
     try {
       authManager = new AuthManager();
 
@@ -69,6 +73,9 @@ public class IOTApplication extends Application {
 
       allDevices.register(t1);
       allDevices.register(t2);
+
+      allDevices.register(c1);
+      allDevices.register(c2);
     } catch (Exception e) {
       return;
     }

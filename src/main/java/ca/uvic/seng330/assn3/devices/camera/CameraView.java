@@ -22,6 +22,7 @@ public class CameraView {
   private CameraModel model;
   private Text title;
   private List<OnOffToggle> cameraRecordSwitches;
+  private List<OnOffToggle> cameraSwitches;
   private List<Text> dataText;
   private Button homeButton;
 
@@ -40,6 +41,18 @@ public class CameraView {
     return view;
   }
 
+  public void setIndexDisabled(int index, boolean value) {
+    if (cameraRecordSwitches.get(index).isDisabled() != value) {
+      cameraRecordSwitches.get(index).setDisable(value);
+
+      if (value) {
+        dataText.get(index).setText("NO FEED");
+      } else {
+        dataText.get(index).setText("FEED SHOWN");
+      }
+    }
+  }
+
   private void createAndConfigurePane() {
     view = new GridPane();
 
@@ -56,6 +69,7 @@ public class CameraView {
 
   private void createAndLayoutControls() {
     cameraRecordSwitches = new ArrayList<OnOffToggle>();
+    cameraSwitches = new ArrayList<OnOffToggle>();
     dataText = new ArrayList<Text>();
     title = new Text("Camera Settings");
     title.setFont(new Font(20));
@@ -66,18 +80,25 @@ public class CameraView {
 
       cameraRecordSwitches.add(record);
 
+      OnOffToggle power = new OnOffToggle(model, controller, i, true);
+
+      cameraSwitches.add(power);
+
       Text data = new Text();
-      data.setText("DATA SHOWN");
+      data.setText("FEED SHOWN");
       dataText.add(data);
 
-      // Set the button state on init.
-      // setIndexDisabled(i, !model.getThermostatConditionAt(i));
+      addConditionListener(i);
 
-      int startRow = 1 + (i * 2);
+      // Set the button state on init.
+      setIndexDisabled(i, !model.getCameraConditionAt(i));
+
+      int startRow = 1 + (i * 3);
 
       view.addRow(
-          startRow, new Label("Camera " + new Integer(i + 1).toString()), record.getContainer());
-      view.addRow(startRow + 1, new Label("Video feed: "), data);
+          startRow, new Label("Camera " + new Integer(i + 1).toString()), power.getContainer());
+      view.addRow(startRow + 1, new Label("Recording state:"), record.getContainer());
+      view.addRow(startRow + 2, new Label("Video feed: "), data);
     }
 
     homeButton = new Button("home");
@@ -89,6 +110,12 @@ public class CameraView {
           }
         });
     view.addRow(2 + model.getCameraCount() * 3, new Label(""), homeButton);
+  }
+
+  private void addConditionListener(int i) {
+    model
+        .cameraConditionPropertyAt(i)
+        .addListener((obs, oldValue, newValue) -> setIndexDisabled(i, !newValue));
   }
 
   private void updateControllerFromListeners() {}
