@@ -3,6 +3,7 @@ package ca.uvic.seng330.assn3.devices;
 import org.json.JSONObject;
 
 public final class Camera extends Device {
+  private boolean isOn;
   private boolean isRecording;
   private int diskPercentageUsed;
 
@@ -14,6 +15,7 @@ public final class Camera extends Device {
   public Camera(Hub h) {
     super(h);
 
+    isOn = false;
     isRecording = false;
     diskPercentageUsed = 0;
   }
@@ -49,6 +51,14 @@ public final class Camera extends Device {
     return isRecording;
   }
 
+  public boolean getCondition() {
+    return isOn;
+  }
+
+  public void toggle() {
+    isOn = !isOn;
+  }
+
   /**
    * Get the percentage of the disk used.
    *
@@ -77,11 +87,21 @@ public final class Camera extends Device {
       }
     } else if (message.equals("isRecording")) {
       alertHub(
-          jsonMessage.getString("node_id"), "isRecording," + new Boolean(isRecording()).toString());
+          jsonMessage.getString("node_id"), "isRecording", new Boolean(isRecording()).toString());
     } else if (message.equals("getDiskPercentageUsed")) {
       alertHub(
           jsonMessage.getString("node_id"),
-          "getDiskPercentageUsed," + new Integer(diskPercentageUsed).toString());
+          "getDiskPercentageUsed,",
+          new Integer(diskPercentageUsed).toString());
+    } else if (message.equals("stopRecording")) {
+      if (isRecording) {
+        isRecording = false;
+      }
+    } else if (message.equals("getCondition")) {
+      alertHub(
+          jsonMessage.getString("node_id"), "getCondition", new Boolean(getCondition()).toString());
+    } else if (message.equals("toggle")) {
+      toggle();
     }
   }
 }

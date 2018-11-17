@@ -65,7 +65,7 @@ public class ThermostatModel extends Model {
     return thermostatConditions.get(thermostats.get(index)).get();
   }
 
-  public void setThermostaConditionAt(int index, Boolean value) {
+  public void setThermostatConditionAt(int index, Boolean value) {
     if (getThermostatConditionAt(index) != value) {
       thermostatConditions.get(thermostats.get(index)).set(value);
       sendMessageToDevice(Command.THERMOSTAT_TOGGLE, thermostats.get(index));

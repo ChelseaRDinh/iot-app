@@ -23,6 +23,11 @@ public abstract class Client {
     commandMap.put(Command.THERMOSTAT_GET_UNIT, "getUnit");
     commandMap.put(Command.SMARTPLUG_GET_CONDITION, "getCondition");
     commandMap.put(Command.SMARTPLUG_TOGGLE, "toggle");
+    commandMap.put(Command.CAMERA_GET_CONDITION, "getCondition");
+    commandMap.put(Command.CAMERA_TOGGLE, "toggle");
+    commandMap.put(Command.CAMERA_IS_RECORDING, "isRecording");
+    commandMap.put(Command.CAMERA_RECORD, "record");
+    commandMap.put(Command.CAMERA_STOP_RECORD, "stopRecording");
 
     // Make sure all Command are in the map.
     assert commandMap.size() == Command.values().length;

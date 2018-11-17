@@ -31,7 +31,7 @@ public class ThermostatController extends Controller {
 
   public void updateThermostatConditionAt(int index, boolean value) {
     // setIndexDisabled(index, value);
-    model.setThermostaConditionAt(index, value);
+    model.setThermostatConditionAt(index, value);
   }
 
   /*

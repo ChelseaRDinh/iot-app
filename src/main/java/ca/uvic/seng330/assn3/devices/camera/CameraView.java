@@ -1,5 +1,8 @@
 package ca.uvic.seng330.assn3.devices.camera;
 
+import ca.uvic.seng330.assn3.OnOffToggle;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
@@ -10,7 +13,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
-import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
@@ -19,7 +21,8 @@ public class CameraView {
   private CameraController controller;
   private CameraModel model;
   private Text title;
-  private Button recordButton;
+  private List<OnOffToggle> cameraRecordSwitches;
+  private List<Text> dataText;
   private Button homeButton;
 
   /** Default constructor for the Camera view. */
@@ -52,39 +55,32 @@ public class CameraView {
   }
 
   private void createAndLayoutControls() {
+    cameraRecordSwitches = new ArrayList<OnOffToggle>();
+    dataText = new ArrayList<Text>();
     title = new Text("Camera Settings");
     title.setFont(new Font(20));
+    view.addRow(0, title);
 
-    // By default, recording is 'off'.
-    recordButton = new Button("OFF");
-    recordButton.setStyle("-fx-base: red;");
+    for (int i = 0; i < model.getCameraCount(); i++) {
+      OnOffToggle record = new OnOffToggle(model, controller, i, false);
 
-    double r = 30;
-    recordButton.setShape(new Circle(r));
-    recordButton.setMinSize(2 * r, 2 * r);
-    recordButton.setMaxSize(2 * r, 2 * r);
+      cameraRecordSwitches.add(record);
+
+      Text data = new Text();
+      data.setText("DATA SHOWN");
+      dataText.add(data);
+
+      // Set the button state on init.
+      // setIndexDisabled(i, !model.getThermostatConditionAt(i));
+
+      int startRow = 1 + (i * 2);
+
+      view.addRow(
+          startRow, new Label("Camera " + new Integer(i + 1).toString()), record.getContainer());
+      view.addRow(startRow + 1, new Label("Video feed: "), data);
+    }
 
     homeButton = new Button("home");
-
-    view.addRow(0, title);
-    view.addRow(2, new Label("Record:"), recordButton);
-    view.addRow(3, new Label(""), homeButton);
-
-    // toggle record button.
-    recordButton.setOnAction(
-        new EventHandler<ActionEvent>() {
-          @Override
-          public void handle(ActionEvent e) {
-            if (recordButton.getText() == "OFF") {
-              recordButton.setText("ON");
-              recordButton.setStyle("-fx-base: green;");
-            } else {
-              recordButton.setText("OFF");
-              recordButton.setStyle("-fx-base: red;");
-            }
-          }
-        });
-
     homeButton.setOnAction(
         new EventHandler<ActionEvent>() {
           @Override
@@ -92,6 +88,7 @@ public class CameraView {
             controller.home();
           }
         });
+    view.addRow(2 + model.getCameraCount() * 3, new Label(""), homeButton);
   }
 
   private void updateControllerFromListeners() {}

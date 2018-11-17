@@ -1,5 +1,7 @@
 package ca.uvic.seng330.assn3;
 
+import ca.uvic.seng330.assn3.devices.camera.CameraController;
+import ca.uvic.seng330.assn3.devices.camera.CameraModel;
 import ca.uvic.seng330.assn3.devices.lightbulb.LightbulbController;
 import ca.uvic.seng330.assn3.devices.lightbulb.LightbulbModel;
 import ca.uvic.seng330.assn3.devices.smartplug.SmartplugController;
@@ -116,6 +118,48 @@ public class OnOffToggle {
     }
   }
 
+  public OnOffToggle(
+      CameraModel model, CameraController controller, int index, boolean isCondition) {
+    if (!isCondition) {
+      createRecordButtons();
+    } else {
+      createButtons();
+    }
+
+    if (isCondition) {
+      shouldBeOn = model.getCameraIsRecordingAt(index);
+    } else {
+      shouldBeOn = model.getCameraConditionAt(index);
+    }
+
+    // Fire the event of the selected button so it gets its color.
+    if (shouldBeOn) {
+      on.fire();
+    } else {
+      off.fire();
+    }
+
+    // Only watch for the on button. Since it's a toggle group, this will trigger no matter which
+    // button is clicked.
+    if (!isCondition) {
+      model
+          .cameraIsRecordingPropertyAt(index)
+          .addListener((obs, oldValue, newValue) -> updateIfNeeded(newValue, on));
+
+      on.selectedProperty()
+          .addListener(
+              (obs, oldValue, newValue) -> controller.updateCameraRecordingAt(index, newValue));
+    } else {
+      model
+          .cameraConditionPropertyAt(index)
+          .addListener((obs, oldValue, newValue) -> updateIfNeeded(newValue, on));
+
+      on.selectedProperty()
+          .addListener(
+              (obs, oldValue, newValue) -> controller.updateCameraConditionAt(index, newValue));
+    }
+  }
+
   public HBox getContainer() {
     return container;
   }
@@ -218,6 +262,52 @@ public class OnOffToggle {
             } else {
               off.setStyle("-fx-base: blue;");
               on.setStyle("-fx-base: grey;");
+            }
+            shouldBeOn = !shouldBeOn;
+          }
+        });
+
+    container = new HBox(on, off);
+  }
+
+  private void createRecordButtons() {
+    group = new ToggleGroup();
+
+    // Lightbulb toggle.
+    on = new ToggleButton("Record");
+    on.setStyle("-fx-base: grey;");
+    on.setToggleGroup(group);
+
+    off = new ToggleButton("Stop");
+    off.setStyle("-fx-base: grey;");
+    off.setToggleGroup(group);
+
+    on.setOnAction(
+        new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent e) {
+            if (shouldBeOn) {
+              on.setStyle("-fx-base: green;");
+              off.setStyle("-fx-base: grey;");
+            } else {
+              on.setStyle("-fx-base: grey;");
+              off.setStyle("-fx-base: red;");
+            }
+            shouldBeOn = !shouldBeOn;
+          }
+        });
+
+    off.setOnAction(
+        new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent e) {
+            if (!shouldBeOn) {
+              on.setStyle("-fx-base: grey;");
+              off.setStyle("-fx-base: red;");
+            } else {
+              on.setStyle("-fx-base: green;");
+              off.setStyle("-fx-base: grey;");
+              on.setSelected(true);
             }
             shouldBeOn = !shouldBeOn;
           }

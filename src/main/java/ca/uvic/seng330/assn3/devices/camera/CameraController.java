@@ -16,6 +16,15 @@ public class CameraController extends Controller {
     this.model = model;
   }
 
+  public void updateCameraRecordingAt(int index, boolean isCelsius) {
+    model.setCameraIsRecordingAt(index, isCelsius);
+  }
+
+  public void updateCameraConditionAt(int index, boolean value) {
+    // setIndexDisabled(index, value);
+    model.setCameraConditionAt(index, value);
+  }
+
   // return to home dashboard
   public void home() {
     Token token = model.getToken();
