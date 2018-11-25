@@ -23,17 +23,28 @@ public class LoginController extends Controller {
     this.model = model;
   }
 
+  /**
+   * Updates the model's username value with a given username.
+   *
+   * @param username the username to set
+   */
   public void updateUsername(String username) {
     model.setUsername(username);
   }
 
+  /**
+   * Updates the model's password value with a given password.
+   *
+   * @param password the password to set
+   */
   public void updatePassword(String password) {
     model.setPassword(password);
   }
 
-  /*
-   * If the user/pass combo is found in master DB, resolves to true.
-   * Otherwise, false.
+  /**
+   * Checks to see if the given credentials are valid for a user.
+   *
+   * @return true if given credentials are valid, false otherwise.
    */
   public boolean isValidLogin() {
     Token token = authManager.getToken(model.getUsername(), model.getPassword());
@@ -41,6 +52,11 @@ public class LoginController extends Controller {
     return authManager.isValidToken(token);
   }
 
+  /**
+   * Checks to see if the given credentials are valid for the admin.
+   *
+   * @return true if given credentials are for the admin, false otherwise.
+   */
   public boolean isAdminUser() {
     Token token = authManager.getToken(model.getUsername(), model.getPassword());
     return authManager.isAdminToken(token);

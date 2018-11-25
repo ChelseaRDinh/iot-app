@@ -2,9 +2,9 @@ package ca.uvic.seng330.assn3.devices;
 
 import org.json.JSONObject;
 
-// Plenty of other devices have full implementations for example of operation.
 public final class SmartPlug extends Device {
   boolean isOn;
+
   /**
    * Constructor for smart plug that takes a hub.
    *
@@ -16,10 +16,16 @@ public final class SmartPlug extends Device {
     isOn = false;
   }
 
+  /**
+   * Gets the condition of the smartplug.
+   *
+   * @return true if the smartplug is on, false otherwise.
+   */
   public boolean getCondition() {
     return isOn;
   }
 
+  /** Toggles the smartplug on if it's off, off if it's on. */
   public void toggle() {
     isOn = !isOn;
   }

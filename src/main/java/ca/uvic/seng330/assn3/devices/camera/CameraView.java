@@ -33,15 +33,19 @@ public class CameraView {
 
     createAndConfigurePane();
     createAndLayoutControls();
-    updateControllerFromListeners();
-    observeModelAndUpdateControls();
   }
 
   public Parent asParent() {
     return view;
   }
 
-  public void setIndexDisabled(int index, boolean value) {
+  /**
+   * Enables or disables the controls for a camera at a given index.
+   *
+   * @param index the index of the controls to enable/disable
+   * @param value true to disable, false to enable
+   */
+  private void setIndexDisabled(int index, boolean value) {
     if (cameraRecordSwitches.get(index).isDisabled() != value) {
       cameraRecordSwitches.get(index).setDisable(value);
 
@@ -53,6 +57,7 @@ public class CameraView {
     }
   }
 
+  /** Creates the view grid pane. */
   private void createAndConfigurePane() {
     view = new GridPane();
 
@@ -67,6 +72,7 @@ public class CameraView {
     view.setVgap(10);
   }
 
+  /** Creates the controls within the view and hooks it up with the model. */
   private void createAndLayoutControls() {
     cameraRecordSwitches = new ArrayList<OnOffToggle>();
     cameraSwitches = new ArrayList<OnOffToggle>();
@@ -112,13 +118,15 @@ public class CameraView {
     view.addRow(2 + model.getCameraCount() * 3, new Label(""), homeButton);
   }
 
+  /**
+   * Adds a listener to the camera condition property at a given index to trigger the
+   * enabling/disabling of controls.
+   *
+   * @param i the index of the camera condition property
+   */
   private void addConditionListener(int i) {
     model
         .cameraConditionPropertyAt(i)
         .addListener((obs, oldValue, newValue) -> setIndexDisabled(i, !newValue));
   }
-
-  private void updateControllerFromListeners() {}
-
-  private void observeModelAndUpdateControls() {}
 }

@@ -27,6 +27,13 @@ public class OnOffToggle {
     createButtons();
   }
 
+  /**
+   * Constructor for the on/off button for the lightbulb UI.
+   *
+   * @param model the lightbulb's model
+   * @param controller the lightbulb's controller
+   * @param index the index of the lightbulb in the model to bind this on/off button to
+   */
   public OnOffToggle(LightbulbModel model, LightbulbController controller, int index) {
     createButtons();
     on.setId("lightbulbOn" + new Integer(index).toString());
@@ -52,6 +59,13 @@ public class OnOffToggle {
             (obs, oldValue, newValue) -> controller.updateLightbulbConditionAt(index, newValue));
   }
 
+  /**
+   * Constructor for the on/off button for the smartplug UI.
+   *
+   * @param model the smartplug's model
+   * @param controller the smartplug's controller
+   * @param index the index of the smartplug in the model to bind this on/off button to
+   */
   public OnOffToggle(SmartplugModel model, SmartplugController controller, int index) {
     createButtons();
     shouldBeOn = model.getSmartplugConditionAt(index);
@@ -73,6 +87,14 @@ public class OnOffToggle {
             (obs, oldValue, newValue) -> controller.updateSmartplugConditionAt(index, newValue));
   }
 
+  /**
+   * Constructor for the on/off button for the thermostat UI.
+   *
+   * @param model the thermostat's model
+   * @param controller the thermostat's controller
+   * @param index the index of the thermostat in the model to bind this on/off button to
+   * @param isTemperatureUnit true if this is the unit buttons, false if it's the condition buttons
+   */
   public OnOffToggle(
       ThermostatModel model,
       ThermostatController controller,
@@ -118,6 +140,14 @@ public class OnOffToggle {
     }
   }
 
+  /**
+   * Constructor for the on/off toggle button for the camera UI.
+   *
+   * @param model the camera's model
+   * @param controller the camera's controller
+   * @param index the index of the camera in the model to bind this on/off button to
+   * @param isCondition true if this is the record buttons, false if it's the condition button
+   */
   public OnOffToggle(
       CameraModel model, CameraController controller, int index, boolean isCondition) {
     if (!isCondition) {
@@ -160,18 +190,40 @@ public class OnOffToggle {
     }
   }
 
+  /**
+   * Gets the container for the on/off toggle button.
+   *
+   * @return the container for the toggle button
+   */
   public HBox getContainer() {
     return container;
   }
 
+  /**
+   * Gets whether or not the button is disabled.
+   *
+   * @return true if the button is enabled, false otherwise
+   */
   public boolean isDisabled() {
     return container.isDisabled();
   }
 
+  /**
+   * Enalbes/disables the button.
+   *
+   * @param value true to disable, false to enable
+   */
   public void setDisable(boolean value) {
     container.setDisable(value);
   }
 
+  /**
+   * Updates the value of a given button if the new value is different than the button's current
+   * value.
+   *
+   * @param value the value to try and set the button to
+   * @param button the button to potentially set the value
+   */
   private void updateIfNeeded(Boolean value, ToggleButton button) {
     // maybe disarm, fire, arm
     if (button.isSelected() != value) {
@@ -179,6 +231,7 @@ public class OnOffToggle {
     }
   }
 
+  /** Creates the on/off toggle button group. */
   private void createButtons() {
     group = new ToggleGroup();
 
@@ -225,6 +278,7 @@ public class OnOffToggle {
     container = new HBox(on, off);
   }
 
+  /** Creates a Celsius/Fahrenheit toggle button group. */
   private void createUnitButtons() {
     group = new ToggleGroup();
 
@@ -270,6 +324,7 @@ public class OnOffToggle {
     container = new HBox(on, off);
   }
 
+  /** Creates a record/stop toggle button group. */
   private void createRecordButtons() {
     group = new ToggleGroup();
 

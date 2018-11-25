@@ -43,7 +43,7 @@ public final class Temperature {
   }
 
   /**
-   * Constructor for temperature for a given unit
+   * Constructor for temperature for a given unit.
    *
    * @param temperature the temperature value
    * @param unit the temperature unit

@@ -17,6 +17,12 @@ public class CameraModel extends Model {
   private Map<UUID, SimpleBooleanProperty> cameraIsRecording;
   private Map<UUID, SimpleBooleanProperty> cameraConditions;
 
+  /**
+   * Constructor for the model for the Camera management UI.
+   *
+   * @param token the token of the current user
+   * @param h the master hub containing all the hubs which may have devices registered to
+   */
   public CameraModel(Token token, MasterHub h) {
     super(token, h);
 
@@ -37,14 +43,33 @@ public class CameraModel extends Model {
     return cameras.size();
   }
 
+  /**
+   * Gets the property of if the camera is recording at a given index in the model.
+   *
+   * @param index the index of the camera in the model
+   * @return the property of if the camera is recording
+   */
   public final SimpleBooleanProperty cameraIsRecordingPropertyAt(int index) {
     return cameraIsRecording.get(cameras.get(index));
   }
 
+  /**
+   * Gets whether or not the camera is recording at a given index in the model.
+   *
+   * @param index the index of the camera in the model
+   * @return true if the camera is recording, false otherwise
+   */
   public Boolean getCameraIsRecordingAt(int index) {
     return cameraIsRecording.get(cameras.get(index)).get();
   }
 
+  /**
+   * Sets whether or not the camera is recording at a given index in the model.
+   *
+   * @param index the index of the camera in the model
+   * @param value true to start the camera recording if it isn't already, false to stop the
+   *     recording if it is recording
+   */
   public void setCameraIsRecordingAt(int index, Boolean value) {
     if (getCameraIsRecordingAt(index) != value) {
       cameraIsRecording.get(cameras.get(index)).set(value);
@@ -57,14 +82,32 @@ public class CameraModel extends Model {
     }
   }
 
+  /**
+   * Gets the property of the camera's condition at a given index in the model.
+   *
+   * @param index the index of the camera in the model
+   * @return the property of the camera's condition
+   */
   public final SimpleBooleanProperty cameraConditionPropertyAt(int index) {
     return cameraConditions.get(cameras.get(index));
   }
 
+  /**
+   * Gets the camera condition at a given index in the model.
+   *
+   * @param index the index of the camera in the model
+   * @return true if the camera is on, false otherwise
+   */
   public Boolean getCameraConditionAt(int index) {
     return cameraConditions.get(cameras.get(index)).get();
   }
 
+  /**
+   * Sets the camera condition at a given index in the model.
+   *
+   * @param index the index of the camera in the model
+   * @param value the condition to set the camera to
+   */
   public void setCameraConditionAt(int index, Boolean value) {
     if (getCameraConditionAt(index) != value) {
       cameraConditions.get(cameras.get(index)).set(value);

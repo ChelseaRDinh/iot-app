@@ -16,6 +16,12 @@ public class SmartplugModel extends Model {
   private List<UUID> smartplugs;
   private Map<UUID, SimpleBooleanProperty> smartplugConditions;
 
+  /**
+   * Constructor for the model for the Smartplug management UI.
+   *
+   * @param token the token of the current user
+   * @param h the master hub containing all the hubs which may have devices registered to
+   */
   public SmartplugModel(Token token, MasterHub h) {
     super(token, h);
 
@@ -28,18 +34,41 @@ public class SmartplugModel extends Model {
     }
   }
 
+  /**
+   * Gets the amount of smartplugs that the user can see.
+   *
+   * @return the amount of smartplugs the user can see
+   */
   public int getSmartplugCount() {
     return smartplugs.size();
   }
 
+  /**
+   * Gets the condition property for the smartplug at a given index.
+   *
+   * @param index the index of the smartplug
+   * @return the property for the smartplug's condition
+   */
   public final SimpleBooleanProperty smartplugConditionPropertyAt(int index) {
     return smartplugConditions.get(smartplugs.get(index));
   }
 
+  /**
+   * Gets the smartplug condition at a given index.
+   *
+   * @param index the index of the smartplug
+   * @return true if the smartplug is on, false otherwise
+   */
   public Boolean getSmartplugConditionAt(int index) {
     return smartplugConditions.get(smartplugs.get(index)).get();
   }
 
+  /**
+   * Sets the smartplug condition at a given index.
+   *
+   * @param index the index of the smartplug
+   * @param value the condition to set the smartplug to
+   */
   public void setSmartplugConditionAt(int index, Boolean value) {
     if (getSmartplugConditionAt(index) != value) {
       smartplugConditions.get(smartplugs.get(index)).set(value);

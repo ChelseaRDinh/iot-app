@@ -16,6 +16,12 @@ public class LightbulbModel extends Model {
   private List<UUID> lightbulbs;
   private Map<UUID, SimpleBooleanProperty> lightbulbConditions;
 
+  /**
+   * Constructor for the model for the Lightbulb management UI.
+   *
+   * @param token the token of the current user
+   * @param h the master hub containing all the hubs which may have devices registered to
+   */
   public LightbulbModel(Token token, MasterHub h) {
     super(token, h);
 
@@ -32,14 +38,32 @@ public class LightbulbModel extends Model {
     return lightbulbs.size();
   }
 
+  /**
+   * Gets the property of the lightbulb's condition at a given index in the model.
+   *
+   * @param index the index of the lightbulb in the model
+   * @return the property of the lightbulb's condition
+   */
   public final SimpleBooleanProperty lightbulbConditionPropertyAt(int index) {
     return lightbulbConditions.get(lightbulbs.get(index));
   }
 
+  /**
+   * Gets the lightbulb condition at a given index in the model.
+   *
+   * @param index the index of the lightbulb in the model
+   * @return true if the lightbulb is on, false otherwise
+   */
   public Boolean getLightbulbConditionAt(int index) {
     return lightbulbConditions.get(lightbulbs.get(index)).get();
   }
 
+  /**
+   * Sets the lightbulb condition at a given index in the model.
+   *
+   * @param index the index of the lightbulb in the model
+   * @param value the condition to set the lightbulb to
+   */
   public void setLightbulbConditionAt(int index, Boolean value) {
     if (getLightbulbConditionAt(index) != value) {
       lightbulbConditions.get(lightbulbs.get(index)).set(value);

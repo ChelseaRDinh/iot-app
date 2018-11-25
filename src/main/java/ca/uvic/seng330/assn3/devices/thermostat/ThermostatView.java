@@ -39,16 +39,19 @@ public class ThermostatView {
     this.model = model;
     createAndConfigurePane();
     createAndLayoutControls();
-    updateControllerFromListeners();
-    observeModelAndUpdateControls();
   }
 
   public Parent asParent() {
     return view;
   }
 
-  // Public since listeners don't always fire for this so the on off toggle needs to call this too.
-  public void setIndexDisabled(int index, boolean value) {
+  /**
+   * Enables or disables the controls for a thermostat at a given index.
+   *
+   * @param index the index of the controls to enable/disable
+   * @param value true to disable, false to enable
+   */
+  private void setIndexDisabled(int index, boolean value) {
     if (temperatureFields.get(index).isDisabled() != value) {
       temperatureFields.get(index).setDisable(value);
     }
@@ -62,6 +65,7 @@ public class ThermostatView {
     }
   }
 
+  /** Creates the view grid pane. */
   private void createAndConfigurePane() {
     view = new GridPane();
 
@@ -79,6 +83,7 @@ public class ThermostatView {
     view.setVgap(10);
   }
 
+  /** Creates the controls within the view and hooks it up with the model. */
   private void createAndLayoutControls() {
     thermostatUnitSwitches = new ArrayList<OnOffToggle>();
     thermostatPowerSwitches = new ArrayList<OnOffToggle>();
@@ -97,10 +102,6 @@ public class ThermostatView {
 
       thermostatUnitSwitches.add(toggle);
 
-      // Set buttons to blue when selected; opposite button is set back to default grey.
-      Button setTemperature = new Button("Set");
-      Text errorMsg = new Text();
-
       TextField temperatureField = new TextField();
       temperatureField.setMaxWidth(80);
       temperatureField.setText(model.getThermostatValueAt(i).toString());
@@ -108,6 +109,9 @@ public class ThermostatView {
 
       // Configure text field to take in double values for temperature.
       configTextFieldForFloats(temperatureField);
+
+      Button setTemperature = new Button("Set");
+      Text errorMsg = new Text();
 
       setupTemperatureSet(setTemperature, temperatureField, errorMsg, i);
 
@@ -147,6 +151,11 @@ public class ThermostatView {
     view.addRow(1 + model.getThermostatCount() * 4, new Label(""), homeButton);
   }
 
+  /**
+   * Sets up the action for the set temperature button and the thermostat model listeners. Updates
+   * the temperature field and error message on click. This stops entering a value into the
+   * temperature triggering a model value update and resetting the temperature field value.
+   */
   private void setupTemperatureSet(
       Button setTemperature, TextField temperatureField, Text errorMsg, int i) {
     setTemperature.setOnAction(
@@ -198,8 +207,12 @@ public class ThermostatView {
         .addListener((obs, oldValue, newValue) -> setIndexDisabled(i, !newValue));
   }
 
-  private void observeModelAndUpdateControls() {}
-
+  /**
+   * Checks if an update is needed for a given text field based on the value given.
+   *
+   * @param value the new value to set if the value isn't already set to this
+   * @param field the field to check against and potentially set
+   */
   private void updateIfNeeded(Number value, TextField field) {
     String s = value.toString();
     if (!field.getText().equals(s)) {
@@ -207,8 +220,11 @@ public class ThermostatView {
     }
   }
 
-  private void updateControllerFromListeners() {}
-
+  /**
+   * Configures a given text field to take in decimal values.
+   *
+   * @param field the field to configure
+   */
   private void configTextFieldForFloats(TextField field) {
     field.setTextFormatter(
         new TextFormatter<Float>(

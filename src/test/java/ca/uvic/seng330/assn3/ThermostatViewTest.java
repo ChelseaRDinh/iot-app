@@ -80,8 +80,8 @@ public class ThermostatViewTest extends ApplicationTest {
     assertNotEquals(before, thermostat.getCondition());
 
     // Convert to F, check that value changed from 0 to 32.
-    float oldTemp = thermostat.getTemp();
     before = thermostat.getUnit();
+    float oldTemp = thermostat.getTemp();
     clickOn("Fahrenheit");
     assertNotEquals(before, thermostat.getUnit());
     assertNotEquals(oldTemp, thermostat.getTemp(), 0.01f);

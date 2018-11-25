@@ -84,8 +84,6 @@ public class HomeView {
     smartplugButton.setMinSize(2 * r, 2 * r);
     smartplugButton.setMaxSize(2 * r, 2 * r);
 
-    Button logoutButton = new Button("Logout");
-
     adminButton = new Button("Admin");
 
     view.add(title, 1, 0);
@@ -93,6 +91,8 @@ public class HomeView {
     view.add(thermostatButton, 2, 1);
     view.add(lightbulbButton, 1, 2);
     view.add(smartplugButton, 2, 2);
+
+    Button logoutButton = new Button("Logout");
     view.add(logoutButton, 1, 3);
     /** Check if user is admin, then add button to go to to admin console if evaluates to true. */
     if (controller.isAdmin() == true) {

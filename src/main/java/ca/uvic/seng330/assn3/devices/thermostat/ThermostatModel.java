@@ -19,6 +19,12 @@ public class ThermostatModel extends Model {
   private Map<UUID, SimpleBooleanProperty> thermostatIsCelsius;
   private Map<UUID, SimpleBooleanProperty> thermostatConditions;
 
+  /**
+   * Constructor for the model for the Thermostat management UI.
+   *
+   * @param token the token of the current user
+   * @param h the master hub containing all the hubs which may have devices registered to
+   */
   public ThermostatModel(Token token, MasterHub h) {
     super(token, h);
 
@@ -42,14 +48,32 @@ public class ThermostatModel extends Model {
     return thermostats.size();
   }
 
+  /**
+   * Gets the thermostat unit property for a thermostat at a given index in the model.
+   *
+   * @param index the index of the thermostat in the model
+   * @return the unit property for the thermostat
+   */
   public final SimpleBooleanProperty thermostatIsCelsiusPropertyAt(int index) {
     return thermostatIsCelsius.get(thermostats.get(index));
   }
 
+  /**
+   * Gets whether or not the thermostat is celcius at a given index in the model.
+   *
+   * @param index the index of the thermostat in the model
+   * @return true if the thermostat is in celsius mode, false otherwise
+   */
   public Boolean getThermostatIsCelsiusAt(int index) {
     return thermostatIsCelsius.get(thermostats.get(index)).get();
   }
 
+  /**
+   * Sets whether or not the thermostat is celsius at a given index in the model.
+   *
+   * @param index the index of the thermostat in the model
+   * @param value the value to set the thermostat to
+   */
   public void setThermostatIsCelsiusAt(int index, Boolean value) {
     if (getThermostatIsCelsiusAt(index) != value) {
       thermostatIsCelsius.get(thermostats.get(index)).set(value);
@@ -57,14 +81,32 @@ public class ThermostatModel extends Model {
     }
   }
 
+  /**
+   * Gets the thermostat condition property for a thermostat at a given index in the model.
+   *
+   * @param index the index of the thermostat in the model
+   * @return the condition property for the thermostat
+   */
   public final SimpleBooleanProperty thermostatConditionPropertyAt(int index) {
     return thermostatConditions.get(thermostats.get(index));
   }
 
+  /**
+   * Gets the thermostat condition at a given index in the model.
+   *
+   * @param index the index of the thermostat in the model
+   * @return true if the thermostat is on, false otherwise
+   */
   public Boolean getThermostatConditionAt(int index) {
     return thermostatConditions.get(thermostats.get(index)).get();
   }
 
+  /**
+   * Sets the thermostat condition at a given index in the model.
+   *
+   * @param index the index of the thermostat in the model
+   * @param value the value to set the thermostat to
+   */
   public void setThermostatConditionAt(int index, Boolean value) {
     if (getThermostatConditionAt(index) != value) {
       thermostatConditions.get(thermostats.get(index)).set(value);
@@ -72,14 +114,32 @@ public class ThermostatModel extends Model {
     }
   }
 
+  /**
+   * Gets the thermostat value property for a thermostat at a given index in the model.
+   *
+   * @param index the index of the thermostat in the model
+   * @return the value property for the thermostat
+   */
   public final SimpleFloatProperty thermostatValuePropertyAt(int index) {
     return thermostatValues.get(thermostats.get(index));
   }
 
+  /**
+   * Gets the thermostat value at a given index in the model.
+   *
+   * @param index the index of the thermostat in the model
+   * @return the value the thermostat is set to
+   */
   public Float getThermostatValueAt(int index) {
     return thermostatValues.get(thermostats.get(index)).get();
   }
 
+  /**
+   * Sets the thermostat temperature value at a given index in the model.
+   *
+   * @param index the index of the thermostat in the model
+   * @param value the value to set the thermostat to
+   */
   public void setThermostatValueAt(int index, Float value) {
     if (getThermostatValueAt(index) != value) {
       thermostatValues.get(thermostats.get(index)).set(value);

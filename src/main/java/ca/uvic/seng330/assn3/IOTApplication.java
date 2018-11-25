@@ -206,6 +206,7 @@ public class IOTApplication extends Application {
         scene = new Scene(adminView.asParent(), 960, 480);
         this.primaryStage.setScene(scene);
         this.primaryStage.show();
+        break;
       default:
         break;
     }

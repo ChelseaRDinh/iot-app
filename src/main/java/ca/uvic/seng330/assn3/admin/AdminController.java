@@ -12,12 +12,20 @@ public class AdminController extends Controller {
 
   private final AdminModel model;
 
+  /**
+   * Constructor for Admin controller for the admin UI.
+   *
+   * @param model the model for the admin UI
+   * @param authManager the auth manager to manage authentication
+   * @param transitionNotifier a function that will allow the controller to invoke a view transition
+   */
   public AdminController(
       AdminModel model, AuthManager authManager, ViewTransition transitionNotifier) {
     super(authManager, transitionNotifier);
     this.model = model;
   }
 
+  /** Open the user management UI. */
   public void manageUsersGUI() {
     Stage manageUsersStage = new Stage();
     ManageUsers manageUsersView = new ManageUsers();
@@ -25,6 +33,7 @@ public class AdminController extends Controller {
     manageUsersStage.show();
   }
 
+  /** Open the device management UI. */
   public void manageDevicesGUI() {
     Stage manageDevicesStage = new Stage();
     ManageDevices manageDevicesView = new ManageDevices();
@@ -32,6 +41,7 @@ public class AdminController extends Controller {
     manageDevicesStage.show();
   }
 
+  /** Return to the home UI. */
   public void homeGUI() {
     Token token = model.getToken();
 

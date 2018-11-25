@@ -57,20 +57,44 @@ public abstract class Client {
     return mediator.getUUIDOfType(type);
   }
 
+  /**
+   * Sends a message from the client to a device through the hub with data.
+   *
+   * @param command the command to send
+   * @param device the device to target
+   * @param data the data to send to the target device
+   */
   public final void sendMessageToDevice(Command command, UUID device, String data) {
     JSONMessaging message = new JSONMessaging(this, CommandsToMessages.get(command), device);
     message.addData(data);
     mediator.alert(message);
   }
 
+  /**
+   * Sends a message from the client to a device.
+   *
+   * @param command the command to send to the devices
+   * @param device the device to send the message to
+   */
   public final void sendMessageToDevice(Command command, UUID device) {
     mediator.alert(new JSONMessaging(this, CommandsToMessages.get(command), device));
   }
 
+  /**
+   * Sends a message from the client to a list of devices.
+   *
+   * @param command the command to send to the devices
+   * @param devices the devices to send the message to
+   */
   public final void sendMessageToDevices(Command command, List<UUID> devices) {
     mediator.alert(new JSONMessaging(this, CommandsToMessages.get(command), devices));
   }
 
+  /**
+   * Sends a message from the client to all devices.
+   *
+   * @param command the command to send to all devices
+   */
   public final void sendMessageToAllDevices(Command command) {
     mediator.alert(new JSONMessaging(this, CommandsToMessages.get(command)));
   }
