@@ -15,12 +15,12 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 
 public class OnOffToggle {
-  private HBox container;
-  private ToggleGroup group;
-  private ToggleButton on;
-  private ToggleButton off;
+  protected HBox container;
+  protected ToggleGroup group;
+  protected ToggleButton on;
+  protected ToggleButton off;
 
-  private boolean shouldBeOn = false;
+  protected boolean shouldBeOn = false;
 
   /** Default constructor for the on off toggle button. */
   public OnOffToggle() {
@@ -93,24 +93,11 @@ public class OnOffToggle {
    * @param model the thermostat's model
    * @param controller the thermostat's controller
    * @param index the index of the thermostat in the model to bind this on/off button to
-   * @param isTemperatureUnit true if this is the unit buttons, false if it's the condition buttons
    */
-  public OnOffToggle(
-      ThermostatModel model,
-      ThermostatController controller,
-      int index,
-      boolean isTemperatureUnit) {
-    if (isTemperatureUnit) {
-      createUnitButtons();
-    } else {
-      createButtons();
-    }
+  public OnOffToggle(ThermostatModel model, ThermostatController controller, int index) {
+    createButtons();
 
-    if (isTemperatureUnit) {
-      shouldBeOn = model.getThermostatIsCelsiusAt(index);
-    } else {
-      shouldBeOn = model.getThermostatConditionAt(index);
-    }
+    shouldBeOn = model.getThermostatConditionAt(index);
 
     // Fire the event of the selected button so it gets its color.
     if (shouldBeOn) {
@@ -121,23 +108,13 @@ public class OnOffToggle {
 
     // Only watch for the on button. Since it's a toggle group, this will trigger no matter which
     // button is clicked.
-    if (isTemperatureUnit) {
-      model
-          .thermostatIsCelsiusPropertyAt(index)
-          .addListener((obs, oldValue, newValue) -> updateIfNeeded(newValue, on));
+    model
+        .thermostatConditionPropertyAt(index)
+        .addListener((obs, oldValue, newValue) -> updateIfNeeded(newValue, on));
 
-      on.selectedProperty()
-          .addListener(
-              (obs, oldValue, newValue) -> controller.updateTemperatureUnit(index, newValue));
-    } else {
-      model
-          .thermostatConditionPropertyAt(index)
-          .addListener((obs, oldValue, newValue) -> updateIfNeeded(newValue, on));
-
-      on.selectedProperty()
-          .addListener(
-              (obs, oldValue, newValue) -> controller.updateThermostatConditionAt(index, newValue));
-    }
+    on.selectedProperty()
+        .addListener(
+            (obs, oldValue, newValue) -> controller.updateThermostatConditionAt(index, newValue));
   }
 
   /**
@@ -146,21 +123,11 @@ public class OnOffToggle {
    * @param model the camera's model
    * @param controller the camera's controller
    * @param index the index of the camera in the model to bind this on/off button to
-   * @param isCondition true if this is the record buttons, false if it's the condition button
    */
-  public OnOffToggle(
-      CameraModel model, CameraController controller, int index, boolean isCondition) {
-    if (!isCondition) {
-      createRecordButtons();
-    } else {
-      createButtons();
-    }
+  public OnOffToggle(CameraModel model, CameraController controller, int index) {
+    createButtons();
 
-    if (isCondition) {
-      shouldBeOn = model.getCameraIsRecordingAt(index);
-    } else {
-      shouldBeOn = model.getCameraConditionAt(index);
-    }
+    shouldBeOn = model.getCameraConditionAt(index);
 
     // Fire the event of the selected button so it gets its color.
     if (shouldBeOn) {
@@ -171,23 +138,13 @@ public class OnOffToggle {
 
     // Only watch for the on button. Since it's a toggle group, this will trigger no matter which
     // button is clicked.
-    if (!isCondition) {
-      model
-          .cameraIsRecordingPropertyAt(index)
-          .addListener((obs, oldValue, newValue) -> updateIfNeeded(newValue, on));
+    model
+        .cameraConditionPropertyAt(index)
+        .addListener((obs, oldValue, newValue) -> updateIfNeeded(newValue, on));
 
-      on.selectedProperty()
-          .addListener(
-              (obs, oldValue, newValue) -> controller.updateCameraRecordingAt(index, newValue));
-    } else {
-      model
-          .cameraConditionPropertyAt(index)
-          .addListener((obs, oldValue, newValue) -> updateIfNeeded(newValue, on));
-
-      on.selectedProperty()
-          .addListener(
-              (obs, oldValue, newValue) -> controller.updateCameraConditionAt(index, newValue));
-    }
+    on.selectedProperty()
+        .addListener(
+            (obs, oldValue, newValue) -> controller.updateCameraConditionAt(index, newValue));
   }
 
   /**
@@ -224,7 +181,7 @@ public class OnOffToggle {
    * @param value the value to try and set the button to
    * @param button the button to potentially set the value
    */
-  private void updateIfNeeded(Boolean value, ToggleButton button) {
+  protected void updateIfNeeded(Boolean value, ToggleButton button) {
     // maybe disarm, fire, arm
     if (button.isSelected() != value) {
       button.setSelected(value);
@@ -241,99 +198,6 @@ public class OnOffToggle {
     on.setToggleGroup(group);
 
     off = new ToggleButton("OFF");
-    off.setStyle("-fx-base: grey;");
-    off.setToggleGroup(group);
-
-    on.setOnAction(
-        new EventHandler<ActionEvent>() {
-          @Override
-          public void handle(ActionEvent e) {
-            if (shouldBeOn) {
-              on.setStyle("-fx-base: green;");
-              off.setStyle("-fx-base: grey;");
-            } else {
-              on.setStyle("-fx-base: grey;");
-              off.setStyle("-fx-base: red;");
-            }
-            shouldBeOn = !shouldBeOn;
-          }
-        });
-
-    off.setOnAction(
-        new EventHandler<ActionEvent>() {
-          @Override
-          public void handle(ActionEvent e) {
-            if (!shouldBeOn) {
-              on.setStyle("-fx-base: grey;");
-              off.setStyle("-fx-base: red;");
-            } else {
-              on.setStyle("-fx-base: green;");
-              off.setStyle("-fx-base: grey;");
-              on.setSelected(true);
-            }
-            shouldBeOn = !shouldBeOn;
-          }
-        });
-
-    container = new HBox(on, off);
-  }
-
-  /** Creates a Celsius/Fahrenheit toggle button group. */
-  private void createUnitButtons() {
-    group = new ToggleGroup();
-
-    off = new ToggleButton("Fahrenheit");
-    off.setStyle("-fx-base: grey;");
-    off.setToggleGroup(group);
-
-    on = new ToggleButton("Celsius");
-    on.setStyle("-fx-base: blue;");
-    on.setToggleGroup(group);
-
-    off.setOnAction(
-        new EventHandler<ActionEvent>() {
-          @Override
-          public void handle(ActionEvent e) {
-            if (!shouldBeOn) {
-              off.setStyle("-fx-base: blue;");
-              on.setStyle("-fx-base: grey;");
-            } else {
-              off.setStyle("-fx-base: grey;");
-              on.setStyle("-fx-base: blue;");
-              on.setSelected(true);
-            }
-            shouldBeOn = !shouldBeOn;
-          }
-        });
-
-    on.setOnAction(
-        new EventHandler<ActionEvent>() {
-          @Override
-          public void handle(ActionEvent e) {
-            if (shouldBeOn) {
-              off.setStyle("-fx-base: grey;");
-              on.setStyle("-fx-base: blue;");
-            } else {
-              off.setStyle("-fx-base: blue;");
-              on.setStyle("-fx-base: grey;");
-            }
-            shouldBeOn = !shouldBeOn;
-          }
-        });
-
-    container = new HBox(on, off);
-  }
-
-  /** Creates a record/stop toggle button group. */
-  private void createRecordButtons() {
-    group = new ToggleGroup();
-
-    // Lightbulb toggle.
-    on = new ToggleButton("Record");
-    on.setStyle("-fx-base: grey;");
-    on.setToggleGroup(group);
-
-    off = new ToggleButton("Stop");
     off.setStyle("-fx-base: grey;");
     off.setToggleGroup(group);
 

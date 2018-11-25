@@ -1,6 +1,7 @@
 package ca.uvic.seng330.assn3.devices.thermostat;
 
 import ca.uvic.seng330.assn3.OnOffToggle;
+import ca.uvic.seng330.assn3.TemperatureToggle;
 import ca.uvic.seng330.assn3.devices.Temperature.Unit;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ public class ThermostatView {
   private Text title;
   private Button homeButton;
   private List<Button> setTemperatureButtons;
-  private List<OnOffToggle> thermostatUnitSwitches;
+  private List<TemperatureToggle> thermostatUnitSwitches;
   private List<OnOffToggle> thermostatPowerSwitches;
   private List<TextField> temperatureFields;
   private List<Text> errorMsgs;
@@ -85,7 +86,7 @@ public class ThermostatView {
 
   /** Creates the controls within the view and hooks it up with the model. */
   private void createAndLayoutControls() {
-    thermostatUnitSwitches = new ArrayList<OnOffToggle>();
+    thermostatUnitSwitches = new ArrayList<TemperatureToggle>();
     thermostatPowerSwitches = new ArrayList<OnOffToggle>();
     setTemperatureButtons = new ArrayList<Button>();
     errorMsgs = new ArrayList<Text>();
@@ -98,7 +99,7 @@ public class ThermostatView {
 
     // This thousand line for loop really has to go if there's time.
     for (int i = 0; i < model.getThermostatCount(); i++) {
-      OnOffToggle toggle = new OnOffToggle(model, controller, i, true);
+      TemperatureToggle toggle = new TemperatureToggle(model, controller, i);
 
       thermostatUnitSwitches.add(toggle);
 
@@ -119,7 +120,7 @@ public class ThermostatView {
       errorMsgs.add(errorMsg);
       temperatureFields.add(temperatureField);
 
-      OnOffToggle powerToggle = new OnOffToggle(model, controller, i, false);
+      OnOffToggle powerToggle = new OnOffToggle(model, controller, i);
 
       thermostatPowerSwitches.add(toggle);
 

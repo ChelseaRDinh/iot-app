@@ -1,6 +1,7 @@
 package ca.uvic.seng330.assn3.devices.camera;
 
 import ca.uvic.seng330.assn3.OnOffToggle;
+import ca.uvic.seng330.assn3.RecordToggle;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.event.ActionEvent;
@@ -21,7 +22,7 @@ public class CameraView {
   private CameraController controller;
   private CameraModel model;
   private Text title;
-  private List<OnOffToggle> cameraRecordSwitches;
+  private List<RecordToggle> cameraRecordSwitches;
   private List<OnOffToggle> cameraSwitches;
   private List<Text> dataText;
   private Button homeButton;
@@ -74,7 +75,7 @@ public class CameraView {
 
   /** Creates the controls within the view and hooks it up with the model. */
   private void createAndLayoutControls() {
-    cameraRecordSwitches = new ArrayList<OnOffToggle>();
+    cameraRecordSwitches = new ArrayList<RecordToggle>();
     cameraSwitches = new ArrayList<OnOffToggle>();
     dataText = new ArrayList<Text>();
     title = new Text("Camera Settings");
@@ -82,11 +83,11 @@ public class CameraView {
     view.addRow(0, title);
 
     for (int i = 0; i < model.getCameraCount(); i++) {
-      OnOffToggle record = new OnOffToggle(model, controller, i, false);
+      RecordToggle record = new RecordToggle(model, controller, i);
 
       cameraRecordSwitches.add(record);
 
-      OnOffToggle power = new OnOffToggle(model, controller, i, true);
+      OnOffToggle power = new OnOffToggle(model, controller, i);
 
       cameraSwitches.add(power);
 
