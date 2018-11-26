@@ -15,7 +15,8 @@ import javafx.beans.property.SimpleStringProperty;
 import org.json.JSONObject;
 
 public class CameraModel extends Model {
-  // Must be final since modifying while threads are running could cause crashes/unexpected behavior.
+  // Must be final since modifying while threads are running could cause crashes/unexpected
+  // behavior.
   private final List<UUID> cameras;
   private final Map<UUID, SimpleBooleanProperty> cameraIsRecording;
   private final Map<UUID, SimpleBooleanProperty> cameraConditions;
@@ -46,9 +47,12 @@ public class CameraModel extends Model {
       cameraData.put(camera, new SimpleStringProperty());
 
       // Camera threads aren't created unless a camera is on.
-      cameraThreads.put(camera, null); 
-      // Create a data retriever to operate on the camera's string property with a delay of 1/30 seconds in milliseconds.
-      dataRetrievers.put(camera, new DataRetriever(token, h, camera, Command.CAMERA_GET_DATA, cameraData.get(camera), 33));
+      cameraThreads.put(camera, null);
+      // Create a data retriever to operate on the camera's string property with a delay of 1/30
+      // seconds in milliseconds.
+      dataRetrievers.put(
+          camera,
+          new DataRetriever(token, h, camera, Command.CAMERA_GET_DATA, cameraData.get(camera), 33));
 
       sendMessageToDevice(Command.CAMERA_IS_RECORDING, camera);
       sendMessageToDevice(Command.CAMERA_GET_CONDITION, camera);
@@ -189,6 +193,7 @@ public class CameraModel extends Model {
     if (cameraConditions.get(camera).get() != value) {
       if (value) {
         cameraThreads.replace(camera, new Thread(dataRetrievers.get(camera)));
+        cameraThreads.get(camera).start();
       }
 
       cameraConditions.get(camera).set(value);

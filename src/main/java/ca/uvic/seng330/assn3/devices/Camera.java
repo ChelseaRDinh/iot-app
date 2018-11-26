@@ -21,7 +21,31 @@ public final class Camera extends Device {
     isRecording = false;
     diskPercentageUsed = 0;
 
-    dataStream = new DataStream(11);
+    // Set the data stream to generate data at 1/30 seconds in milliseconds.
+    // This mimics actual camera hardware generating a frame at 30 FPS.
+    dataStream = new DataStream(33);
+
+    cameraThread = null;
+    if (isOn) {
+      cameraThread = new Thread(dataStream);
+      cameraThread.start();
+    }
+  }
+
+  /**
+   * Constructor for camera that generates data at a specific rate.
+   *
+   * @param h the hub that owns the device
+   * @param delay the delay in milliseconds between generating a frame of data.
+   */
+  public Camera(Hub h, int delay) {
+    super(h);
+
+    isOn = false;
+    isRecording = false;
+    diskPercentageUsed = 0;
+
+    dataStream = new DataStream(delay);
 
     cameraThread = null;
     if (isOn) {
@@ -65,6 +89,7 @@ public final class Camera extends Device {
     return isOn;
   }
 
+  /** Toggles the camera on and off, and starts and stops the camera hardware thread. */
   public void toggle() {
     isOn = !isOn;
 
