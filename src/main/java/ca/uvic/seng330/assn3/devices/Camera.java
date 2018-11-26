@@ -6,6 +6,8 @@ public final class Camera extends Device {
   private boolean isOn;
   private boolean isRecording;
   private int diskPercentageUsed;
+  private Thread cameraThread;
+  private DataStream dataStream;
 
   /**
    * Constructor for camera that takes a hub.
@@ -18,10 +20,18 @@ public final class Camera extends Device {
     isOn = false;
     isRecording = false;
     diskPercentageUsed = 0;
+
+    dataStream = new DataStream(11);
+
+    cameraThread = null;
+    if (isOn) {
+      cameraThread = new Thread(dataStream);
+      cameraThread.start();
+    }
   }
 
   /**
-   * Make the camera start recording.
+   * Make the camera start recording. Doesn't actually save the data due to time constraints.
    *
    * @throws ca.uvic.seng330.assn3.devices.CameraFullException when the diskSize reaches 100, it's
    *     actually disk percentage used
@@ -57,6 +67,14 @@ public final class Camera extends Device {
 
   public void toggle() {
     isOn = !isOn;
+
+    // If the camera is toggled on, start generating data, otherwise stop.
+    if (isOn) {
+      cameraThread = new Thread(dataStream);
+    } else {
+      cameraThread.interrupt();
+      cameraThread = null;
+    }
   }
 
   /**
@@ -102,6 +120,10 @@ public final class Camera extends Device {
           jsonMessage.getString("node_id"), "getCondition", new Boolean(getCondition()).toString());
     } else if (message.equals("toggle")) {
       toggle();
+    } else if (message.equals("getData")) {
+      if (cameraThread != null && isOn) {
+        alertHub(jsonMessage.getString("node_id"), "getData", dataStream.readNext());
+      }
     }
   }
 }

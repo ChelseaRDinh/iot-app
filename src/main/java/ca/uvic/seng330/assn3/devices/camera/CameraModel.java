@@ -130,6 +130,7 @@ public class CameraModel extends Model {
     if (getCameraConditionAt(index) != value) {
       if (value) {
         cameraThreads.replace(camera, new Thread(dataRetrievers.get(camera)));
+        cameraThreads.get(camera).start();
       }
 
       cameraConditions.get(camera).set(value);
