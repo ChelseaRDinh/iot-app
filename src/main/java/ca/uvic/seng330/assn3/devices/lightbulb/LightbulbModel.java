@@ -77,7 +77,10 @@ public class LightbulbModel extends Model {
 
     // Try to find a match from the commands that this model handles.
     String match = "";
-    String[] commandsToCheck = {CommandsToMessages.get(Command.LIGHTBULB_GET_CONDITION)};
+    String[] commandsToCheck = {
+      CommandsToMessages.get(Command.LIGHTBULB_GET_CONDITION),
+      CommandsToMessages.get(Command.LIGHTBULB_CONDITION_CHANGED)
+    };
 
     for (String check : commandsToCheck) {
       if (!message.equals(check)) {
@@ -99,6 +102,9 @@ public class LightbulbModel extends Model {
       }
 
       lightbulbConditions.get(sender).set(bulbCondition);
+    } else if (match.equals(CommandsToMessages.get(Command.LIGHTBULB_CONDITION_CHANGED))) {
+      sendMessageToDevice(
+          Command.LIGHTBULB_GET_CONDITION, UUID.fromString(jsonMessage.getString("node_id")));
     }
   }
 }

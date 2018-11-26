@@ -68,6 +68,20 @@ public final class Camera extends Device {
     return diskPercentageUsed;
   }
 
+  /** This function gets called when an object is seen in front of the camera. */
+  public void seeObjectInFront() {
+    if (isOn) {
+      alertHub("objectInFront");
+    }
+  }
+
+  /** This function gets called when nothing is seen in front of the camera. */
+  public void seeNothingInFront() {
+    if (isOn) {
+      alertHub("nothingInFront");
+    }
+  }
+
   /**
    * Notify the camera of some message sent to it.
    *

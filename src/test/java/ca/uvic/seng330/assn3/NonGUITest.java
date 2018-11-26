@@ -14,9 +14,17 @@ import ca.uvic.seng330.assn3.devices.Thermostat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import org.json.JSONObject;
 import org.junit.Test;
 
-public class NonGUITest {
+// Tests covered: 3
+public class NonGUITest extends Client {
+  boolean gotNotified = false;
+
+  public NonGUITest() {
+    super(null);
+  }
+
   @Test
   public void applicationExists() {
     IOTApplication app = new IOTApplication();
@@ -235,6 +243,81 @@ public class NonGUITest {
       assertEquals(auth.isAdminToken(token), false);
     } catch (Exception e) {
       assertEquals(false, true);
+    }
+  }
+
+  /**
+   * GIVEN the Camera is functional WHEN the camera detects an object in front of it THEN my camera
+   * notifies Hub about the activity.
+   * 
+   * GIVEN a functional light bulb WHEN there is no one in the room
+   * (Camera notifies hub) THEN it should turn off and should notify Hub about the activity.
+   * 
+   * GIVEN a non-functional light bulb WHEN someone enters the room (Camera notifies hub) THEN it should
+   * turn on and should notify Hub about the activity.
+   */
+  @Test
+  public void testCameraNotify() {
+    Hub h = new Hub();
+    Camera c = new Camera(h);
+    Lightbulb b = new Lightbulb(h);
+
+    try {
+      h.register(c);
+      h.register(b);
+      h.register(this);
+    } catch (Exception e) {
+      assertEquals(false, true);
+    }
+
+    // given: a non-functional lightbulb
+    if (b.getCondition()) {
+      b.toggle();
+    }
+
+    // given: the camera is on and detects an object in front
+    if (!c.getCondition()) {
+      c.toggle();
+    }
+    c.seeObjectInFront();
+
+    // then: the lightbulb in the room should turn on
+    // Implies that the camera notified the hub in order to pass the messages.
+    // Got notified implies that the hub was notified by the lightbulb of the activity, as the
+    // lightbulb sends a message to the clients.
+    assertEquals(b.getCondition(), true);
+    assertEquals(gotNotified, true);
+
+    gotNotified = false;
+
+    // given: the camera is on and detects nothing in front
+    c.seeNothingInFront();
+
+    // then: the lightbulb in the room should turn off
+    // Implies that the camera notified the hub in order to pass the messages.
+    // Got notified implies that the hub was notified by the lightbulb of the activity, as the
+    // lightbulb sends a message to the clients.
+    assertEquals(b.getCondition(), false);
+    assertEquals(gotNotified, true);
+
+    // Check that nothing happens when the camera is off.
+    c.toggle();
+    c.seeObjectInFront();
+    assertEquals(b.getCondition(), false);
+
+    // Set the lightbulb to on now for the next test.
+    b.toggle();
+
+    // Check that nothing happens again when the camera is off.
+    c.seeNothingInFront();
+    assertEquals(b.getCondition(), true);
+  }
+
+  public void notify(JSONObject jsonMessage) {
+    String message = jsonMessage.getString("payload");
+
+    if (message.equals(CommandsToMessages.get(Command.LIGHTBULB_CONDITION_CHANGED))) {
+      gotNotified = true;
     }
   }
 }

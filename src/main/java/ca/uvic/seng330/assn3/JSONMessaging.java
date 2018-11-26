@@ -104,6 +104,15 @@ public final class JSONMessaging {
   }
 
   /**
+   * Gets the message that is to be sent.
+   *
+   * @return the message to be sent as a string
+   */
+  public String getMessage() {
+    return message;
+  }
+
+  /**
    * Invokes this JSONMessaging object and creates a JSONObject representing it.
    *
    * @return the JSONObject representing this message

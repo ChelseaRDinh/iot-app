@@ -53,6 +53,12 @@ public final class Lightbulb extends Device {
     } else if (message.equals("getCondition")) {
       alertHub(
           jsonMessage.getString("node_id"), "getCondition", new Boolean(getCondition()).toString());
+    } else if (message.equals("turnOn")) {
+      isOn = true;
+      alertHub("conditionChangedFromCamera");
+    } else if (message.equals("turnOff")) {
+      isOn = false;
+      alertHub("conditionChangedFromCamera");
     }
   }
 }

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -67,6 +68,12 @@ public final class Hub extends Mediator {
   @Override
   public void alert(JSONMessaging message) {
     List<UUID> targets = message.getTargets();
+
+    if (message.getMessage().equals("objectInFront")
+        || message.getMessage().equals("nothingInFront")) {
+      processMessage(message.invoke());
+      return;
+    }
 
     // If there was no target, forward message to every object.
     if (targets.size() == 0) {
@@ -236,6 +243,53 @@ public final class Hub extends Mediator {
    */
   public HashMap<UUID, Device> getDevices() {
     return new HashMap<UUID, Device>(devices);
+  }
+
+  /**
+   * Process a given message to the hub. For example, the camera notifies the hub of an object being
+   * in front or not. Each camera is linked to a lightbulb at the same index, if there is one.
+   *
+   * @param jsonMessage the message sent to the hub
+   */
+  private void processMessage(JSONObject jsonMessage) {
+    String message = jsonMessage.getString("payload");
+    UUID sender = UUID.fromString(jsonMessage.getString("node_id"));
+
+    if (message.equals("objectInFront")) {
+      int index = getIndexOfSenderCamera(sender);
+      List<UUID> lightbulbs = getUUIDOfType(Lightbulb.class.getName());
+
+      if (index == -1 || index > lightbulbs.size()) {
+        return;
+      }
+
+      JSONMessaging on = new JSONMessaging(devices.get(sender), "turnOn");
+      devices.get(lightbulbs.get(index)).notify(on.invoke());
+    } else if (message.equals("nothingInFront")) {
+      int index = getIndexOfSenderCamera(sender);
+      List<UUID> lightbulbs = getUUIDOfType(Lightbulb.class.getName());
+
+      if (index == -1 || index > lightbulbs.size()) {
+        return;
+      }
+
+      JSONMessaging on = new JSONMessaging(devices.get(sender), "turnOff");
+      devices.get(lightbulbs.get(index)).notify(on.invoke());
+    }
+  }
+
+  private int getIndexOfSenderCamera(UUID sender) {
+    List<UUID> cameras = getUUIDOfType(Camera.class.getName());
+
+    int index = 0;
+    for (UUID camera : cameras) {
+      if (sender.equals(camera)) {
+        return index;
+      }
+      ++index;
+    }
+
+    return -1;
   }
 
   /**

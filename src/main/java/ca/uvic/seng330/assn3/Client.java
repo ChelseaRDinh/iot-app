@@ -15,6 +15,7 @@ public abstract class Client {
     Map<Command, String> commandMap = new HashMap<Command, String>();
     commandMap.put(Command.LIGHTBULB_GET_CONDITION, "getCondition");
     commandMap.put(Command.LIGHTBULB_TOGGLE, "toggle");
+    commandMap.put(Command.LIGHTBULB_CONDITION_CHANGED, "conditionChangedFromCamera");
     commandMap.put(Command.THERMOSTAT_GET_CONDITION, "getCondition");
     commandMap.put(Command.THERMOSTAT_TOGGLE, "toggle");
     commandMap.put(Command.THERMOSTAT_SET_TEMP, "setTemp");
