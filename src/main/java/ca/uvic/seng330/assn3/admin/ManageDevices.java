@@ -98,20 +98,16 @@ public class ManageDevices {
 	// add columns to table for device DB
 	deviceType = new TableColumn("Device");
     deviceType.setMinWidth(100);
-	deviceType.setCellValueFactory(new PropertyValueFactory<DeviceItem, String>("deviceType"));
+	deviceType.setCellValueFactory(new PropertyValueFactory<DeviceItem,String>("Type"));
 	deviceUUID = new TableColumn("UUID");
     deviceUUID.setMinWidth(100);
-	deviceUUID.setCellValueFactory(new PropertyValueFactory<DeviceItem, String>("deviceUUID"));
-	deviceOwner = new TableColumn("Owner");	
+	deviceUUID.setCellValueFactory(new PropertyValueFactory<DeviceItem,String>("UUID"));
+	deviceOwner = new TableColumn("Owner");
     deviceOwner.setMinWidth(100);
-    deviceOwner.setCellValueFactory(new PropertyValueFactory<DeviceItem, String>("deviceOwner"));
+    deviceOwner.setCellValueFactory(new PropertyValueFactory<DeviceItem,String>("Owner"));
 
-	//Test adding a device to interface of DB. Not currently working.
-	DeviceItem testItem = new DeviceItem("Test", "Test", "Test");
-	deviceData.add(testItem);
-	deviceTable.setItems(deviceData);
-	
 	deviceTable.getColumns().addAll(deviceType, deviceUUID, deviceOwner);
+	deviceTable.setItems(deviceData);
 
     addDevice = new Button("Add Device");
     removeDevice = new Button("Remove Device");
@@ -148,7 +144,7 @@ public class ManageDevices {
           @Override
           public void handle(ActionEvent e) {
 			  if(deviceTypeBox.getValue().toString() == "Camera") {
-				deviceData.add(new DeviceItem("Camera","1234","cdinh"));
+				deviceData.add(new DeviceItem("Camera","1234",eviceOwnerField.getText()));
 				Camera c = new Camera(adminHub);
 				try {
 					adminHub.register(c);
@@ -156,6 +152,7 @@ public class ManageDevices {
 					//do nothing
 				}
 			  } else if(deviceTypeBox.getValue().toString() == "Lightbulb") {
+				deviceData.add(new DeviceItem("Lightbulb","5678",eviceOwnerField.getText()));
 				Lightbulb l = new Lightbulb(adminHub);
 				try {
 					adminHub.register(l);
@@ -163,6 +160,7 @@ public class ManageDevices {
 					//do nothing
 				}
 			  } else if(deviceTypeBox.getValue().toString() == "SmartPlug") {
+				deviceData.add(new DeviceItem("Smartplug","9101112",eviceOwnerField.getText()));
 				SmartPlug s = new SmartPlug(adminHub);
 				try {
 					adminHub.register(s);
@@ -170,6 +168,7 @@ public class ManageDevices {
 					//do nothing
 				}
 			  } else if(deviceTypeBox.getValue().toString() == "Thermostat") {
+				  deviceData.add(new DeviceItem("Thermostat","13141516", deviceOwnerField.getText()));
 				  Thermostat t = new Thermostat(adminHub);
 				  try {
 					  adminHub.register(t);

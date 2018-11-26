@@ -19,7 +19,7 @@ public class DeviceItem {
     this.deviceUUID = new SimpleStringProperty(deviceUUID);
     this.deviceOwner = new SimpleStringProperty(deviceOwner);
   }
-
+  
   /**
    *
    * @return the type of the device.
