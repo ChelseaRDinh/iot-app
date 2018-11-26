@@ -11,6 +11,7 @@ import ca.uvic.seng330.assn3.devices.Device;
 import ca.uvic.seng330.assn3.devices.HubRegistrationException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.ComboBox;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
@@ -26,12 +27,14 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.control.Label;
 
 public class ManageDevices {
   private GridPane view;
   private Text title;
   private TableView deviceTable;
   private ObservableList<Device> deviceData;
+  private ObservableList<String> deviceTypeOptions;
   private TableColumn userName;
   private TableColumn device;
   private Button addDevice;
@@ -79,7 +82,7 @@ public class ManageDevices {
 
   private void createAndLayoutControls() {
     title = new Text("Registered Devices:");
-    title.setFont(new Font(20));
+	title.setFont(new Font(20));
 
     deviceTable = new TableView();
     // be able to edit device info in table.
@@ -111,7 +114,13 @@ public class ManageDevices {
     view.addRow(0, title);
     view.addRow(1, deviceTable);
     view.add(addDevice, 1, 2);
-    view.add(removeDevice, 2, 2);
+	view.add(removeDevice, 2, 2);
+	
+	/*Device types for drop-down menu
+	* That appears after the button 'Add Device' is selected.
+	*/
+	deviceTypeOptions = FXCollections.observableArrayList("Camera","Lightbulb","SmartPlug","Thermostat");
+	ComboBox deviceTypeBox = new ComboBox(deviceTypeOptions);
 
     //When the add user button is selected
     //Show fields to add device information
@@ -119,9 +128,9 @@ public class ManageDevices {
         new EventHandler<ActionEvent>() {
           @Override
           public void handle(ActionEvent e) {
-            view.add(deviceNameField, 2,3);
-            view.add(deviceTypeField, 2,4);
-            view.add(deviceOwnerField, 2,5);
+            //view.add(deviceNameField, 2,3);
+			view.add(deviceTypeBox, 2, 4);
+            view.add(deviceOwnerField, 2, 5);
             view.add(confirmButton, 2, 6);
           }
 		});
@@ -130,14 +139,39 @@ public class ManageDevices {
         new EventHandler<ActionEvent>() {
           @Override
           public void handle(ActionEvent e) {
-			//deviceNameField.getText();
-			//deviceTypeField.getText();
-			//deviceOwnerField.getText();
-			//Test adding camera to adminhub
-			Camera cameraDevice = new Camera(adminHub);
-			try {
-				adminHub.register(cameraDevice);
-			  } catch (HubRegistrationException h) {
+			  if(deviceTypeBox.getValue().toString() == "Camera") {
+				Camera c = new Camera(adminHub);
+				try {
+					adminHub.register(c);
+				} catch (HubRegistrationException h) {
+					//do nothing
+				}
+			  } else if(deviceTypeBox.getValue().toString() == "Lightbulb") {
+				Lightbulb l = new Lightbulb(adminHub);
+				try {
+					adminHub.register(l);
+				} catch (HubRegistrationException h) {
+					//do nothing
+				}
+			  } else if(deviceTypeBox.getValue().toString() == "SmartPlug") {
+				SmartPlug s = new SmartPlug(adminHub);
+				try {
+					adminHub.register(s);
+				} catch (HubRegistrationException h) {
+					//do nothing
+				}
+			  } else if(deviceTypeBox.getValue().toString() == "Thermostat") {
+				  Thermostat t = new Thermostat(adminHub);
+				  try {
+					  adminHub.register(t);
+				  } catch (HubRegistrationException h) {
+					  /*
+					  * Add error msg here that the device cannot be added to the DB,
+					  * Because no device type was specified.
+					  */
+				  }
+			  } else {
+				  //Do nothing, because no device type was selected.
 			  }
           }
 		});
