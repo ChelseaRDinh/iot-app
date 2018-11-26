@@ -144,7 +144,7 @@ public class ManageDevices {
           @Override
           public void handle(ActionEvent e) {
 			  if(deviceTypeBox.getValue().toString() == "Camera") {
-				deviceData.add(new DeviceItem("Camera","1234",eviceOwnerField.getText()));
+				deviceData.add(new DeviceItem("Camera","1234",deviceOwnerField.getText()));
 				Camera c = new Camera(adminHub);
 				try {
 					adminHub.register(c);
@@ -152,7 +152,7 @@ public class ManageDevices {
 					//do nothing
 				}
 			  } else if(deviceTypeBox.getValue().toString() == "Lightbulb") {
-				deviceData.add(new DeviceItem("Lightbulb","5678",eviceOwnerField.getText()));
+				deviceData.add(new DeviceItem("Lightbulb","5678",deviceOwnerField.getText()));
 				Lightbulb l = new Lightbulb(adminHub);
 				try {
 					adminHub.register(l);
@@ -160,7 +160,7 @@ public class ManageDevices {
 					//do nothing
 				}
 			  } else if(deviceTypeBox.getValue().toString() == "SmartPlug") {
-				deviceData.add(new DeviceItem("Smartplug","9101112",eviceOwnerField.getText()));
+				deviceData.add(new DeviceItem("Smartplug","9101112",deviceOwnerField.getText()));
 				SmartPlug s = new SmartPlug(adminHub);
 				try {
 					adminHub.register(s);
