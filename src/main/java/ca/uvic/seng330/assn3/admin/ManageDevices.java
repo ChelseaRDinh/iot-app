@@ -32,9 +32,13 @@ public class ManageDevices {
   private TextField deviceNameField;
   private TextField deviceTypeField;
   private TextField deviceOwnerField;
+  private AdminController controller;
+  private AdminModel model;
 
   /** Default constructor for the Manage Devices view. */
-  public ManageDevices() {
+  public ManageDevices(AdminController controller, AdminModel model) {
+	  this.controller = controller;
+	  this.model = model;
     createAndConfigurePane();
     createAndLayoutControls();
     updateControllerFromListeners();
@@ -112,9 +116,12 @@ public class ManageDevices {
         new EventHandler<ActionEvent>() {
           @Override
           public void handle(ActionEvent e) {
+			deviceNameField.getText();
+			deviceTypeField.getText();
+			deviceOwnerField.getText();
+			//deviceData.add(Device device) <-- figure out how to do this during device registration
           }
-        });
-    
+		});
   }
 
   private void updateControllerFromListeners() {}
