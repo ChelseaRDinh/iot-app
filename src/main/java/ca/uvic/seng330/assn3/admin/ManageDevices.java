@@ -1,5 +1,7 @@
 package ca.uvic.seng330.assn3.admin;
 
+import ca.uvic.seng330.assn3.DeviceItem;
+import ca.uvic.seng330.assn3.AuthManager;
 import ca.uvic.seng330.assn3.Token;
 import ca.uvic.seng330.assn3.devices.MasterHub;
 import ca.uvic.seng330.assn3.devices.Hub;
@@ -9,6 +11,7 @@ import ca.uvic.seng330.assn3.devices.SmartPlug;
 import ca.uvic.seng330.assn3.devices.Thermostat;
 import ca.uvic.seng330.assn3.devices.Device;
 import ca.uvic.seng330.assn3.devices.HubRegistrationException;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
@@ -32,11 +35,12 @@ import javafx.scene.control.Label;
 public class ManageDevices {
   private GridPane view;
   private Text title;
-  private TableView deviceTable;
-  private ObservableList<Device> deviceData;
+  private TableView<DeviceItem> deviceTable;
+  private ObservableList<DeviceItem> deviceData;
   private ObservableList<String> deviceTypeOptions;
-  private TableColumn userName;
-  private TableColumn device;
+  private TableColumn deviceOwner;
+  private TableColumn deviceType;
+  private TableColumn deviceUUID;
   private Button addDevice;
   private Button removeDevice;
   private Button confirmButton;
@@ -56,6 +60,7 @@ public class ManageDevices {
 	  h = model.getMasterHub();
 	  token = model.getUserToken();
 	  adminHub = h.getHubForUser(token);
+	  
     createAndConfigurePane();
     createAndLayoutControls();
     updateControllerFromListeners();
@@ -84,29 +89,33 @@ public class ManageDevices {
     title = new Text("Registered Devices:");
 	title.setFont(new Font(20));
 
-    deviceTable = new TableView();
+    deviceTable = new TableView<DeviceItem>();
     // be able to edit device info in table.
-    deviceTable.setEditable(true);
+	deviceTable.setEditable(true);
+	//Create observable list of devices
+	deviceData = FXCollections.observableArrayList();
 
-    // add columns to table for device DB
-    userName = new TableColumn("Username");
-    device = new TableColumn("Device");
+	// add columns to table for device DB
+	deviceType = new TableColumn("Device");
+    deviceType.setMinWidth(100);
+	deviceType.setCellValueFactory(new PropertyValueFactory<DeviceItem, String>("deviceType"));
+	deviceUUID = new TableColumn("UUID");
+    deviceUUID.setMinWidth(100);
+	deviceUUID.setCellValueFactory(new PropertyValueFactory<DeviceItem, String>("deviceUUID"));
+	deviceOwner = new TableColumn("Owner");	
+    deviceOwner.setMinWidth(100);
+    deviceOwner.setCellValueFactory(new PropertyValueFactory<DeviceItem, String>("deviceOwner"));
 
-    deviceTable.getColumns().addAll(userName, device);
-    deviceTable.setItems(deviceData);
+	//Test adding a device to interface of DB. Not currently working.
+	DeviceItem testItem = new DeviceItem("Test", "Test", "Test");
+	deviceData.add(testItem);
+	deviceTable.setItems(deviceData);
+	
+	deviceTable.getColumns().addAll(deviceType, deviceUUID, deviceOwner);
 
     addDevice = new Button("Add Device");
     removeDevice = new Button("Remove Device");
     confirmButton = new Button("Confirm");
-
-    /** Text fields for adding a user. */
-    deviceNameField = new TextField();
-    deviceNameField.setPromptText("Device Name");
-
-    //Change this to drop-down menu? Makes more sense.
-    //Then the user has a choice of what devices they are allowed to register
-    deviceTypeField = new TextField();
-    deviceTypeField.setPromptText("Device Type");
 
     deviceOwnerField = new TextField();
     deviceOwnerField.setPromptText("Device Owner Username");
@@ -128,18 +137,18 @@ public class ManageDevices {
         new EventHandler<ActionEvent>() {
           @Override
           public void handle(ActionEvent e) {
-            //view.add(deviceNameField, 2,3);
 			view.add(deviceTypeBox, 2, 4);
             view.add(deviceOwnerField, 2, 5);
             view.add(confirmButton, 2, 6);
           }
 		});
-      
-      confirmButton.setOnAction(
+	  
+	  confirmButton.setOnAction(
         new EventHandler<ActionEvent>() {
           @Override
           public void handle(ActionEvent e) {
 			  if(deviceTypeBox.getValue().toString() == "Camera") {
+				deviceData.add(new DeviceItem("Camera","1234","cdinh"));
 				Camera c = new Camera(adminHub);
 				try {
 					adminHub.register(c);
@@ -165,13 +174,12 @@ public class ManageDevices {
 				  try {
 					  adminHub.register(t);
 				  } catch (HubRegistrationException h) {
-					  /*
-					  * Add error msg here that the device cannot be added to the DB,
-					  * Because no device type was specified.
-					  */
 				  }
 			  } else {
-				  //Do nothing, because no device type was selected.
+				   /*
+					* Add error msg here that the device cannot be added to the DB,
+					* Because no device type was specified.
+					*/
 			  }
           }
 		});

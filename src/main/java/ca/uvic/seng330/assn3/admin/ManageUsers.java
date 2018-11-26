@@ -85,8 +85,6 @@ public class ManageUsers {
     userRole = new TableColumn("Role");
     userRole.setMinWidth(100);
     userRole.setCellValueFactory(new PropertyValueFactory<User, String>("role"));
-    // figure out if a list needs to go in for this.
-    // userDevices = new TableColumn("Devices");
 
     // test adding users
     User adminUser = new User("admin", "John", "Smith", "Admin");

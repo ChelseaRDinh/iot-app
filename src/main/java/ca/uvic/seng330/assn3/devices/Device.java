@@ -43,6 +43,10 @@ public abstract class Device implements IOTDevice {
     status = Status.OFF;
   }
 
+  public Hub getHub() {
+	  return hub;
+  }
+
   /**
    * This function alerts the hub with a message from the device. It protects the hub from the
    * device implementations.
