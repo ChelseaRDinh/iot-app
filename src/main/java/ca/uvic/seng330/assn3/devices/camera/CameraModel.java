@@ -142,6 +142,16 @@ public class CameraModel extends Model {
     }
   }
 
+  /**
+   * Gets the property of if the camera is recording at a given index in the model.
+   *
+   * @param index the index of the camera in the model
+   * @return the property of if the camera is recording
+   */
+  public final SimpleStringProperty cameraDataPropertyAt(int index) {
+    return cameraData.get(cameras.get(index));
+  }
+
   @Override
   public void notify(JSONObject jsonMessage) {
     String message = jsonMessage.getString("payload");

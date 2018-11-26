@@ -129,5 +129,21 @@ public class CameraView {
     model
         .cameraConditionPropertyAt(i)
         .addListener((obs, oldValue, newValue) -> setIndexDisabled(i, !newValue));
+
+    model
+        .cameraDataPropertyAt(i)
+        .addListener((obs, oldValue, newValue) -> updateIfNeeded(newValue, dataText.get(i)));
+  }
+
+  /**
+   * Checks if an update is needed for a given text field based on the value given.
+   *
+   * @param value the new value to set if the value isn't already set to this
+   * @param field the field to check against and potentially set
+   */
+  private void updateIfNeeded(String value, Text field) {
+    if (!field.getText().equals(value)) {
+      field.setText(value);
+    }
   }
 }

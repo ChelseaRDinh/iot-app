@@ -96,6 +96,7 @@ public final class Camera extends Device {
     // If the camera is toggled on, start generating data, otherwise stop.
     if (isOn) {
       cameraThread = new Thread(dataStream);
+      cameraThread.start();
     } else {
       cameraThread.interrupt();
       cameraThread = null;
