@@ -4,18 +4,24 @@ import ca.uvic.seng330.assn3.Command;
 import ca.uvic.seng330.assn3.Model;
 import ca.uvic.seng330.assn3.Token;
 import ca.uvic.seng330.assn3.devices.Camera;
+import ca.uvic.seng330.assn3.devices.DataRetriever;
 import ca.uvic.seng330.assn3.devices.MasterHub;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
 import org.json.JSONObject;
 
 public class CameraModel extends Model {
-  private List<UUID> cameras;
-  private Map<UUID, SimpleBooleanProperty> cameraIsRecording;
-  private Map<UUID, SimpleBooleanProperty> cameraConditions;
+  // Must be final since modifying while threads are running could cause crashes/unexpected behavior.
+  private final List<UUID> cameras;
+  private final Map<UUID, SimpleBooleanProperty> cameraIsRecording;
+  private final Map<UUID, SimpleBooleanProperty> cameraConditions;
+  private final Map<UUID, SimpleStringProperty> cameraData;
+  private final Map<UUID, Thread> cameraThreads;
+  private final Map<UUID, DataRetriever> dataRetrievers;
 
   /**
    * Constructor for the model for the Camera management UI.
@@ -28,12 +34,22 @@ public class CameraModel extends Model {
 
     cameraIsRecording = new HashMap<UUID, SimpleBooleanProperty>();
     cameraConditions = new HashMap<UUID, SimpleBooleanProperty>();
+    cameraData = new HashMap<UUID, SimpleStringProperty>();
+    cameraThreads = new HashMap<UUID, Thread>();
+    dataRetrievers = new HashMap<UUID, DataRetriever>();
 
     cameras = getUUIDOfType(Camera.class.getName());
 
     for (UUID camera : cameras) {
       cameraIsRecording.put(camera, new SimpleBooleanProperty());
       cameraConditions.put(camera, new SimpleBooleanProperty());
+      cameraData.put(camera, new SimpleStringProperty());
+
+      // Camera threads aren't created unless a camera is on.
+      cameraThreads.put(camera, null); 
+      // Create a data retriever to operate on the camera's string property with a delay of 1/30 seconds in milliseconds.
+      dataRetrievers.put(camera, new DataRetriever(token, h, camera, Command.CAMERA_GET_DATA, cameraData.get(camera), 33));
+
       sendMessageToDevice(Command.CAMERA_IS_RECORDING, camera);
       sendMessageToDevice(Command.CAMERA_GET_CONDITION, camera);
     }
@@ -109,9 +125,15 @@ public class CameraModel extends Model {
    * @param value the condition to set the camera to
    */
   public void setCameraConditionAt(int index, Boolean value) {
+    UUID camera = cameras.get(index);
+
     if (getCameraConditionAt(index) != value) {
-      cameraConditions.get(cameras.get(index)).set(value);
-      sendMessageToDevice(Command.CAMERA_TOGGLE, cameras.get(index));
+      if (value) {
+        cameraThreads.replace(camera, new Thread(dataRetrievers.get(camera)));
+      }
+
+      cameraConditions.get(camera).set(value);
+      sendMessageToDevice(Command.CAMERA_TOGGLE, camera);
     }
   }
 
@@ -158,7 +180,17 @@ public class CameraModel extends Model {
         return;
       }
 
-      cameraConditions.get(sender).set(condition);
+      setCameraCondition(sender, condition);
+    }
+  }
+
+  private void setCameraCondition(UUID camera, Boolean value) {
+    if (cameraConditions.get(camera).get() != value) {
+      if (value) {
+        cameraThreads.replace(camera, new Thread(dataRetrievers.get(camera)));
+      }
+
+      cameraConditions.get(camera).set(value);
     }
   }
 }

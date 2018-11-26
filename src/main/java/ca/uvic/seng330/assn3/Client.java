@@ -28,6 +28,7 @@ public abstract class Client {
     commandMap.put(Command.CAMERA_IS_RECORDING, "isRecording");
     commandMap.put(Command.CAMERA_RECORD, "record");
     commandMap.put(Command.CAMERA_STOP_RECORD, "stopRecording");
+    commandMap.put(Command.CAMERA_GET_DATA, "getData");
 
     // Make sure all Command are in the map.
     assert commandMap.size() == Command.values().length;
