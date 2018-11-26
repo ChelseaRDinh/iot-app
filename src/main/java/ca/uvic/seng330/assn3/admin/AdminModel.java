@@ -18,6 +18,10 @@ public class AdminModel extends Model {
 		return h;
 	}
 
+	public Token getUserToken() {
+		return token;
+	}
+
 	@Override
 	public void notify(JSONObject message) {}
 }

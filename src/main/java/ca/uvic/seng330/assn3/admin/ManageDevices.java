@@ -1,6 +1,14 @@
 package ca.uvic.seng330.assn3.admin;
 
+import ca.uvic.seng330.assn3.Token;
+import ca.uvic.seng330.assn3.devices.MasterHub;
+import ca.uvic.seng330.assn3.devices.Hub;
+import ca.uvic.seng330.assn3.devices.Camera;
+import ca.uvic.seng330.assn3.devices.Lightbulb;
+import ca.uvic.seng330.assn3.devices.SmartPlug;
+import ca.uvic.seng330.assn3.devices.Thermostat;
 import ca.uvic.seng330.assn3.devices.Device;
+import ca.uvic.seng330.assn3.devices.HubRegistrationException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -34,11 +42,17 @@ public class ManageDevices {
   private TextField deviceOwnerField;
   private AdminController controller;
   private AdminModel model;
+  private MasterHub h;
+  private Token token;
+  private Hub adminHub;
 
   /** Default constructor for the Manage Devices view. */
   public ManageDevices(AdminController controller, AdminModel model) {
 	  this.controller = controller;
 	  this.model = model;
+	  h = model.getMasterHub();
+	  token = model.getUserToken();
+	  adminHub = h.getHubForUser(token);
     createAndConfigurePane();
     createAndLayoutControls();
     updateControllerFromListeners();
@@ -116,10 +130,15 @@ public class ManageDevices {
         new EventHandler<ActionEvent>() {
           @Override
           public void handle(ActionEvent e) {
-			deviceNameField.getText();
-			deviceTypeField.getText();
-			deviceOwnerField.getText();
-			//deviceData.add(Device device) <-- figure out how to do this during device registration
+			//deviceNameField.getText();
+			//deviceTypeField.getText();
+			//deviceOwnerField.getText();
+			//Test adding camera to adminhub
+			Camera cameraDevice = new Camera(adminHub);
+			try {
+				adminHub.register(cameraDevice);
+			  } catch (HubRegistrationException h) {
+			  }
           }
 		});
   }
