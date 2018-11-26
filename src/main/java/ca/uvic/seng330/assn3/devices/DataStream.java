@@ -54,8 +54,9 @@ public class DataStream implements Runnable {
   }
 
   private synchronized void writeNext() {
-    // Overwrite the oldest data.
-    data[writeIndex] = new String(Integer.toString(count));
+    // Overwrite the oldest data. Add "th frame" because otherwise the JSON library will
+    // automatically parse it to an integer. This is the dumbest functionality ever.
+    data[writeIndex] = new String(Integer.toString(count) + "th frame");
     count++;
     writeIndex = (writeIndex + 1) % data.length;
 
