@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 
-// Tests covered: 4
+// Tests covered: 5
 public class CameraViewTest extends ApplicationTest {
   private AuthManager authManager;
   private MasterHub allHubs;
@@ -24,7 +24,7 @@ public class CameraViewTest extends ApplicationTest {
   @Override
   public void start(Stage primaryStage) {
     Hub allDevices = new Hub();
-    camera = new Camera(allDevices);
+    camera = new Camera(allDevices, 1000);
 
     try {
       authManager = new AuthManager();
@@ -64,14 +64,20 @@ public class CameraViewTest extends ApplicationTest {
   // control THEN my Camera stops recording
   // GIVEN a functioning camera WHEN I click "Turn Off" on the Client camera control THEN the camera
   // shuts down and I do not see the data from the Camera
+  // GIVEN I want to see a Camera device WHEN That Camera has integrated video streaming THEN I can see the video's live feed
   @Test
   public void testToggle() {
     // when I click ON then the camera turns on and I see the feed:
     clickOn("ON");
-    clickOn("FEED SHOWN");
+    clickOn("Initial");
     // given: functioning camera that is not full
     assertNotEquals(camera.getDiskPercentageUsed(), 100);
-    camera.toggle();
+
+    // then: I can see the video's live feed
+    sleep(1000);
+    clickOn("0th frame");
+    sleep(1000);
+    clickOn("1th frame");
 
     boolean before = camera.isRecording();
     // when: click record
@@ -86,6 +92,7 @@ public class CameraViewTest extends ApplicationTest {
     assertNotEquals(before, camera.isRecording());
 
     clickOn("OFF");
+    sleep(1000);
     clickOn("NO FEED");
   }
 }
