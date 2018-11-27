@@ -26,10 +26,13 @@ public class DataStream implements Runnable {
       try {
         Thread.sleep(delay);
       } catch (InterruptedException e) {
+        resetDataStream();
         return;
       }
       writeNext();
     }
+
+    resetDataStream();
   }
 
   /**
@@ -38,37 +41,55 @@ public class DataStream implements Runnable {
    *
    * @return the oldest data available as a string
    */
-  public synchronized String readNext() {
-    if (readIndex == writeIndex) {
-      // Wait until write is ahead, return empty data if the read is canceled.
-      try {
-        wait();
-      } catch (InterruptedException e) {
-        return "";
+  public String readNext() {
+    synchronized (this) {
+      if (readIndex == writeIndex) {
+        // Wait until write is ahead, return empty data if the read is canceled.
+        try {
+          wait();
+        } catch (InterruptedException e) {
+          return "EMPTY";
+        }
       }
-    }
 
-    String next = data[readIndex];
-    readIndex = (readIndex + 1) % data.length;
-    return next;
+      String next = data[readIndex];
+      readIndex = (readIndex + 1) % data.length;
+      return next;
+    }
   }
 
-  private synchronized void writeNext() {
-    // Overwrite the oldest data. Add "th frame" because otherwise the JSON library will
-    // automatically parse it to an integer. This is the dumbest functionality ever.
-    data[writeIndex] = new String(Integer.toString(count) + "th frame");
-    count++;
-    writeIndex = (writeIndex + 1) % data.length;
+  private void writeNext() {
+    synchronized (this) {
+      // Overwrite the oldest data. Add "th frame" because otherwise the JSON library will
+      // automatically parse it to an integer. This is the dumbest functionality ever.
+      data[writeIndex] = new String(Integer.toString(count) + "th frame");
+      count++;
 
-    // Keep the read index ahead always so it takes the most stale data.
-    if (readIndex == writeIndex) {
-      readIndex = (readIndex + 1) % data.length;
+      // If this is the case, it's possible there is another thread trying to retrieve data that is
+      // waiting.
+      if (readIndex == writeIndex) {
+        notifyAll();
+      }
+
+      writeIndex = (writeIndex + 1) % data.length;
+
+      // Keep the read index ahead always so it takes the most stale data.
+      if (readIndex == writeIndex) {
+        readIndex = (readIndex + 1) % data.length;
+      }
+    }
+  }
+
+  private void resetDataStream() {
+    int index = writeIndex - 1;
+    if (index < 0) {
+      index += 16;
     }
 
-    // If this is the case, it's possible there is another thread trying to retrieve data that is
-    // waiting.
-    if (readIndex == writeIndex - 1) {
-      notifyAll();
-    }
+    String last = data[index % data.length];
+    data = new String[16];
+    data[0] = last;
+    readIndex = 0;
+    writeIndex = 1;
   }
 }

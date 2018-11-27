@@ -135,6 +135,8 @@ public class CameraModel extends Model {
       if (value) {
         cameraThreads.replace(camera, new Thread(dataRetrievers.get(camera)));
         cameraThreads.get(camera).start();
+      } else {
+        cameraThreads.get(camera).interrupt();
       }
 
       cameraConditions.get(camera).set(value);
@@ -204,6 +206,8 @@ public class CameraModel extends Model {
       if (value) {
         cameraThreads.replace(camera, new Thread(dataRetrievers.get(camera)));
         cameraThreads.get(camera).start();
+      } else {
+        cameraThreads.get(camera).interrupt();
       }
 
       cameraConditions.get(camera).set(value);

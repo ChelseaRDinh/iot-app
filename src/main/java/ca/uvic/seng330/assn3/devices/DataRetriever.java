@@ -4,6 +4,7 @@ import ca.uvic.seng330.assn3.Command;
 import ca.uvic.seng330.assn3.Model;
 import ca.uvic.seng330.assn3.Token;
 import java.util.UUID;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import org.json.JSONObject;
 
@@ -54,9 +55,16 @@ public class DataRetriever extends Model implements Runnable {
     String message = jsonMessage.getString("payload");
 
     if (message.equals(CommandsToMessages.get(retrieveCommand))) {
-      String data = jsonMessage.getString("data");
+      final String data = jsonMessage.getString("data");
 
-      stringProperty.set(data);
+      // Make sure that the property set gets run on the UI thread.
+      Platform.runLater(
+          new Runnable() {
+            @Override
+            public void run() {
+              stringProperty.set(data);
+            }
+          });
     }
   }
 }

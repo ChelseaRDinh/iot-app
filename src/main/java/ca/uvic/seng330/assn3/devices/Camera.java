@@ -148,7 +148,13 @@ public final class Camera extends Device {
       toggle();
     } else if (message.equals("getData")) {
       if (cameraThread != null && isOn) {
-        alertHub(jsonMessage.getString("node_id"), "getData", dataStream.readNext());
+        String data = dataStream.readNext();
+
+        if (data == null) {
+          return;
+        }
+
+        alertHub(jsonMessage.getString("node_id"), "getData", data);
       }
     }
   }
