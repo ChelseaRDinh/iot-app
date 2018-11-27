@@ -48,6 +48,10 @@ public class ManageDevices {
   private MasterHub h;
   private Token token;
   private Hub adminHub;
+  private Camera c;
+  private Lightbulb l;
+  private SmartPlug s;
+  private Thermostat t;
 
   /** Default constructor for the Manage Devices view. */
   public ManageDevices(AdminController controller, AdminModel model) {
@@ -141,7 +145,7 @@ public class ManageDevices {
           @Override
           public void handle(ActionEvent e) {
             if (deviceTypeBox.getValue().toString() == "Camera") {
-              Camera c = new Camera(adminHub);
+              c = new Camera(adminHub);
               deviceData.add(
                   new DeviceItem(
                       "Camera", String.valueOf(c.getIdentifier()), deviceOwnerField.getText()));
@@ -151,7 +155,7 @@ public class ManageDevices {
                 // do nothing
               }
             } else if (deviceTypeBox.getValue().toString() == "Lightbulb") {
-              Lightbulb l = new Lightbulb(adminHub);
+              l = new Lightbulb(adminHub);
               try {
                 adminHub.register(l);
                 deviceData.add(
@@ -163,7 +167,7 @@ public class ManageDevices {
                 // do nothing
               }
             } else if (deviceTypeBox.getValue().toString() == "SmartPlug") {
-              SmartPlug s = new SmartPlug(adminHub);
+              s = new SmartPlug(adminHub);
               try {
                 adminHub.register(s);
                 deviceData.add(
@@ -175,7 +179,7 @@ public class ManageDevices {
                 // do nothing
               }
             } else if (deviceTypeBox.getValue().toString() == "Thermostat") {
-              Thermostat t = new Thermostat(adminHub);
+              t = new Thermostat(adminHub);
               try {
                 adminHub.register(t);
                 deviceData.add(
