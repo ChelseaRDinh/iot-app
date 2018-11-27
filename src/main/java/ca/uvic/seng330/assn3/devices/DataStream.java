@@ -48,7 +48,7 @@ public class DataStream implements Runnable {
         try {
           wait();
         } catch (InterruptedException e) {
-          return "EMPTY";
+          return "NO FEED";
         }
       }
 
