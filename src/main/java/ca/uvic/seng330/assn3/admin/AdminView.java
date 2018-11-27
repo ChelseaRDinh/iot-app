@@ -24,8 +24,8 @@ public class AdminView {
   /** Default constructor for the Admin Dashboard view. */
   public AdminView(AdminController controller, AdminModel model) {
     this.controller = controller;
-	this.model = model;
-	
+    this.model = model;
+
     createAndConfigurePane();
     createAndLayoutControls();
     updateControllerFromListeners();

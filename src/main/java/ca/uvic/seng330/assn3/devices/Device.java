@@ -44,7 +44,7 @@ public abstract class Device implements IOTDevice {
   }
 
   public Hub getHub() {
-	  return hub;
+    return hub;
   }
 
   /**

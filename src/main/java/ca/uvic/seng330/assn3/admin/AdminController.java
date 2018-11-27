@@ -1,4 +1,5 @@
 package ca.uvic.seng330.assn3.admin;
+
 import ca.uvic.seng330.assn3.AuthManager;
 import ca.uvic.seng330.assn3.Controller;
 import ca.uvic.seng330.assn3.Token;
@@ -23,9 +24,9 @@ public class AdminController extends Controller {
   public AdminController(
       AdminModel model, AuthManager authManager, ViewTransition transitionNotifier) {
     super(authManager, transitionNotifier);
-	this.model = model;
-	this.authManager = authManager;
-	this.transitionNotifier = transitionNotifier;
+    this.model = model;
+    this.authManager = authManager;
+    this.transitionNotifier = transitionNotifier;
   }
 
   /** Open the user management UI. */
@@ -38,9 +39,9 @@ public class AdminController extends Controller {
 
   /** Open the device management UI. */
   public void manageDevicesGUI() {
-	Stage manageDevicesStage = new Stage();
-	AdminController controller = new AdminController(model, authManager, transitionNotifier);
-	ManageDevices manageDevicesView = new ManageDevices(controller, model);
+    Stage manageDevicesStage = new Stage();
+    AdminController controller = new AdminController(model, authManager, transitionNotifier);
+    ManageDevices manageDevicesView = new ManageDevices(controller, model);
     manageDevicesStage.setScene(new Scene(manageDevicesView.asParent(), 960, 480));
     manageDevicesStage.show();
   }

@@ -6,22 +6,23 @@ import ca.uvic.seng330.assn3.devices.MasterHub;
 import org.json.JSONObject;
 
 public class AdminModel extends Model {
-	private Token token;
-	private MasterHub h;
-	public AdminModel(Token token, MasterHub h) {
-		super(token, h);
-		this.token = token;
-		this.h = h;
-	}
+  private Token token;
+  private MasterHub h;
 
-	public MasterHub getMasterHub() {
-		return h;
-	}
+  public AdminModel(Token token, MasterHub h) {
+    super(token, h);
+    this.token = token;
+    this.h = h;
+  }
 
-	public Token getUserToken() {
-		return token;
-	}
+  public MasterHub getMasterHub() {
+    return h;
+  }
 
-	@Override
-	public void notify(JSONObject message) {}
+  public Token getUserToken() {
+    return token;
+  }
+
+  @Override
+  public void notify(JSONObject message) {}
 }
