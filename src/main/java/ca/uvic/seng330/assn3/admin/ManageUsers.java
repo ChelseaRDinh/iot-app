@@ -23,7 +23,7 @@ public class ManageUsers {
   private GridPane view;
   private Text title;
   private TableView<User> userTable;
-  private ObservableList<User> data;
+  private ObservableList<User> userData;
   private TableColumn userName;
   private TableColumn firstName;
   private TableColumn lastName;
@@ -70,7 +70,7 @@ public class ManageUsers {
     // be able to edit user info in table.
     userTable.setEditable(true);
     // Create observable list of users
-    data = FXCollections.observableArrayList();
+    userData = FXCollections.observableArrayList();
 
     // add columns to table for user DB
     userName = new TableColumn("Username");
@@ -85,15 +85,13 @@ public class ManageUsers {
     userRole = new TableColumn("Role");
     userRole.setMinWidth(100);
     userRole.setCellValueFactory(new PropertyValueFactory<User, String>("role"));
-    // figure out if a list needs to go in for this.
-    // userDevices = new TableColumn("Devices");
 
     // test adding users
     User adminUser = new User("admin", "John", "Smith", "Admin");
     User basicUser = new User("user", "Nancy", "Walsh", "Basic User");
-    data.add(adminUser);
-    data.add(basicUser);
-    userTable.setItems(data);
+    userData.add(adminUser);
+    userData.add(basicUser);
+    userTable.setItems(userData);
 
     userTable.getColumns().addAll(userName, firstName, lastName, userRole);
 
@@ -118,7 +116,7 @@ public class ManageUsers {
         new EventHandler<ActionEvent>() {
           @Override
           public void handle(ActionEvent e) {
-            data.add(
+            userData.add(
                 new User(
                     userNameField.getText(),
                     firstNameField.getText(),
