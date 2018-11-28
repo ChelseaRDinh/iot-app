@@ -11,9 +11,9 @@ Think of this as "pre-condition/test stimulus/post-condition".
 
 # Assignment 4 Cases
 ## Scenario Z: Assignment 4
-1. GIVEN I want to see a Camera device
+1. ~~GIVEN I want to see a Camera device
     WHEN That Camera has integrated video streaming
-      THEN I can see the video's live feed
+      THEN I can see the video's live feed~~
 
 <!-- 1. GIVEN a streaming Camera
     WHEN I want to see historical activity

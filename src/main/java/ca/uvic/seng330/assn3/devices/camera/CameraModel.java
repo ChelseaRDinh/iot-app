@@ -5,17 +5,23 @@ import ca.uvic.seng330.assn3.Model;
 import ca.uvic.seng330.assn3.Token;
 import ca.uvic.seng330.assn3.devices.Camera;
 import ca.uvic.seng330.assn3.devices.MasterHub;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
 import org.json.JSONObject;
 
 public class CameraModel extends Model {
   private List<UUID> cameras;
   private Map<UUID, SimpleBooleanProperty> cameraIsRecording;
   private Map<UUID, SimpleBooleanProperty> cameraConditions;
+  private List<Media> cameraMedia;
+  private List<MediaPlayer> cameraMediaPlayers;
 
   /**
    * Constructor for the model for the Camera management UI.
@@ -29,9 +35,24 @@ public class CameraModel extends Model {
     cameraIsRecording = new HashMap<UUID, SimpleBooleanProperty>();
     cameraConditions = new HashMap<UUID, SimpleBooleanProperty>();
 
+    cameraMedia = new ArrayList<Media>();
+    cameraMediaPlayers = new ArrayList<MediaPlayer>();
+
     cameras = getUUIDOfType(Camera.class.getName());
 
     for (UUID camera : cameras) {
+      Media media = new Media(getRandomURI());
+      MediaPlayer player = new MediaPlayer(media);
+      player.setOnEndOfMedia(
+          new Runnable() {
+            public void run() {
+              player.seek(Duration.ZERO);
+            }
+          });
+
+      cameraMedia.add(media);
+      cameraMediaPlayers.add(player);
+
       cameraIsRecording.put(camera, new SimpleBooleanProperty());
       cameraConditions.put(camera, new SimpleBooleanProperty());
       sendMessageToDevice(Command.CAMERA_IS_RECORDING, camera);
@@ -39,8 +60,19 @@ public class CameraModel extends Model {
     }
   }
 
+  /** Stops all of the video players. */
+  public void stopAllPlayers() {
+    for (MediaPlayer player : cameraMediaPlayers) {
+      player.stop();
+    }
+  }
+
   public int getCameraCount() {
     return cameras.size();
+  }
+
+  public MediaPlayer getMediaPlayer(int index) {
+    return cameraMediaPlayers.get(index);
   }
 
   /**
@@ -110,6 +142,12 @@ public class CameraModel extends Model {
    */
   public void setCameraConditionAt(int index, Boolean value) {
     if (getCameraConditionAt(index) != value) {
+      if (value) {
+        cameraMediaPlayers.get(index).play();
+      } else {
+        cameraMediaPlayers.get(index).pause();
+      }
+
       cameraConditions.get(cameras.get(index)).set(value);
       sendMessageToDevice(Command.CAMERA_TOGGLE, cameras.get(index));
     }
@@ -159,6 +197,22 @@ public class CameraModel extends Model {
       }
 
       cameraConditions.get(sender).set(condition);
+
+      int index;
+      for (index = 0; index < cameras.size(); index++) {
+        if (cameras.get(index).equals(sender)) {
+          break;
+        }
+      }
+      if (condition) {
+        cameraMediaPlayers.get(index).play();
+      } else {
+        cameraMediaPlayers.get(index).pause();
+      }
     }
+  }
+
+  private String getRandomURI() {
+    return "http://techslides.com/demos/sample-videos/small.mp4";
   }
 }

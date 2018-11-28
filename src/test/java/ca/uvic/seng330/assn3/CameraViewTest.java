@@ -1,5 +1,6 @@
 package ca.uvic.seng330.assn3;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
 import ca.uvic.seng330.assn3.devices.Camera;
@@ -9,17 +10,19 @@ import ca.uvic.seng330.assn3.devices.camera.CameraController;
 import ca.uvic.seng330.assn3.devices.camera.CameraModel;
 import ca.uvic.seng330.assn3.devices.camera.CameraView;
 import javafx.scene.Scene;
+import javafx.scene.media.MediaPlayer.Status;
 import javafx.stage.Stage;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 
-// Tests covered: 4
+// Tests covered: 5
 public class CameraViewTest extends ApplicationTest {
   private AuthManager authManager;
   private MasterHub allHubs;
   private Scene scene;
   private Stage primaryStage;
   private Camera camera;
+  CameraModel cameraModel;
 
   @Override
   public void start(Stage primaryStage) {
@@ -40,7 +43,7 @@ public class CameraViewTest extends ApplicationTest {
 
     Token authToken = authManager.getToken("admin", "admin");
 
-    CameraModel cameraModel = new CameraModel(authToken, allHubs);
+    cameraModel = new CameraModel(authToken, allHubs);
     CameraController cameraController =
         new CameraController(
             cameraModel,
@@ -52,6 +55,7 @@ public class CameraViewTest extends ApplicationTest {
     scene = new Scene(cameraView.asParent(), 960, 480);
     this.primaryStage.setScene(scene);
     this.primaryStage.show();
+    cameraModel.stopAllPlayers();
   }
 
   public void transition(Controller from, Views to, Token token) {}
@@ -64,14 +68,20 @@ public class CameraViewTest extends ApplicationTest {
   // control THEN my Camera stops recording
   // GIVEN a functioning camera WHEN I click "Turn Off" on the Client camera control THEN the camera
   // shuts down and I do not see the data from the Camera
+  // GIVEN I want to see a Camera device WHEN That Camera has integrated video streaming THEN I can
+  // see the video's live feed
   @Test
   public void testToggle() {
     // when I click ON then the camera turns on and I see the feed:
     clickOn("ON");
-    clickOn("FEED SHOWN");
+
+    // sleep since retrieval takes time
+    sleep(5000);
+    // then: I can see the video's live feed
+    assertEquals(cameraModel.getMediaPlayer(0).getStatus().equals(Status.PLAYING), true);
+
     // given: functioning camera that is not full
     assertNotEquals(camera.getDiskPercentageUsed(), 100);
-    camera.toggle();
 
     boolean before = camera.isRecording();
     // when: click record

@@ -249,12 +249,12 @@ public class NonGUITest extends Client {
   /**
    * GIVEN the Camera is functional WHEN the camera detects an object in front of it THEN my camera
    * notifies Hub about the activity.
-   * 
-   * GIVEN a functional light bulb WHEN there is no one in the room
-   * (Camera notifies hub) THEN it should turn off and should notify Hub about the activity.
-   * 
-   * GIVEN a non-functional light bulb WHEN someone enters the room (Camera notifies hub) THEN it should
-   * turn on and should notify Hub about the activity.
+   *
+   * <p>GIVEN a functional light bulb WHEN there is no one in the room (Camera notifies hub) THEN it
+   * should turn off and should notify Hub about the activity.
+   *
+   * <p>GIVEN a non-functional light bulb WHEN someone enters the room (Camera notifies hub) THEN it
+   * should turn on and should notify Hub about the activity.
    */
   @Test
   public void testCameraNotify() {

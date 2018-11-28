@@ -141,7 +141,7 @@ public class ManageDevices {
           @Override
           public void handle(ActionEvent e) {
             if (deviceTypeBox.getValue().toString() == "Camera") {
-			  Camera c = new Camera(adminHub);
+              Camera c = new Camera(adminHub);
               deviceData.add(
                   new DeviceItem(
                       "Camera", String.valueOf(c.getIdentifier()), deviceOwnerField.getText()));

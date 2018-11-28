@@ -11,13 +11,16 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.scene.media.MediaView;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 public class CameraView {
+  private ScrollPane pane;
   private GridPane view;
   private CameraController controller;
   private CameraModel model;
@@ -25,6 +28,7 @@ public class CameraView {
   private List<RecordToggle> cameraRecordSwitches;
   private List<OnOffToggle> cameraSwitches;
   private List<Text> dataText;
+  private List<MediaView> mediaViews;
   private Button homeButton;
 
   /** Default constructor for the Camera view. */
@@ -37,7 +41,7 @@ public class CameraView {
   }
 
   public Parent asParent() {
-    return view;
+    return pane; // view;
   }
 
   /**
@@ -55,12 +59,20 @@ public class CameraView {
       } else {
         dataText.get(index).setText("FEED SHOWN");
       }
+
+      dataText.get(index).setVisible(value);
+      dataText.get(index).setManaged(value);
+      mediaViews.get(index).setVisible(!value);
+      mediaViews.get(index).setManaged(!value);
     }
   }
 
   /** Creates the view grid pane. */
   private void createAndConfigurePane() {
+    pane = new ScrollPane();
     view = new GridPane();
+
+    pane.setContent(view);
 
     ColumnConstraints leftCol = new ColumnConstraints();
     leftCol.setHalignment(HPos.RIGHT);
@@ -78,6 +90,7 @@ public class CameraView {
     cameraRecordSwitches = new ArrayList<RecordToggle>();
     cameraSwitches = new ArrayList<OnOffToggle>();
     dataText = new ArrayList<Text>();
+    mediaViews = new ArrayList<MediaView>();
     title = new Text("Camera Settings");
     title.setFont(new Font(20));
     view.addRow(0, title);
@@ -95,17 +108,22 @@ public class CameraView {
       data.setText("FEED SHOWN");
       dataText.add(data);
 
+      MediaView mediaView = new MediaView(model.getMediaPlayer(i));
+      mediaView.setId("player" + Integer.toString(i));
+      mediaViews.add(mediaView);
+
       addConditionListener(i);
 
       // Set the button state on init.
       setIndexDisabled(i, !model.getCameraConditionAt(i));
 
-      int startRow = 1 + (i * 3);
+      int startRow = 1 + (i * 4);
 
       view.addRow(
           startRow, new Label("Camera " + new Integer(i + 1).toString()), power.getContainer());
       view.addRow(startRow + 1, new Label("Recording state:"), record.getContainer());
       view.addRow(startRow + 2, new Label("Video feed: "), data);
+      view.addRow(startRow + 3, new Label(""), mediaView);
     }
 
     homeButton = new Button("home");
@@ -116,7 +134,7 @@ public class CameraView {
             controller.home();
           }
         });
-    view.addRow(2 + model.getCameraCount() * 3, new Label(""), homeButton);
+    view.addRow(2 + model.getCameraCount() * 4, new Label(""), homeButton);
   }
 
   /**
