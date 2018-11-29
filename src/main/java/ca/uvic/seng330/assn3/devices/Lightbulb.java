@@ -21,7 +21,6 @@ public final class Lightbulb extends Device {
     isOn = !isOn;
 
     if (isOn) {
-      setStatus(Status.OFF);
       alertHub("Light is now off.");
     } else {
       setStatus(Status.NORMAL);

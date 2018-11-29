@@ -40,7 +40,7 @@ public abstract class Device implements IOTDevice {
   }
 
   public void shutdown() {
-    status = Status.OFF;
+    status = Status.OFFLINE;
   }
 
   public Hub getHub() {

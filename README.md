@@ -49,35 +49,35 @@ Think of this as "pre-condition/test stimulus/post-condition".
       WHEN I open the admin interface 
         THEN I can assign device notifications to users (ALL, NONE, some selection)
 
-1. GIVEN I want to boot my Home Automation System
+1. ~~GIVEN I want to boot my Home Automation System
       WHEN I log in as an admin AND I open the app's admin interface 
         THEN I need to see a blank screen
-        OR the list of Devices found in my home
+        OR the list of Devices found in my home~~
 
 ## Scenario: Booting Home Automation System (Hub)
 1. GIVEN the Home Automation System is functional
       WHEN I open the app admin interface
         THEN I should see the log of the previous activities
 
-2. GIVEN the Home Automation System is functional
+2. ~~GIVEN the Home Automation System is functional
       WHEN I add a new device to my system on the Client control
-        THEN the Hub should register this new device to the system.
+        THEN the Hub should register this new device to the system.~~
 
-3. GIVEN the Home Automation System is functional
+3. ~~GIVEN the Home Automation System is functional
       WHEN I remove a device from my system on the Client Control
-        THEN the Hub should deregister this new device from the system.
+        THEN the Hub should deregister this new device from the system.~~
 
-4. GIVEN the Home Automation System is functional
+4. ~~GIVEN the Home Automation System is functional
       WHEN I want to administer my devices
-        THEN the Hub should show the device config screen
+        THEN the Hub should show the device config screen~~
 
 5. GIVEN the Home Automation System is functional
       WHEN the devices of the system are functional
         THEN the Hub should log all the activities of the devices and store them.
 
-5. GIVEN the Home Automation System is functional
+5. ~~GIVEN the Home Automation System is functional
       WHEN the devices of the system are functional
-        THEN the Hub should display device status visually: functioning, offline, error
+        THEN the Hub should display device status visually: functioning, offline, error~~
 
 5. GIVEN the Home Automation System is functional
       WHEN I click shutdown from the Client Control

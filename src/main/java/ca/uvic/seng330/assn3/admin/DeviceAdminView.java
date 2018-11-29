@@ -156,6 +156,7 @@ public class DeviceAdminView {
 
     // Device types for drop-down menu that appears after the button 'Add Device' is selected.
     deviceTypeBox = new ComboBox(deviceTypeOptions);
+    deviceTypeBox.setId("deviceTypeBox");
 
     bottomView.add(deviceTypeBox, 0, 1);
 

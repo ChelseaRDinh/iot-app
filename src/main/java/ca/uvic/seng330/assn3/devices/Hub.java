@@ -255,7 +255,7 @@ public final class Hub extends Mediator {
       d.shutdown();
     }
 
-    setStatus(Status.OFF);
+    setStatus(Status.OFFLINE);
 
     log(LogSeverity.INFO, "Shut down " + new Integer(devices.size()).toString() + " devices.");
   }
