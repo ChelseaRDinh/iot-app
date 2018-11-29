@@ -31,7 +31,7 @@ Think of this as "pre-condition/test stimulus/post-condition".
 
 1. ~~GIVEN the app supports two classes of users
       WHEN a user account is created
-          THEN the account is either an ADMIN or a USER 
+          THEN the account is either an ADMIN or a USER~~ 
 
 1. ~~GIVEN I am logged in as a user to the Hub
       WHEN I open the app interface
