@@ -4,6 +4,7 @@ public enum Views {
   LOGIN,
   MAIN,
   ADMIN,
+  DEVICE_ADMIN,
   CAMERA,
   LIGHTBULB,
   SMARTPLUG,

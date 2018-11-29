@@ -9,10 +9,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class AdminController extends Controller {
-
   private final AdminModel model;
-  private final AuthManager authManager;
-  private final ViewTransition transitionNotifier;
 
   /**
    * Constructor for Admin controller for the admin UI.
@@ -25,8 +22,6 @@ public class AdminController extends Controller {
       AdminModel model, AuthManager authManager, ViewTransition transitionNotifier) {
     super(authManager, transitionNotifier);
     this.model = model;
-    this.authManager = authManager;
-    this.transitionNotifier = transitionNotifier;
   }
 
   /** Open the user management UI. */
@@ -39,11 +34,9 @@ public class AdminController extends Controller {
 
   /** Open the device management UI. */
   public void manageDevicesGUI() {
-    Stage manageDevicesStage = new Stage();
-    AdminController controller = new AdminController(model, authManager, transitionNotifier);
-    ManageDevices manageDevicesView = new ManageDevices(controller, model);
-    manageDevicesStage.setScene(new Scene(manageDevicesView.asParent(), 960, 480));
-    manageDevicesStage.show();
+    Token token = model.getToken();
+
+    switchViews(this, Views.DEVICE_ADMIN, token);
   }
 
   /** Return to the home UI. */

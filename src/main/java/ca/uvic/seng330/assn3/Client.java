@@ -1,5 +1,6 @@
 package ca.uvic.seng330.assn3;
 
+import ca.uvic.seng330.assn3.devices.Device;
 import ca.uvic.seng330.assn3.devices.Mediator;
 import java.util.Collections;
 import java.util.HashMap;
@@ -98,6 +99,30 @@ public abstract class Client {
    */
   public final void sendMessageToAllDevices(Command command) {
     mediator.alert(new JSONMessaging(this, CommandsToMessages.get(command)));
+  }
+
+  /**
+   * Registers a device with the mediator.
+   *
+   * @param d the device to register with the mediator
+   * @return the UUID of the device, null if registering the device failed
+   */
+  public final UUID registerNewDevice(Device d) {
+    try {
+      mediator.register(d);
+    } catch (Exception e) {
+      return null;
+    }
+
+    return d.getIdentifier();
+  }
+
+  public String getDeviceClassName(UUID device) {
+    return mediator.getDeviceClassName(device);
+  }
+
+  public String getDeviceStatus(UUID device) {
+    return mediator.getDeviceStatus(device);
   }
 
   public abstract void notify(JSONObject message);

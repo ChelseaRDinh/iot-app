@@ -21,11 +21,10 @@ public class CameraController extends Controller {
   }
 
   public void updateCameraConditionAt(int index, boolean value) {
-    // setIndexDisabled(index, value);
     model.setCameraConditionAt(index, value);
   }
 
-  // return to home dashboard
+  /** Return to home dashboard. */
   public void home() {
     model.stopAllPlayers();
 

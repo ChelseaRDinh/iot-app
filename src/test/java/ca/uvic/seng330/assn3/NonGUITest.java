@@ -313,6 +313,11 @@ public class NonGUITest extends Client {
     assertEquals(b.getCondition(), true);
   }
 
+  /**
+   * Gets messages back from a hub.
+   *
+   * @param jsonMessage the json object sent by the hub
+   */
   public void notify(JSONObject jsonMessage) {
     String message = jsonMessage.getString("payload");
 

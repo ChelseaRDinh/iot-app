@@ -19,9 +19,9 @@ Think of this as "pre-condition/test stimulus/post-condition".
     WHEN I want to see historical activity
       THEN I can see snapshot images displayed from the past hour, taken every 5 minutes.
  -->
-2. Given I am an administrator
+2. ~~Given I am an administrator
     WHEN I want to see a device status check
-      THEN the status check thread starts and collects the data without interrupting the UI.
+      THEN the status check thread starts and collects the data without interrupting the UI.~~
 
 # Assignment 3 Cases
 ## Scenario A: Users and Admin
@@ -29,7 +29,7 @@ Think of this as "pre-condition/test stimulus/post-condition".
     WHEN I first open the application/page
         THEN I see a user login screen~~
 
-1. GIVEN the app supports two classes of users
+1. ~~GIVEN the app supports two classes of users
       WHEN a user account is created
           THEN the account is either an ADMIN or a USER 
 

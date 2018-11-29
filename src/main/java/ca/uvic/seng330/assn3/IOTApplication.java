@@ -3,6 +3,9 @@ package ca.uvic.seng330.assn3;
 import ca.uvic.seng330.assn3.admin.AdminController;
 import ca.uvic.seng330.assn3.admin.AdminModel;
 import ca.uvic.seng330.assn3.admin.AdminView;
+import ca.uvic.seng330.assn3.admin.DeviceAdminController;
+import ca.uvic.seng330.assn3.admin.DeviceAdminModel;
+import ca.uvic.seng330.assn3.admin.DeviceAdminView;
 import ca.uvic.seng330.assn3.devices.Camera;
 import ca.uvic.seng330.assn3.devices.Hub;
 import ca.uvic.seng330.assn3.devices.Lightbulb;
@@ -204,6 +207,21 @@ public class IOTApplication extends Application {
                 });
         AdminView adminView = new AdminView(adminController, adminModel);
         scene = new Scene(adminView.asParent(), 960, 480);
+        this.primaryStage.setScene(scene);
+        this.primaryStage.show();
+        break;
+      case DEVICE_ADMIN:
+        DeviceAdminModel deviceAdminModel = new DeviceAdminModel(authToken, allHubs);
+        DeviceAdminController deviceAdminController =
+            new DeviceAdminController(
+                deviceAdminModel,
+                authManager,
+                (from, to, token) -> {
+                  this.transition(from, to, token);
+                });
+        DeviceAdminView deviceAdminView =
+            new DeviceAdminView(deviceAdminController, deviceAdminModel);
+        scene = new Scene(deviceAdminView.asParent(), 960, 480);
         this.primaryStage.setScene(scene);
         this.primaryStage.show();
         break;

@@ -26,6 +26,14 @@ public abstract class Mediator {
     return uuid;
   }
 
+  public abstract String getDeviceClassName(UUID device);
+
+  public abstract String getDeviceStatus(UUID device);
+
+  public abstract boolean doesDeviceExist(UUID device);
+
+  public abstract Device getDeviceByUUID(UUID uuid);
+
   public abstract List<UUID> getUUIDOfType(String type);
 
   public abstract void alert(JSONMessaging message);

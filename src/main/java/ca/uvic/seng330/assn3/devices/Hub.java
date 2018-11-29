@@ -30,6 +30,39 @@ public final class Hub extends Mediator {
     log(LogSeverity.DEBUG, "Hub created.");
   }
 
+  @Override
+  public String getDeviceClassName(UUID device) {
+    if (!devices.containsKey(device)) {
+      return null;
+    }
+
+    return devices.get(device).getClass().getName();
+  }
+
+  @Override
+  public String getDeviceStatus(UUID device) {
+    if (!devices.containsKey(device)) {
+      return null;
+    }
+
+    return devices.get(device).getStatus().toString();
+  }
+
+  @Override
+  public boolean doesDeviceExist(UUID device) {
+    return devices.containsKey(device);
+  }
+
+  @Override
+  public Device getDeviceByUUID(UUID uuid) {
+    if (!devices.containsKey(uuid)) {
+      log(LogSeverity.ERROR, "Device " + uuid.toString() + " doesn't exist.");
+      return null;
+    }
+
+    return devices.get(uuid);
+  }
+
   /**
    * Gets all of the UUIDs of devices or clients with a given type (object.getClass().toString()).
    *
