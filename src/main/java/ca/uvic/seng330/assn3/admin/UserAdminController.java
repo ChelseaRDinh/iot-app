@@ -21,4 +21,8 @@ public class UserAdminController extends Controller {
 
     switchViews(this, Views.ADMIN, token);
   }
+
+  public String[] getUsers() {
+	  return authManager.getUsers();
+  }
 }

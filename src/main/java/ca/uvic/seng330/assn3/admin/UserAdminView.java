@@ -96,7 +96,7 @@ public class UserAdminView {
     User adminUser = new User("admin", "John", "Smith", "Admin");
     User basicUser = new User("user", "Nancy", "Walsh", "Basic User");
     userData.add(adminUser);
-    userData.add(basicUser);
+	userData.add(basicUser);
     userTable.setItems(userData);
 
     userTable.getColumns().addAll(userName, firstName, lastName, userRole);
