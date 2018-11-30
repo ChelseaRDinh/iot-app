@@ -19,7 +19,10 @@ import javafx.scene.layout.Priority;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-public class ManageUsers {
+public class UserAdminView {
+  private UserAdminController controller;
+  private UserAdminModel model;
+
   private GridPane view;
   private Text title;
   private TableView<User> userTable;
@@ -36,8 +39,10 @@ public class ManageUsers {
   private TextField lastNameField;
   private TextField roleField;
 
-  /** Default constructor for the Manage Users view. */
-  public ManageUsers() {
+  /** Default constructor for the User Admin view. */
+  public UserAdminView(UserAdminController controller, UserAdminModel model) {
+	this.controller = controller;
+	this.model = model;
     createAndConfigurePane();
     createAndLayoutControls();
     updateControllerFromListeners();

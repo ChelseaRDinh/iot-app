@@ -26,10 +26,13 @@ public class AdminController extends Controller {
 
   /** Open the user management UI. */
   public void manageUsersGUI() {
-    Stage manageUsersStage = new Stage();
-    ManageUsers manageUsersView = new ManageUsers();
-    manageUsersStage.setScene(new Scene(manageUsersView.asParent(), 960, 480));
-    manageUsersStage.show();
+    //Stage manageUsersStage = new Stage();
+    //ManageUsers manageUsersView = new ManageUsers();
+    //manageUsersStage.setScene(new Scene(manageUsersView.asParent(), 960, 480));
+	//manageUsersStage.show();
+	Token token = model.getToken();
+
+	switchViews(this, Views.USER_ADMIN, token);
   }
 
   /** Open the device management UI. */
