@@ -19,7 +19,10 @@ import javafx.scene.layout.Priority;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-public class ManageUsers {
+public class UserAdminView {
+  private UserAdminController controller;
+  private UserAdminModel model;
+
   private GridPane view;
   private Text title;
   private TableView<User> userTable;
@@ -31,13 +34,16 @@ public class ManageUsers {
   private TableColumn userDevices;
   private Button addUser;
   private Button removeUser;
+  private Button backButton;
   private TextField userNameField;
   private TextField firstNameField;
   private TextField lastNameField;
   private TextField roleField;
 
-  /** Default constructor for the Manage Users view. */
-  public ManageUsers() {
+  /** Default constructor for the User Admin view. */
+  public UserAdminView(UserAdminController controller, UserAdminModel model) {
+	this.controller = controller;
+	this.model = model;
     createAndConfigurePane();
     createAndLayoutControls();
     updateControllerFromListeners();
@@ -96,7 +102,8 @@ public class ManageUsers {
     userTable.getColumns().addAll(userName, firstName, lastName, userRole);
 
     addUser = new Button("Add User");
-    removeUser = new Button("Remove User");
+	removeUser = new Button("Remove User");
+	backButton = new Button("Back");
 
     /** Text fields for adding a user. */
     userNameField = new TextField();
@@ -133,7 +140,17 @@ public class ManageUsers {
             User selectedItem = userTable.getSelectionModel().getSelectedItem();
             userTable.getItems().remove(selectedItem);
           }
-        });
+		});
+	
+	/**Go back to admin console */
+	backButton.setOnAction(
+		new EventHandler<ActionEvent>() {
+		  @Override
+		  public void handle(ActionEvent e) {
+			controller.adminGUI();
+		  }
+		}
+	);
 
     view.addRow(0, title);
     view.addRow(1, userTable);
@@ -142,7 +159,8 @@ public class ManageUsers {
     view.addRow(4, lastNameField);
     view.addRow(5, roleField);
     view.add(addUser, 5, 5);
-    view.add(removeUser, 5, 6);
+	view.add(removeUser, 5, 6);
+	view.add(backButton, 5, 7);
   }
 
   private void updateControllerFromListeners() {}
