@@ -39,4 +39,10 @@ public class DeviceAdminController extends Controller {
 
     switchViews(this, Views.ADMIN, token);
   }
+
+  public void userDeviceRegistrationGUI() {
+	  Token token = model.getToken();
+
+	  switchViews(this, Views.USER_DEVICE_REG, token);
+  }
 }

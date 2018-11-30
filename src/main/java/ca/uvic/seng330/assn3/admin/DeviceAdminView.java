@@ -140,8 +140,8 @@ public class DeviceAdminView {
     otherBackButton = new Button("Back");
     setOwnerButton = new Button("Change Selected Device Owner");
     removeDevice = new Button("Remove Selected Device");
-	confirmButton = new Button("Confirm Add Device");
-	registerDeviceWithUser = new Button("Register Device with User");
+    confirmButton = new Button("Confirm Add Device");
+    registerDeviceWithUser = new Button("Register Device with User");
 
     topView.addRow(0, title);
     topView.addRow(1, loadingText);
@@ -152,8 +152,8 @@ public class DeviceAdminView {
 
     bottomView.add(confirmButton, 0, 0);
     bottomView.add(setOwnerButton, 1, 0);
-	bottomView.add(removeDevice, 2, 0);
-	bottomView.add(registerDeviceWithUser, 3, 0);
+    bottomView.add(removeDevice, 2, 0);
+    bottomView.add(registerDeviceWithUser, 3, 0);
 
     bottomView.add(otherBackButton, 1, 2);
 
@@ -245,7 +245,15 @@ public class DeviceAdminView {
           public void handle(ActionEvent e) {
             controller.adminGUI();
           }
-        });
+		});
+	
+	registerDeviceWithUser.setOnAction(
+		new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				controller.userDeviceRegistrationGUI();
+			}
+		});
   }
 
   private void addDevicesToTable(Boolean newValue) {

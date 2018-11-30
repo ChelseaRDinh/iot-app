@@ -1,38 +1,13 @@
 package ca.uvic.seng330.assn3;
 
-import ca.uvic.seng330.assn3.admin.AdminController;
-import ca.uvic.seng330.assn3.admin.AdminModel;
-import ca.uvic.seng330.assn3.admin.AdminView;
-import ca.uvic.seng330.assn3.admin.DeviceAdminController;
-import ca.uvic.seng330.assn3.admin.DeviceAdminModel;
-import ca.uvic.seng330.assn3.admin.DeviceAdminView;
-import ca.uvic.seng330.assn3.admin.UserAdminController;
-import ca.uvic.seng330.assn3.admin.UserAdminModel;
-import ca.uvic.seng330.assn3.admin.UserAdminView;
-import ca.uvic.seng330.assn3.devices.Camera;
-import ca.uvic.seng330.assn3.devices.Hub;
-import ca.uvic.seng330.assn3.devices.Lightbulb;
-import ca.uvic.seng330.assn3.devices.MasterHub;
-import ca.uvic.seng330.assn3.devices.SmartPlug;
-import ca.uvic.seng330.assn3.devices.Thermostat;
-import ca.uvic.seng330.assn3.devices.camera.CameraController;
-import ca.uvic.seng330.assn3.devices.camera.CameraModel;
-import ca.uvic.seng330.assn3.devices.camera.CameraView;
-import ca.uvic.seng330.assn3.devices.lightbulb.LightbulbController;
-import ca.uvic.seng330.assn3.devices.lightbulb.LightbulbModel;
-import ca.uvic.seng330.assn3.devices.lightbulb.LightbulbView;
-import ca.uvic.seng330.assn3.devices.smartplug.SmartplugController;
-import ca.uvic.seng330.assn3.devices.smartplug.SmartplugModel;
-import ca.uvic.seng330.assn3.devices.smartplug.SmartplugView;
-import ca.uvic.seng330.assn3.devices.thermostat.ThermostatController;
-import ca.uvic.seng330.assn3.devices.thermostat.ThermostatModel;
-import ca.uvic.seng330.assn3.devices.thermostat.ThermostatView;
-import ca.uvic.seng330.assn3.home.HomeController;
-import ca.uvic.seng330.assn3.home.HomeModel;
-import ca.uvic.seng330.assn3.home.HomeView;
-import ca.uvic.seng330.assn3.login.LoginController;
-import ca.uvic.seng330.assn3.login.LoginModel;
-import ca.uvic.seng330.assn3.login.LoginView;
+import ca.uvic.seng330.assn3.admin.*;
+import ca.uvic.seng330.assn3.devices.*;
+import ca.uvic.seng330.assn3.devices.camera.*;
+import ca.uvic.seng330.assn3.devices.lightbulb.*;
+import ca.uvic.seng330.assn3.devices.smartplug.*;
+import ca.uvic.seng330.assn3.devices.thermostat.*;
+import ca.uvic.seng330.assn3.home.*;
+import ca.uvic.seng330.assn3.login.*;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -212,22 +187,21 @@ public class IOTApplication extends Application {
         scene = new Scene(adminView.asParent(), 960, 480);
         this.primaryStage.setScene(scene);
         this.primaryStage.show();
-		break;
-	case USER_ADMIN:
-		UserAdminModel userAdminModel = new UserAdminModel(authToken, allHubs);
-		UserAdminController userAdminController = 
-			new UserAdminController(
-				userAdminModel,
-				authManager,
-				(from, to, token) -> {
-					this.transition(from, to, token);
-				});
-		UserAdminView userAdminView =
-				new UserAdminView(userAdminController, userAdminModel);
-		scene = new Scene(userAdminView.asParent(), 960, 480);
-		this.primaryStage.setScene(scene);
-		this.primaryStage.show();
-		break;
+        break;
+      case USER_ADMIN:
+        UserAdminModel userAdminModel = new UserAdminModel(authToken, allHubs);
+        UserAdminController userAdminController =
+            new UserAdminController(
+                userAdminModel,
+                authManager,
+                (from, to, token) -> {
+                  this.transition(from, to, token);
+                });
+        UserAdminView userAdminView = new UserAdminView(userAdminController, userAdminModel);
+        scene = new Scene(userAdminView.asParent(), 960, 480);
+        this.primaryStage.setScene(scene);
+        this.primaryStage.show();
+        break;
       case DEVICE_ADMIN:
         DeviceAdminModel deviceAdminModel = new DeviceAdminModel(authToken, allHubs);
         DeviceAdminController deviceAdminController =
@@ -242,7 +216,22 @@ public class IOTApplication extends Application {
         scene = new Scene(deviceAdminView.asParent(), 960, 480);
         this.primaryStage.setScene(scene);
         this.primaryStage.show();
-        break;
+		break;
+	  case USER_DEVICE_REG:
+		UserDeviceRegistrationModel userDeviceRegistrationModel = new UserDeviceRegistrationModel(authToken, allHubs);
+		UserDeviceRegistrationController userDeviceRegistrationController = 
+			new UserDeviceRegistrationController(
+				userDeviceRegistrationModel,
+				authManager,
+				(from, to, token) -> {
+					this.transition(from, to, token);
+				});
+		UserDeviceRegistrationView userDeviceRegistrationView =
+			new UserDeviceRegistrationView(userDeviceRegistrationController, userDeviceRegistrationModel);
+		scene = new Scene(userDeviceRegistrationView.asParent(), 960, 480);
+		this.primaryStage.setScene(scene);
+		this.primaryStage.show();
+		break;
       default:
         break;
     }

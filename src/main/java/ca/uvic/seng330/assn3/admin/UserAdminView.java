@@ -42,8 +42,8 @@ public class UserAdminView {
 
   /** Default constructor for the User Admin view. */
   public UserAdminView(UserAdminController controller, UserAdminModel model) {
-	this.controller = controller;
-	this.model = model;
+    this.controller = controller;
+    this.model = model;
     createAndConfigurePane();
     createAndLayoutControls();
     updateControllerFromListeners();
@@ -102,8 +102,8 @@ public class UserAdminView {
     userTable.getColumns().addAll(userName, firstName, lastName, userRole);
 
     addUser = new Button("Add User");
-	removeUser = new Button("Remove User");
-	backButton = new Button("Back");
+    removeUser = new Button("Remove User");
+    backButton = new Button("Back");
 
     /** Text fields for adding a user. */
     userNameField = new TextField();
@@ -140,17 +140,16 @@ public class UserAdminView {
             User selectedItem = userTable.getSelectionModel().getSelectedItem();
             userTable.getItems().remove(selectedItem);
           }
-		});
-	
-	/**Go back to admin console */
-	backButton.setOnAction(
-		new EventHandler<ActionEvent>() {
-		  @Override
-		  public void handle(ActionEvent e) {
-			controller.adminGUI();
-		  }
-		}
-	);
+        });
+
+    /** Go back to admin console */
+    backButton.setOnAction(
+        new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent e) {
+            controller.adminGUI();
+          }
+        });
 
     view.addRow(0, title);
     view.addRow(1, userTable);
@@ -159,8 +158,8 @@ public class UserAdminView {
     view.addRow(4, lastNameField);
     view.addRow(5, roleField);
     view.add(addUser, 5, 5);
-	view.add(removeUser, 5, 6);
-	view.add(backButton, 5, 7);
+    view.add(removeUser, 5, 6);
+    view.add(backButton, 5, 7);
   }
 
   private void updateControllerFromListeners() {}
