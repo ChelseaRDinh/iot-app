@@ -30,7 +30,6 @@ public class UserAdminView {
   private TableColumn userName;
   private TableColumn firstName;
   private TableColumn lastName;
-  private TableColumn userRole;
   private TableColumn userDevices;
   private Button addUser;
   private Button removeUser;
@@ -38,7 +37,7 @@ public class UserAdminView {
   private TextField userNameField;
   private TextField firstNameField;
   private TextField lastNameField;
-  private TextField roleField;
+  private String[] users;
 
   /** Default constructor for the User Admin view. */
   public UserAdminView(UserAdminController controller, UserAdminModel model) {
@@ -88,18 +87,12 @@ public class UserAdminView {
     lastName = new TableColumn("Last");
     lastName.setMinWidth(100);
     lastName.setCellValueFactory(new PropertyValueFactory<User, String>("lastName"));
-    userRole = new TableColumn("Role");
-    userRole.setMinWidth(100);
-    userRole.setCellValueFactory(new PropertyValueFactory<User, String>("role"));
 
-    // test adding users
-    User adminUser = new User("admin", "John", "Smith", "Admin");
-    User basicUser = new User("user", "Nancy", "Walsh", "Basic User");
-    userData.add(adminUser);
-	userData.add(basicUser);
     userTable.setItems(userData);
 
-    userTable.getColumns().addAll(userName, firstName, lastName, userRole);
+	userTable.getColumns().addAll(userName, firstName, lastName);
+	
+	addUsersToTable();
 
     addUser = new Button("Add User");
     removeUser = new Button("Remove User");
@@ -115,9 +108,6 @@ public class UserAdminView {
     lastNameField = new TextField();
     lastNameField.setPromptText("Last");
 
-    roleField = new TextField();
-    roleField.setPromptText("Role");
-
     // add user based on inputting username, first, last, and role params.
     addUser.setOnAction(
         new EventHandler<ActionEvent>() {
@@ -127,8 +117,7 @@ public class UserAdminView {
                 new User(
                     userNameField.getText(),
                     firstNameField.getText(),
-                    lastNameField.getText(),
-                    roleField.getText()));
+                    lastNameField.getText()));
           }
         });
 
@@ -156,7 +145,6 @@ public class UserAdminView {
     view.addRow(2, userNameField);
     view.addRow(3, firstNameField);
     view.addRow(4, lastNameField);
-    view.addRow(5, roleField);
     view.add(addUser, 5, 5);
     view.add(removeUser, 5, 6);
     view.add(backButton, 5, 7);
@@ -165,4 +153,13 @@ public class UserAdminView {
   private void updateControllerFromListeners() {}
 
   private void observeModelAndUpdateControls() {}
+
+  private void addUsersToTable() {
+	  users = controller.getUsers();
+	  for(int i = 0; i < users.length; i++) {
+		  String currentUser = users[i];
+		  User newUser = new User(currentUser, "Test", "Test");
+		  userData.add(newUser);
+	  }
+  }
 }

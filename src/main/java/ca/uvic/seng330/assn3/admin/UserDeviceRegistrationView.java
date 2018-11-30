@@ -34,6 +34,7 @@ public class UserDeviceRegistrationView {
   private GridPane view;
   private Text title;
   private Button backButton;
+  private Button manageDevicesButton;
 
   public UserDeviceRegistrationView(
       UserDeviceRegistrationController controller, UserDeviceRegistrationModel model) {
@@ -81,6 +82,7 @@ public class UserDeviceRegistrationView {
 
   private void createUserTable() {
 	userTable = new TableView<String>();
+	userTable.setEditable(true);
 	userData = FXCollections.observableArrayList();
 
     userName = new TableColumn("Username");

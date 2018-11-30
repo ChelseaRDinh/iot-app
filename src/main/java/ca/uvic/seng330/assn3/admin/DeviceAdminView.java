@@ -175,7 +175,7 @@ public class DeviceAdminView {
     deviceData = FXCollections.observableArrayList();
 
     // add columns to table for device DB
-    TableColumn deviceType = new TableColumn("Device");
+    TableColumn deviceType = new TableColumn("Type");
     deviceType.setMinWidth(260);
     deviceType.setCellValueFactory(new PropertyValueFactory<DeviceItem, String>("Type"));
 
