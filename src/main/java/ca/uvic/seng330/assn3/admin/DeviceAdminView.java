@@ -44,6 +44,7 @@ public class DeviceAdminView {
   private Button setOwnerButton;
   private Button removeDevice;
   private Button confirmButton;
+  private Button registerDeviceWithUser;
   private TextField deviceNameField;
   private TextField deviceTypeField;
   private ComboBox deviceTypeBox;
@@ -139,7 +140,8 @@ public class DeviceAdminView {
     otherBackButton = new Button("Back");
     setOwnerButton = new Button("Change Selected Device Owner");
     removeDevice = new Button("Remove Selected Device");
-    confirmButton = new Button("Confirm Add Device");
+	confirmButton = new Button("Confirm Add Device");
+	registerDeviceWithUser = new Button("Register Device with User");
 
     topView.addRow(0, title);
     topView.addRow(1, loadingText);
@@ -150,7 +152,8 @@ public class DeviceAdminView {
 
     bottomView.add(confirmButton, 0, 0);
     bottomView.add(setOwnerButton, 1, 0);
-    bottomView.add(removeDevice, 2, 0);
+	bottomView.add(removeDevice, 2, 0);
+	bottomView.add(registerDeviceWithUser, 3, 0);
 
     bottomView.add(otherBackButton, 1, 2);
 
