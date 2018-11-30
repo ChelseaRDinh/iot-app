@@ -6,7 +6,9 @@ import org.json.JSONObject;
 
 public final class Thermostat extends Device {
   private Temperature desiredTemperature;
+  private Temperature additionalTemperature;
   private boolean isOn;
+  private boolean isCold;
 
   /**
    * Constructor for thermostat that takes a hub.
@@ -17,6 +19,7 @@ public final class Thermostat extends Device {
     super(h);
 
     desiredTemperature = new Temperature();
+    additionalTemperature = new Temperature();
     isOn = false;
   }
 
@@ -28,10 +31,31 @@ public final class Thermostat extends Device {
   public void setTemp(Temperature temp) {
     desiredTemperature = temp;
 
+    float target = Temperature.Unit.convertUnits(20.0f, Unit.CELSIUS, temp.getUnit());
+
+    if (isCold && target > desiredTemperature.getTemperature()) {
+      try {
+        additionalTemperature = new Temperature(target - temp.getTemperature(), temp.getUnit());
+        alertHub("thermostatAutoChanged");
+      } catch (Exception e) {
+        // This won't happen, but it doesn't matter since it's supposed to be a valid automatic
+        // adjustment anyways.
+      }
+    } else {
+      additionalTemperature = new Temperature();
+    }
+
     alertHub(
         "Thermostat temperature set to "
-            + new Float(desiredTemperature.getTemperature()).toString()
+            + new Float(
+                    desiredTemperature.getTemperature() + additionalTemperature.getTemperature())
+                .toString()
             + " celsius.");
+  }
+
+  public void setIsColdOutside(boolean isCold) {
+    this.isCold = isCold;
+    setTemp(desiredTemperature);
   }
 
   /**
@@ -40,7 +64,7 @@ public final class Thermostat extends Device {
    * @return the temperature in celsius as a float
    */
   public float getTemp() {
-    return desiredTemperature.getTemperature();
+    return desiredTemperature.getTemperature() + additionalTemperature.getTemperature();
   }
 
   public boolean getUnit() {

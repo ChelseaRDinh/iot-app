@@ -137,9 +137,9 @@ Think of this as "pre-condition/test stimulus/post-condition".
         THEN I should see that the thermostat is turned off.~~
 
 
-6. GIVEN a functional thermostat
+6. ~~GIVEN a functional thermostat
       WHEN it automatically changes the temperature based on the climate outside
-        THEN it should notify hub about this event.
+        THEN it should notify hub about this event.~~
 
 
 ## Scenario E: User wants to access lightbulb

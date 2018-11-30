@@ -10,6 +10,9 @@ import ca.uvic.seng330.assn3.devices.Hub;
 import ca.uvic.seng330.assn3.devices.HubRegistrationException;
 import ca.uvic.seng330.assn3.devices.Lightbulb;
 import ca.uvic.seng330.assn3.devices.SmartPlug;
+import ca.uvic.seng330.assn3.devices.Temperature;
+import ca.uvic.seng330.assn3.devices.Temperature.TemperatureOutofBoundsException;
+import ca.uvic.seng330.assn3.devices.Temperature.Unit;
 import ca.uvic.seng330.assn3.devices.Thermostat;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +20,7 @@ import java.util.UUID;
 import org.json.JSONObject;
 import org.junit.Test;
 
-// Tests covered: 3
+// Tests covered: 4
 public class NonGUITest extends Client {
   boolean gotNotified = false;
 
@@ -261,6 +264,7 @@ public class NonGUITest extends Client {
     Hub h = new Hub();
     Camera c = new Camera(h);
     Lightbulb b = new Lightbulb(h);
+    gotNotified = false;
 
     try {
       h.register(c);
@@ -313,6 +317,65 @@ public class NonGUITest extends Client {
     assertEquals(b.getCondition(), true);
   }
 
+  // GIVEN a functional thermostat WHEN it automatically changes the temperature based on the
+  // climate outside THEN it should notify hub about this event.
+  @Test
+  public void testThermostatTemperature() {
+    Hub mediator = new Hub();
+    Thermostat t = new Thermostat(mediator);
+    Temperature tempCold = null;
+    Temperature tempWarm = null;
+
+    try {
+      tempCold = new Temperature(10.0f, Unit.CELSIUS);
+      tempWarm = new Temperature(25.0f, Unit.CELSIUS);
+    } catch (TemperatureOutofBoundsException e) {
+      assertEquals(false, true);
+      return;
+    }
+
+    try {
+      mediator.register(t);
+      mediator.register(this);
+    } catch (Exception e) {
+      assertEquals(false, true);
+      return;
+    }
+
+    gotNotified = false;
+
+    // Test that nothing happens when the thermostat is set cold when it isn't cold outside.
+    t.setTemp(tempCold);
+    assertEquals(gotNotified, false);
+
+    // Test that the thermostat adjusts if it's set cold and it's cold outside.
+    t.setIsColdOutside(true);
+    assertEquals(gotNotified, true);
+    assertEquals(20.0f, t.getTemp(), 0.01f);
+
+    gotNotified = false;
+
+    // Test that disabling the outside cold resets the temperature back to normal.
+    t.setIsColdOutside(false);
+    assertEquals(gotNotified, false);
+    assertEquals(10.0f, t.getTemp(), 0.01f);
+
+    gotNotified = false;
+
+    // Test that setting the thermostat to warm when it's cold outside stays the same.
+    t.setTemp(tempWarm);
+    assertEquals(gotNotified, false);
+    t.setIsColdOutside(true);
+    assertEquals(gotNotified, false);
+    assertEquals(25.0f, t.getTemp(), 0.01f);
+
+    // Test that setting the thermostat back to cold when it's cold outside automatically adjusts it
+    // again.
+    t.setTemp(tempCold);
+    assertEquals(gotNotified, true);
+    assertEquals(20.0f, t.getTemp(), 0.01f);
+  }
+
   /**
    * Gets messages back from a hub.
    *
@@ -322,6 +385,8 @@ public class NonGUITest extends Client {
     String message = jsonMessage.getString("payload");
 
     if (message.equals(CommandsToMessages.get(Command.LIGHTBULB_CONDITION_CHANGED))) {
+      gotNotified = true;
+    } else if (message.equals("thermostatAutoChanged")) {
       gotNotified = true;
     }
   }
