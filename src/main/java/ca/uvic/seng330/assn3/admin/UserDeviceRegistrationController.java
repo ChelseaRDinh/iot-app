@@ -19,7 +19,9 @@ public class UserDeviceRegistrationController extends Controller {
    * @param transitionNotifier a function that will allow the controller to invoke a view transition
    */
   public UserDeviceRegistrationController(
-      UserDeviceRegistrationModel model, AuthManager authManager, ViewTransition transitionNotifier) {
+      UserDeviceRegistrationModel model,
+      AuthManager authManager,
+      ViewTransition transitionNotifier) {
     super(authManager, transitionNotifier);
     this.model = model;
   }
@@ -33,12 +35,12 @@ public class UserDeviceRegistrationController extends Controller {
   }
 
   public void deviceAdminGUI() {
-	  Token token = model.getToken();
+    Token token = model.getToken();
 
-	  switchViews(this, Views.DEVICE_ADMIN, token);
+    switchViews(this, Views.DEVICE_ADMIN, token);
   }
 
   public String[] getUsers() {
-	  return authManager.getUsers();
+    return authManager.getUsers();
   }
 }

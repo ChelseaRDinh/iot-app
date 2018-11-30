@@ -1,10 +1,6 @@
 package ca.uvic.seng330.assn3.admin;
 
-import ca.uvic.seng330.assn3.DeviceItem;
 import ca.uvic.seng330.assn3.*;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,10 +9,8 @@ import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -40,22 +34,22 @@ public class UserDeviceRegistrationView {
 
   public UserDeviceRegistrationView(
       UserDeviceRegistrationController controller, UserDeviceRegistrationModel model) {
-		  this.controller = controller;
-		  this.model = model;
-	   
-	  createAndConfigurePane();
-      createAndLayoutControls();
-      observeModelAndUpdateControls();
-	  }
-  
+    this.controller = controller;
+    this.model = model;
+
+    createAndConfigurePane();
+    createAndLayoutControls();
+    observeModelAndUpdateControls();
+  }
+
   public Parent asParent() {
-	  return view;
+    return view;
   }
 
   public void createAndConfigurePane() {
-	  view = new GridPane();
+    view = new GridPane();
 
-	ColumnConstraints leftCol = new ColumnConstraints();
+    ColumnConstraints leftCol = new ColumnConstraints();
     leftCol.setHalignment(HPos.RIGHT);
     leftCol.setHgrow(Priority.NEVER);
     ColumnConstraints rightCol = new ColumnConstraints();
@@ -67,57 +61,56 @@ public class UserDeviceRegistrationView {
   }
 
   public void createAndLayoutControls() {
-	title = new Text("Currently Registered Devices for Users");
-	title.setFont(new Font(20));
+    title = new Text("Currently Registered Devices for Users");
+    title.setFont(new Font(20));
 
-	addButtonActions();
-	createUserTable();
-	addUsersToTable();
+    addButtonActions();
+    createUserTable();
+    addUsersToTable();
 
-	view.addRow(0, title);
-	view.addRow(1, userTable);
-	view.addRow(2, backButton);
+    view.addRow(0, title);
+    view.addRow(1, userTable);
+    view.addRow(2, backButton);
   }
 
-  private void observeModelAndUpdateControls() {
-  }
+  private void observeModelAndUpdateControls() {}
 
   private void createUserTable() {
-	userTable = new TableView<User>();
-	userTable.setEditable(true);
-	userData = FXCollections.observableArrayList();
+    userTable = new TableView<User>();
+    userTable.setEditable(true);
+    userData = FXCollections.observableArrayList();
 
     userName = new TableColumn("Username");
     userName.setMinWidth(100);
-	userName.setCellValueFactory(new PropertyValueFactory<User, String>("Username"));
-	
-	firstName = new TableColumn("First");
+    userName.setCellValueFactory(new PropertyValueFactory<User, String>("Username"));
+
+    firstName = new TableColumn("First");
     firstName.setMinWidth(100);
-	firstName.setCellValueFactory(new PropertyValueFactory<User, String>("First"));
-	
-	lastName = new TableColumn("Last");
+    firstName.setCellValueFactory(new PropertyValueFactory<User, String>("First"));
+
+    lastName = new TableColumn("Last");
     lastName.setMinWidth(100);
     lastName.setCellValueFactory(new PropertyValueFactory<User, String>("Last"));
-	
-	userTable.getColumns().addAll(userName, firstName, lastName);
+
+    userTable.getColumns().addAll(userName, firstName, lastName);
     userTable.setItems(userData);
   }
 
-  /**Add current users in DB from the auth manager.*/
+  /** Add current users in DB from the auth manager. */
   private void addUsersToTable() {
-	  users = controller.getUsers();
-	  
-	  for(int i = 0; i < users.length; i++) {
-		  String currentUser = users[i];
-		  User newUser = new User(currentUser, "Test", "Test");
-		  userData.add(newUser);
-	  }
+    users = controller.getUsers();
+
+    for (int i = 0; i < users.length; i++) {
+      String currentUser = users[i];
+      User newUser = new User(currentUser, "Test", "Test");
+      userData.add(newUser);
+    }
   }
 
   private void addButtonActions() {
-	backButton = new Button("Back");
+    backButton = new Button("Back");
 
-	/** Go back to admin console */
+    /** Go back to admin console */
     backButton.setOnAction(
         new EventHandler<ActionEvent>() {
           @Override

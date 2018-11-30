@@ -23,6 +23,6 @@ public class UserAdminController extends Controller {
   }
 
   public String[] getUsers() {
-	  return authManager.getUsers();
+    return authManager.getUsers();
   }
 }

@@ -41,8 +41,8 @@ public class DeviceAdminController extends Controller {
   }
 
   public void userDeviceRegistrationGUI() {
-	  Token token = model.getToken();
+    Token token = model.getToken();
 
-	  switchViews(this, Views.USER_DEVICE_REG, token);
+    switchViews(this, Views.USER_DEVICE_REG, token);
   }
 }

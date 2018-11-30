@@ -245,15 +245,15 @@ public class DeviceAdminView {
           public void handle(ActionEvent e) {
             controller.adminGUI();
           }
-		});
-	
-	registerDeviceWithUser.setOnAction(
-		new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				controller.userDeviceRegistrationGUI();
-			}
-		});
+        });
+
+    registerDeviceWithUser.setOnAction(
+        new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent e) {
+            controller.userDeviceRegistrationGUI();
+          }
+        });
   }
 
   private void addDevicesToTable(Boolean newValue) {

@@ -90,9 +90,9 @@ public class UserAdminView {
 
     userTable.setItems(userData);
 
-	userTable.getColumns().addAll(userName, firstName, lastName);
-	
-	addUsersToTable();
+    userTable.getColumns().addAll(userName, firstName, lastName);
+
+    addUsersToTable();
 
     addUser = new Button("Add User");
     removeUser = new Button("Remove User");
@@ -115,9 +115,7 @@ public class UserAdminView {
           public void handle(ActionEvent e) {
             userData.add(
                 new User(
-                    userNameField.getText(),
-                    firstNameField.getText(),
-                    lastNameField.getText()));
+                    userNameField.getText(), firstNameField.getText(), lastNameField.getText()));
           }
         });
 
@@ -155,11 +153,11 @@ public class UserAdminView {
   private void observeModelAndUpdateControls() {}
 
   private void addUsersToTable() {
-	  users = controller.getUsers();
-	  for(int i = 0; i < users.length; i++) {
-		  String currentUser = users[i];
-		  User newUser = new User(currentUser, "Test", "Test");
-		  userData.add(newUser);
-	  }
+    users = controller.getUsers();
+    for (int i = 0; i < users.length; i++) {
+      String currentUser = users[i];
+      User newUser = new User(currentUser, "Test", "Test");
+      userData.add(newUser);
+    }
   }
 }
