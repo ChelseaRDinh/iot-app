@@ -28,8 +28,10 @@ public class UserDeviceRegistrationView {
   private UserDeviceRegistrationController controller;
   private UserDeviceRegistrationModel model;
   private TableColumn userName;
-  private TableView<String> userTable;
-  private ObservableList<String> userData;
+  private TableColumn firstName;
+  private TableColumn lastName;
+  private TableView<User> userTable;
+  private ObservableList<User> userData;
   private String[] users;
   private GridPane view;
   private Text title;
@@ -81,15 +83,23 @@ public class UserDeviceRegistrationView {
   }
 
   private void createUserTable() {
-	userTable = new TableView<String>();
+	userTable = new TableView<User>();
 	userTable.setEditable(true);
 	userData = FXCollections.observableArrayList();
 
     userName = new TableColumn("Username");
     userName.setMinWidth(100);
-    userName.setCellValueFactory(new PropertyValueFactory<String, String>("Username"));
+	userName.setCellValueFactory(new PropertyValueFactory<User, String>("Username"));
 	
-	userTable.getColumns().addAll(userName);
+	firstName = new TableColumn("First");
+    firstName.setMinWidth(100);
+	firstName.setCellValueFactory(new PropertyValueFactory<User, String>("First"));
+	
+	lastName = new TableColumn("Last");
+    lastName.setMinWidth(100);
+    lastName.setCellValueFactory(new PropertyValueFactory<User, String>("Last"));
+	
+	userTable.getColumns().addAll(userName, firstName, lastName);
     userTable.setItems(userData);
   }
 
@@ -99,7 +109,8 @@ public class UserDeviceRegistrationView {
 	  
 	  for(int i = 0; i < users.length; i++) {
 		  String currentUser = users[i];
-		  userData.add(currentUser);
+		  User newUser = new User(currentUser, "Test", "Test");
+		  userData.add(newUser);
 	  }
   }
 
