@@ -6,6 +6,7 @@ public class User {
   private SimpleStringProperty userName;
   private SimpleStringProperty firstName;
   private SimpleStringProperty lastName;
+  private SimpleStringProperty role;
 
   /**
    * The constructor for a user class.
@@ -13,11 +14,13 @@ public class User {
    * @param userName the user's name
    * @param firstName the user's first name
    * @param lastName the user's last name
+   * @param role the user's role
    */
-  public User(String userName, String firstName, String lastName) {
+  public User(String userName, String firstName, String lastName, String role) {
     this.userName = new SimpleStringProperty(userName);
     this.firstName = new SimpleStringProperty(firstName);
     this.lastName = new SimpleStringProperty(lastName);
+    this.role = new SimpleStringProperty(role);
   }
 
   /**
@@ -48,6 +51,15 @@ public class User {
   }
 
   /**
+   * Get the user's role.
+   *
+   * @return the user's role
+   */
+  public String getRole() {
+    return role.get();
+  }
+
+  /**
    * Sets the user's username.
    *
    * @param s the username to set
@@ -72,5 +84,14 @@ public class User {
    */
   public void setLastName(String s) {
     lastName.set(s);
+  }
+
+  /**
+   * Sets the user's role.
+   *
+   * @param s the user's role to set
+   */
+  public void setRole(String s) {
+    role.set(s);
   }
 }
