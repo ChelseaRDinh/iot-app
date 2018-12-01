@@ -2,7 +2,7 @@ package ca.uvic.seng330.assn3;
 
 import org.testfx.framework.junit.ApplicationTest;
 
-public class ManageDevicesTest extends ApplicationTest {
+public class DeviceAdminTest extends ApplicationTest {
 
   /*
   @Override

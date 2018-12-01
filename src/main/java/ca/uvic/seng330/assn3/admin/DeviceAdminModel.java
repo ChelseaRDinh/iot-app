@@ -5,17 +5,17 @@ import ca.uvic.seng330.assn3.Model;
 import ca.uvic.seng330.assn3.Token;
 import ca.uvic.seng330.assn3.devices.Camera;
 import ca.uvic.seng330.assn3.devices.Device;
+import ca.uvic.seng330.assn3.devices.Hub;
 import ca.uvic.seng330.assn3.devices.Lightbulb;
 import ca.uvic.seng330.assn3.devices.MasterHub;
-import ca.uvic.seng330.assn3.devices.Hub;
 import ca.uvic.seng330.assn3.devices.SmartPlug;
 import ca.uvic.seng330.assn3.devices.Thermostat;
+import java.util.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import javafx.beans.property.SimpleBooleanProperty;
 import org.json.JSONObject;
-import java.util.*;
 
 public class DeviceAdminModel extends Model {
   private Thread getDevices;
@@ -39,16 +39,15 @@ public class DeviceAdminModel extends Model {
 
     isReady = new SimpleBooleanProperty(false);
     devices = new ArrayList<UUID>();
-	deviceItems = new ArrayList<DeviceItem>();
-	this.h = h;
-	this.token = token;
+    deviceItems = new ArrayList<DeviceItem>();
+    this.h = h;
+    this.token = token;
 
     devicesSupported = new ArrayList<String>();
     devicesSupported.add(Camera.class.getName());
     devicesSupported.add(Lightbulb.class.getName());
-	devicesSupported.add(SmartPlug.class.getName());
-	devicesSupported.add(Thermostat.class.getName());
-	
+    devicesSupported.add(SmartPlug.class.getName());
+    devicesSupported.add(Thermostat.class.getName());
 
     Runnable task =
         new Runnable() {
@@ -150,11 +149,11 @@ public class DeviceAdminModel extends Model {
   }
 
   /*
-  * Get HashSet of all usernames.
-  */
+   * Get HashSet of all usernames.
+   */
   public Set<String> getAllUsernames() {
-	  return h.getAllUsernames();
-  } 
+    return h.getAllUsernames();
+  }
 
   /**
    * Gets the device item at a given index.
@@ -204,11 +203,11 @@ public class DeviceAdminModel extends Model {
   }
 
   public Hub getHubForUser(String user) {
-	return h.getHubForUser(token, user);
+    return h.getHubForUser(token, user);
   }
 
   public MasterHub getMasterHub() {
-	  return h;
+    return h;
   }
 
   @Override

@@ -1,6 +1,7 @@
 package ca.uvic.seng330.assn3.admin;
 
 import ca.uvic.seng330.assn3.DeviceItem;
+import java.util.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -22,9 +23,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import java.util.*;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 
 public class DeviceAdminView {
   private DeviceAdminController controller;
@@ -65,19 +63,18 @@ public class DeviceAdminView {
     for (String className : addableClasses) {
       int lastDot = className.lastIndexOf('.');
       displayNameToType.put(className.substring(lastDot + 1, className.length()), className);
-	}
+    }
 
-	displayUsername = new HashMap<String, String>();
-	Set<String> addableUsernames = model.getAllUsernames();
-	for(String userName : addableUsernames) {
-		if(!userName.equals("admin")) {
-			displayUsername.put(userName,userName);
-		}
-	}
+    displayUsername = new HashMap<String, String>();
+    Set<String> addableUsernames = model.getAllUsernames();
+    for (String userName : addableUsernames) {
+      if (!userName.equals("admin")) {
+        displayUsername.put(userName, userName);
+      }
+    }
 
-
-	deviceTypeOptions = FXCollections.observableArrayList(displayNameToType.keySet());
-	deviceOwnerOptions = FXCollections.observableArrayList(displayUsername.keySet());
+    deviceTypeOptions = FXCollections.observableArrayList(displayNameToType.keySet());
+    deviceOwnerOptions = FXCollections.observableArrayList(displayUsername.keySet());
 
     createAndConfigurePane();
     createAndLayoutControls();
@@ -172,13 +169,13 @@ public class DeviceAdminView {
 
     // Device types for drop-down menu that appears after the button 'Add Device' is selected.
     deviceTypeBox = new ComboBox(deviceTypeOptions);
-	deviceTypeBox.setId("deviceTypeBox");
-	
-	deviceOwnerBox = new ComboBox(deviceOwnerOptions);
-	deviceOwnerBox.setId("deviceOwnerBox");
+    deviceTypeBox.setId("deviceTypeBox");
 
-	bottomView.add(deviceTypeBox, 0, 1);
-	bottomView.add(deviceOwnerBox, 1, 1);
+    deviceOwnerBox = new ComboBox(deviceOwnerOptions);
+    deviceOwnerBox.setId("deviceOwnerBox");
+
+    bottomView.add(deviceTypeBox, 0, 1);
+    bottomView.add(deviceOwnerBox, 1, 1);
 
     addButtonActions();
     setLoadingControlsHidden(false);
@@ -213,8 +210,8 @@ public class DeviceAdminView {
   }
 
   private void addButtonActions() {
-	
-	confirmButton.setOnAction(
+
+    confirmButton.setOnAction(
         new EventHandler<ActionEvent>() {
           @Override
           public void handle(ActionEvent e) {
@@ -247,38 +244,36 @@ public class DeviceAdminView {
               // Show error message.
             }
           }
-		});
-	
-	/*setOwnerButton.setOnAction(
-		new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				DeviceItem selectedItem = deviceTable.getSelectionModel().getSelectedItem();
-				controller.userDeviceRegGUI();
-			}
-		});*/
-	
-	
-	setOwnerButton.setOnAction(
-		new EventHandler<ActionEvent>() {
-		  @Override
-		  public void handle(ActionEvent e) {
-		  /**
-		   * After selecting device to change its ownership,
-		   * show combo box of avail users to change ownership to
-		   * Then update user field of table in place.
-		   */
-		   DeviceItem selectedItem = deviceTable.getSelectionModel().getSelectedItem();
-		   String oldOwner = selectedItem.getOwner();
-		   String selectedOwner = deviceOwnerBox.getValue().toString();
-		   String selectedDeviceUUID = selectedItem.getUUID();
+        });
 
-		   controller.changeDeviceOwner(oldOwner, selectedOwner, selectedDeviceUUID);
-		   selectedItem.setOwner(selectedOwner);
-		  /**Refresh table after changing owner so user doesn't have to refresh the page. */
-		   deviceTable.refresh();
-		}
-		});
+    /*setOwnerButton.setOnAction(
+    new EventHandler<ActionEvent>() {
+    	@Override
+    	public void handle(ActionEvent e) {
+    		DeviceItem selectedItem = deviceTable.getSelectionModel().getSelectedItem();
+    		controller.userDeviceRegGUI();
+    	}
+    });*/
+
+    setOwnerButton.setOnAction(
+        new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent e) {
+            /**
+             * After selecting device to change its ownership, show combo box of avail users to
+             * change ownership to Then update user field of table in place.
+             */
+            DeviceItem selectedItem = deviceTable.getSelectionModel().getSelectedItem();
+            String oldOwner = selectedItem.getOwner();
+            String selectedOwner = deviceOwnerBox.getValue().toString();
+            String selectedDeviceUUID = selectedItem.getUUID();
+
+            controller.changeDeviceOwner(oldOwner, selectedOwner, selectedDeviceUUID);
+            selectedItem.setOwner(selectedOwner);
+            /** Refresh table after changing owner so user doesn't have to refresh the page. */
+            deviceTable.refresh();
+          }
+        });
 
     backButton.setOnAction(
         new EventHandler<ActionEvent>() {

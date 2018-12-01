@@ -1,21 +1,11 @@
 package ca.uvic.seng330.assn3.admin;
 
-import ca.uvic.seng330.assn3.DeviceItem;
 import ca.uvic.seng330.assn3.Model;
 import ca.uvic.seng330.assn3.Token;
-import ca.uvic.seng330.assn3.devices.Camera;
-import ca.uvic.seng330.assn3.devices.Device;
-import ca.uvic.seng330.assn3.devices.Lightbulb;
-import ca.uvic.seng330.assn3.devices.MasterHub;
 import ca.uvic.seng330.assn3.devices.Hub;
-import ca.uvic.seng330.assn3.devices.SmartPlug;
-import ca.uvic.seng330.assn3.devices.Thermostat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-import javafx.beans.property.SimpleBooleanProperty;
-import org.json.JSONObject;
+import ca.uvic.seng330.assn3.devices.MasterHub;
 import java.util.*;
+import org.json.JSONObject;
 
 public class DeviceRegistrationModel extends Model {
   private MasterHub h;
@@ -30,19 +20,19 @@ public class DeviceRegistrationModel extends Model {
   public DeviceRegistrationModel(Token token, MasterHub h) {
     super(token, h);
 
-	this.h = h;
-	this.token = token;
+    this.h = h;
+    this.token = token;
   }
 
   /*
-  * Get HashSet of all usernames.
-  */
+   * Get HashSet of all usernames.
+   */
   public Set<String> getAllUsernames() {
-	  return h.getAllUsernames();
-  } 
+    return h.getAllUsernames();
+  }
 
   public Hub getHubForUser(String user) {
-	return h.getHubForUser(token, user);
+    return h.getHubForUser(token, user);
   }
 
   @Override

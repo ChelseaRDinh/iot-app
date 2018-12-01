@@ -215,8 +215,8 @@ public class IOTApplication extends Application {
             new DeviceAdminView(deviceAdminController, deviceAdminModel);
         scene = new Scene(deviceAdminView.asParent(), 960, 480);
         this.primaryStage.setScene(scene);
-		this.primaryStage.show();
-		break;
+        this.primaryStage.show();
+        break;
       default:
         break;
     }
