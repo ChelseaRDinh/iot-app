@@ -215,25 +215,8 @@ public class IOTApplication extends Application {
             new DeviceAdminView(deviceAdminController, deviceAdminModel);
         scene = new Scene(deviceAdminView.asParent(), 960, 480);
         this.primaryStage.setScene(scene);
-        this.primaryStage.show();
-        break;
-      case USER_DEVICE_REG:
-        UserDeviceRegistrationModel userDeviceRegistrationModel =
-            new UserDeviceRegistrationModel(authToken, allHubs);
-        UserDeviceRegistrationController userDeviceRegistrationController =
-            new UserDeviceRegistrationController(
-                userDeviceRegistrationModel,
-                authManager,
-                (from, to, token) -> {
-                  this.transition(from, to, token);
-                });
-        UserDeviceRegistrationView userDeviceRegistrationView =
-            new UserDeviceRegistrationView(
-                userDeviceRegistrationController, userDeviceRegistrationModel);
-        scene = new Scene(userDeviceRegistrationView.asParent(), 960, 480);
-        this.primaryStage.setScene(scene);
-        this.primaryStage.show();
-        break;
+		this.primaryStage.show();
+		break;
       default:
         break;
     }

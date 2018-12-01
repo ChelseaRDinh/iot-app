@@ -7,9 +7,10 @@ import ca.uvic.seng330.assn3.Token;
 import ca.uvic.seng330.assn3.ViewTransition;
 import ca.uvic.seng330.assn3.Views;
 import java.util.UUID;
+import ca.uvic.seng330.assn3.devices.*;
 
-public class UserDeviceRegistrationController extends Controller {
-  private final UserDeviceRegistrationModel model;
+public class DeviceRegistrationController extends Controller {
+  private final DeviceRegistrationModel model;
 
   /**
    * Constructor for Admin controller for the device admin UI.
@@ -18,29 +19,9 @@ public class UserDeviceRegistrationController extends Controller {
    * @param authManager the auth manager to manage authentication
    * @param transitionNotifier a function that will allow the controller to invoke a view transition
    */
-  public UserDeviceRegistrationController(
-      UserDeviceRegistrationModel model,
-      AuthManager authManager,
-      ViewTransition transitionNotifier) {
+  public DeviceRegistrationController(
+      DeviceRegistrationModel model, AuthManager authManager, ViewTransition transitionNotifier) {
     super(authManager, transitionNotifier);
     this.model = model;
-  }
-
-  public DeviceItem addNewDevice(String className) {
-    return model.addNewDevice(className);
-  }
-
-  public boolean removeByUUID(UUID device) {
-    return model.removeByUUID(device);
-  }
-
-  public void deviceAdminGUI() {
-    Token token = model.getToken();
-
-    switchViews(this, Views.DEVICE_ADMIN, token);
-  }
-
-  public String[] getUsers() {
-    return authManager.getUsers();
   }
 }

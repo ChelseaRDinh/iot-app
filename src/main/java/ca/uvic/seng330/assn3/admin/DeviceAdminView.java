@@ -47,7 +47,6 @@ public class DeviceAdminView {
   private Button setOwnerButton;
   private Button removeDevice;
   private Button confirmButton;
-  private Button registerDeviceWithUser;
   private TextField deviceNameField;
   private TextField deviceTypeField;
   private ComboBox deviceTypeBox;
@@ -153,7 +152,6 @@ public class DeviceAdminView {
     setOwnerButton = new Button("Change Selected Device Owner");
     removeDevice = new Button("Remove Selected Device");
     confirmButton = new Button("Confirm Add Device");
-    registerDeviceWithUser = new Button("Register Device with User");
 
     topView.addRow(0, title);
     topView.addRow(1, loadingText);
@@ -165,7 +163,6 @@ public class DeviceAdminView {
     bottomView.add(confirmButton, 0, 0);
     bottomView.add(setOwnerButton, 1, 0);
     bottomView.add(removeDevice, 2, 0);
-    bottomView.add(registerDeviceWithUser, 3, 0);
 
     bottomView.add(otherBackButton, 1, 2);
 
@@ -212,7 +209,8 @@ public class DeviceAdminView {
   }
 
   private void addButtonActions() {
-    confirmButton.setOnAction(
+	
+	confirmButton.setOnAction(
         new EventHandler<ActionEvent>() {
           @Override
           public void handle(ActionEvent e) {
@@ -249,24 +247,34 @@ public class DeviceAdminView {
 	
 	setOwnerButton.setOnAction(
 		new EventHandler<ActionEvent>() {
-		  @Override
-		  public void handle(ActionEvent e) {
+			@Override
+			public void handle(ActionEvent e) {
+				DeviceItem selectedItem = deviceTable.getSelectionModel().getSelectedItem();
+				controller.userDeviceRegGUI();
+			}
+		});
+	
+	
+	//setOwnerButton.setOnAction(
+		//new EventHandler<ActionEvent>() {
+		  //@Override
+		  //public void handle(ActionEvent e) {
 		  /**
 		   * After selecting device to change its ownership,
 		   * show combo box of avail users to change ownership to
 		   * Then update user field of table in place.
 		   */
-		   DeviceItem selectedItem = deviceTable.getSelectionModel().getSelectedItem();
-		   String oldOwner = selectedItem.getOwner();
-		   String selectedOwner = deviceOwnerBox.getValue().toString();
-		   String selectedDeviceUUID = selectedItem.getUUID();
+		   //DeviceItem selectedItem = deviceTable.getSelectionModel().getSelectedItem();
+		   //String oldOwner = selectedItem.getOwner();
+		   //String selectedOwner = deviceOwnerBox.getValue().toString();
+		   //String selectedDeviceUUID = selectedItem.getUUID();
 
-		   controller.changeDeviceOwner(oldOwner, selectedOwner, selectedDeviceUUID);
-		   selectedItem.setOwner(selectedOwner);
+		   //controller.changeDeviceOwner(oldOwner, selectedOwner, selectedDeviceUUID);
+		   //selectedItem.setOwner(selectedOwner);
 		   /**Refresh table after changing owner so user doesn't have to refresh the page. */
-		   deviceTable.refresh();
-		}
-		});
+		   //deviceTable.refresh();
+		//}
+		//});
 
     backButton.setOnAction(
         new EventHandler<ActionEvent>() {
@@ -283,14 +291,6 @@ public class DeviceAdminView {
             controller.adminGUI();
           }
         });
-
-    registerDeviceWithUser.setOnAction(
-        new EventHandler<ActionEvent>() {
-          @Override
-          public void handle(ActionEvent e) {
-            controller.userDeviceRegistrationGUI();
-          }
-		});
   }
 
   private void addDevicesToTable(Boolean newValue) {

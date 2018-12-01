@@ -207,6 +207,10 @@ public class DeviceAdminModel extends Model {
 	return h.getHubForUser(token, user);
   }
 
+  public MasterHub getMasterHub() {
+	  return h;
+  }
+
   @Override
   public void notify(JSONObject message) {}
 }
