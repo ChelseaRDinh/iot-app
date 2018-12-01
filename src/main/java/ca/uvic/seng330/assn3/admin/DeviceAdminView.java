@@ -70,7 +70,9 @@ public class DeviceAdminView {
 	displayUsername = new HashMap<String, String>();
 	Set<String> addableUsernames = model.getAllUsernames();
 	for(String userName : addableUsernames) {
-		displayUsername.put(userName,userName);
+		if(!userName.equals("admin")) {
+			displayUsername.put(userName,userName);
+		}
 	}
 
 
