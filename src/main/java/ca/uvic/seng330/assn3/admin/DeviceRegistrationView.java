@@ -25,6 +25,9 @@ import javafx.scene.text.Text;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.util.*;
+import ca.uvic.seng330.assn3.admin.DeviceRegistrationView;
+import ca.uvic.seng330.assn3.admin.DeviceRegistrationModel;
+import ca.uvic.seng330.assn3.admin.DeviceRegistrationController;
 
 public class DeviceRegistrationView {
   private DeviceRegistrationController controller;

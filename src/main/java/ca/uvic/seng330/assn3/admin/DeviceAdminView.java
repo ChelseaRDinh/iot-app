@@ -23,6 +23,8 @@ import javafx.scene.layout.Priority;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import java.util.*;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 public class DeviceAdminView {
   private DeviceAdminController controller;
@@ -245,36 +247,36 @@ public class DeviceAdminView {
           }
 		});
 	
-	setOwnerButton.setOnAction(
+	/*setOwnerButton.setOnAction(
 		new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
 				DeviceItem selectedItem = deviceTable.getSelectionModel().getSelectedItem();
 				controller.userDeviceRegGUI();
 			}
-		});
+		});*/
 	
 	
-	//setOwnerButton.setOnAction(
-		//new EventHandler<ActionEvent>() {
-		  //@Override
-		  //public void handle(ActionEvent e) {
+	setOwnerButton.setOnAction(
+		new EventHandler<ActionEvent>() {
+		  @Override
+		  public void handle(ActionEvent e) {
 		  /**
 		   * After selecting device to change its ownership,
 		   * show combo box of avail users to change ownership to
 		   * Then update user field of table in place.
 		   */
-		   //DeviceItem selectedItem = deviceTable.getSelectionModel().getSelectedItem();
-		   //String oldOwner = selectedItem.getOwner();
-		   //String selectedOwner = deviceOwnerBox.getValue().toString();
-		   //String selectedDeviceUUID = selectedItem.getUUID();
+		   DeviceItem selectedItem = deviceTable.getSelectionModel().getSelectedItem();
+		   String oldOwner = selectedItem.getOwner();
+		   String selectedOwner = deviceOwnerBox.getValue().toString();
+		   String selectedDeviceUUID = selectedItem.getUUID();
 
-		   //controller.changeDeviceOwner(oldOwner, selectedOwner, selectedDeviceUUID);
-		   //selectedItem.setOwner(selectedOwner);
-		   /**Refresh table after changing owner so user doesn't have to refresh the page. */
-		   //deviceTable.refresh();
-		//}
-		//});
+		   controller.changeDeviceOwner(oldOwner, selectedOwner, selectedDeviceUUID);
+		   selectedItem.setOwner(selectedOwner);
+		  /**Refresh table after changing owner so user doesn't have to refresh the page. */
+		   deviceTable.refresh();
+		}
+		});
 
     backButton.setOnAction(
         new EventHandler<ActionEvent>() {
