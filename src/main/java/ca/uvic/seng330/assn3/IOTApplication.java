@@ -1,13 +1,38 @@
 package ca.uvic.seng330.assn3;
 
-import ca.uvic.seng330.assn3.admin.*;
-import ca.uvic.seng330.assn3.devices.*;
-import ca.uvic.seng330.assn3.devices.camera.*;
-import ca.uvic.seng330.assn3.devices.lightbulb.*;
-import ca.uvic.seng330.assn3.devices.smartplug.*;
-import ca.uvic.seng330.assn3.devices.thermostat.*;
-import ca.uvic.seng330.assn3.home.*;
-import ca.uvic.seng330.assn3.login.*;
+import ca.uvic.seng330.assn3.admin.AdminController;
+import ca.uvic.seng330.assn3.admin.AdminModel;
+import ca.uvic.seng330.assn3.admin.AdminView;
+import ca.uvic.seng330.assn3.admin.DeviceAdminController;
+import ca.uvic.seng330.assn3.admin.DeviceAdminModel;
+import ca.uvic.seng330.assn3.admin.DeviceAdminView;
+import ca.uvic.seng330.assn3.admin.UserAdminController;
+import ca.uvic.seng330.assn3.admin.UserAdminModel;
+import ca.uvic.seng330.assn3.admin.UserAdminView;
+import ca.uvic.seng330.assn3.devices.Camera;
+import ca.uvic.seng330.assn3.devices.Hub;
+import ca.uvic.seng330.assn3.devices.Lightbulb;
+import ca.uvic.seng330.assn3.devices.MasterHub;
+import ca.uvic.seng330.assn3.devices.SmartPlug;
+import ca.uvic.seng330.assn3.devices.Thermostat;
+import ca.uvic.seng330.assn3.devices.camera.CameraController;
+import ca.uvic.seng330.assn3.devices.camera.CameraModel;
+import ca.uvic.seng330.assn3.devices.camera.CameraView;
+import ca.uvic.seng330.assn3.devices.lightbulb.LightbulbController;
+import ca.uvic.seng330.assn3.devices.lightbulb.LightbulbModel;
+import ca.uvic.seng330.assn3.devices.lightbulb.LightbulbView;
+import ca.uvic.seng330.assn3.devices.smartplug.SmartplugController;
+import ca.uvic.seng330.assn3.devices.smartplug.SmartplugModel;
+import ca.uvic.seng330.assn3.devices.smartplug.SmartplugView;
+import ca.uvic.seng330.assn3.devices.thermostat.ThermostatController;
+import ca.uvic.seng330.assn3.devices.thermostat.ThermostatModel;
+import ca.uvic.seng330.assn3.devices.thermostat.ThermostatView;
+import ca.uvic.seng330.assn3.home.HomeController;
+import ca.uvic.seng330.assn3.home.HomeModel;
+import ca.uvic.seng330.assn3.home.HomeView;
+import ca.uvic.seng330.assn3.login.LoginController;
+import ca.uvic.seng330.assn3.login.LoginModel;
+import ca.uvic.seng330.assn3.login.LoginView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -215,8 +240,8 @@ public class IOTApplication extends Application {
             new DeviceAdminView(deviceAdminController, deviceAdminModel);
         scene = new Scene(deviceAdminView.asParent(), 960, 480);
         this.primaryStage.setScene(scene);
-		this.primaryStage.show();
-		break;
+        this.primaryStage.show();
+        break;
       default:
         break;
     }
