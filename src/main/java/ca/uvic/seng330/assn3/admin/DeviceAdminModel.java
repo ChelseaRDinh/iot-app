@@ -162,7 +162,7 @@ public class DeviceAdminModel extends Model {
         return;
       }
 
-      devices.addAll(getUUIDOfType(className));
+      devices.addAll(getUUIDOfType(className, true));
     }
 
     for (UUID device : devices) {

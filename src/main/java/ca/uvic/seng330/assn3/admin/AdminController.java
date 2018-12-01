@@ -5,8 +5,6 @@ import ca.uvic.seng330.assn3.Controller;
 import ca.uvic.seng330.assn3.Token;
 import ca.uvic.seng330.assn3.ViewTransition;
 import ca.uvic.seng330.assn3.Views;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 
 public class AdminController extends Controller {
   private final AdminModel model;
@@ -24,11 +22,15 @@ public class AdminController extends Controller {
     this.model = model;
   }
 
+  public boolean toggleHubPower() {
+    return model.toggleHubPower();
+  }
+
   /** Open the user management UI. */
   public void manageUsersGUI() {
-	Token token = model.getToken();
+    Token token = model.getToken();
 
-	switchViews(this, Views.USER_ADMIN, token);
+    switchViews(this, Views.USER_ADMIN, token);
   }
 
   /** Open the device management UI. */

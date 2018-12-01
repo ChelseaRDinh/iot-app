@@ -19,6 +19,7 @@ public class AdminView {
   private Text title;
   private Button manageUsersButton;
   private Button manageDevicesButton;
+  private Button shutdownButton;
   private Button backButton;
 
   /** Default constructor for the Admin Dashboard view. */
@@ -56,12 +57,22 @@ public class AdminView {
 
     manageUsersButton = new Button("Manage Users");
     manageDevicesButton = new Button("Manage Devices");
+    shutdownButton = new Button("Shutdown Devices");
     backButton = new Button("Back");
 
     view.addRow(0, title);
     view.addRow(1, manageUsersButton);
     view.addRow(2, manageDevicesButton);
-    view.addRow(3, backButton);
+    view.addRow(3, shutdownButton);
+    view.addRow(4, backButton);
+
+    boolean isShutDown = model.getIsHubOn();
+
+    if (isShutDown) {
+      shutdownButton.setText("Startup Devices");
+    } else {
+      shutdownButton.setText("Shutdown Devices");
+    }
 
     /*
      * Go back to home dashboard.
@@ -95,6 +106,20 @@ public class AdminView {
           @Override
           public void handle(ActionEvent e) {
             controller.manageDevicesGUI();
+          }
+        });
+
+    shutdownButton.setOnAction(
+        new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent e) {
+            boolean isShutDown = controller.toggleHubPower();
+
+            if (isShutDown) {
+              shutdownButton.setText("Startup Devices");
+            } else {
+              shutdownButton.setText("Shutdown Devices");
+            }
           }
         });
   }
