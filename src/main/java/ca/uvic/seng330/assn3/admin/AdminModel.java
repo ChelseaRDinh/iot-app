@@ -9,12 +9,23 @@ import org.json.JSONObject;
 public class AdminModel extends Model {
   private boolean isHubOn;
 
+  /**
+   * Constructor for admin model for the admin UI.
+   *
+   * @param token the user's token
+   * @param h the master hub containing all the user's hubs
+   */
   public AdminModel(Token token, MasterHub h) {
     super(token, h);
 
     sendMessageToAllDevices(Command.HUB_GET_CONDITION);
   }
 
+  /**
+   * Shutsdown the hub if it's on, starts it up if it's offline, returns its new status.
+   *
+   * @return true if on, false if offline
+   */
   public boolean toggleHubPower() {
     sendMessageToAllDevices(Command.HUB_TOGGLE_POWER);
 
