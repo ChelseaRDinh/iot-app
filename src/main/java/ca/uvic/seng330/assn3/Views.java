@@ -6,6 +6,7 @@ public enum Views {
   ADMIN,
   DEVICE_ADMIN,
   USER_ADMIN,
+  USER_DEVICE_REG,
   CAMERA,
   LIGHTBULB,
   SMARTPLUG,
