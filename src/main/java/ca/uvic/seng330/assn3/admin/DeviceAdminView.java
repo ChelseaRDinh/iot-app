@@ -22,14 +22,17 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import java.util.*;
 
 public class DeviceAdminView {
   private DeviceAdminController controller;
   private DeviceAdminModel model;
 
   private HashMap<String, String> displayNameToType;
+  private HashMap<String, String> displayUsername;
   private ObservableList<DeviceItem> deviceData;
   private ObservableList<String> deviceTypeOptions;
+  private ObservableList<String> deviceOwnerOptions;
 
   private GridPane mainView;
   private GridPane topView;
@@ -48,6 +51,7 @@ public class DeviceAdminView {
   private TextField deviceNameField;
   private TextField deviceTypeField;
   private ComboBox deviceTypeBox;
+  private ComboBox deviceOwnerBox;
 
   /** Default constructor for the Manage Devices view. */
   public DeviceAdminView(DeviceAdminController controller, DeviceAdminModel model) {
@@ -60,9 +64,17 @@ public class DeviceAdminView {
     for (String className : addableClasses) {
       int lastDot = className.lastIndexOf('.');
       displayNameToType.put(className.substring(lastDot + 1, className.length()), className);
-    }
+	}
 
-    deviceTypeOptions = FXCollections.observableArrayList(displayNameToType.keySet());
+	displayUsername = new HashMap<String, String>();
+	Set<String> addableUsernames = model.getAllUsernames();
+	for(String userName : addableUsernames) {
+		displayUsername.put(userName,userName);
+	}
+
+
+	deviceTypeOptions = FXCollections.observableArrayList(displayNameToType.keySet());
+	deviceOwnerOptions = FXCollections.observableArrayList(displayUsername.keySet());
 
     createAndConfigurePane();
     createAndLayoutControls();
@@ -159,9 +171,13 @@ public class DeviceAdminView {
 
     // Device types for drop-down menu that appears after the button 'Add Device' is selected.
     deviceTypeBox = new ComboBox(deviceTypeOptions);
-    deviceTypeBox.setId("deviceTypeBox");
+	deviceTypeBox.setId("deviceTypeBox");
+	
+	deviceOwnerBox = new ComboBox(deviceOwnerOptions);
+	deviceOwnerBox.setId("deviceOwnerBox");
 
-    bottomView.add(deviceTypeBox, 0, 1);
+	bottomView.add(deviceTypeBox, 0, 1);
+	bottomView.add(deviceOwnerBox, 1, 1);
 
     addButtonActions();
     setLoadingControlsHidden(false);
@@ -253,7 +269,20 @@ public class DeviceAdminView {
           public void handle(ActionEvent e) {
             controller.userDeviceRegistrationGUI();
           }
-        });
+		});
+	
+	setOwnerButton.setOnAction(
+		new EventHandler<ActionEvent>() {
+		@Override
+		public void handle(ActionEvent e) {
+		/**
+		 * After selecting device to change its ownership,
+		 * show combo box of avail users to change ownership to
+		 */
+		DeviceItem selectedItem = deviceTable.getSelectionModel().getSelectedItem();
+
+		}
+		});
   }
 
   private void addDevicesToTable(Boolean newValue) {

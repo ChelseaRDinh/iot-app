@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.UUID;
 import javafx.beans.property.SimpleBooleanProperty;
 import org.json.JSONObject;
+import java.util.*;
 
 public class DeviceAdminModel extends Model {
   private Thread getDevices;
@@ -21,6 +22,7 @@ public class DeviceAdminModel extends Model {
   private List<UUID> devices;
   private List<DeviceItem> deviceItems;
   private List<String> devicesSupported;
+  private MasterHub h;
 
   private SimpleBooleanProperty isReady;
 
@@ -35,13 +37,15 @@ public class DeviceAdminModel extends Model {
 
     isReady = new SimpleBooleanProperty(false);
     devices = new ArrayList<UUID>();
-    deviceItems = new ArrayList<DeviceItem>();
+	deviceItems = new ArrayList<DeviceItem>();
+	this.h = h;
 
     devicesSupported = new ArrayList<String>();
     devicesSupported.add(Camera.class.getName());
     devicesSupported.add(Lightbulb.class.getName());
-    devicesSupported.add(SmartPlug.class.getName());
-    devicesSupported.add(Thermostat.class.getName());
+	devicesSupported.add(SmartPlug.class.getName());
+	devicesSupported.add(Thermostat.class.getName());
+	
 
     Runnable task =
         new Runnable() {
@@ -141,6 +145,13 @@ public class DeviceAdminModel extends Model {
 
     return devices.size();
   }
+
+  /*
+  * Get HashSet of all usernames.
+  */
+  public Set<String> getAllUsernames() {
+	  return h.getAllUsernames();
+  } 
 
   /**
    * Gets the device item at a given index.
