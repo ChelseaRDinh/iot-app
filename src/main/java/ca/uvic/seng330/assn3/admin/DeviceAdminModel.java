@@ -7,6 +7,7 @@ import ca.uvic.seng330.assn3.devices.Camera;
 import ca.uvic.seng330.assn3.devices.Device;
 import ca.uvic.seng330.assn3.devices.Lightbulb;
 import ca.uvic.seng330.assn3.devices.MasterHub;
+import ca.uvic.seng330.assn3.devices.Hub;
 import ca.uvic.seng330.assn3.devices.SmartPlug;
 import ca.uvic.seng330.assn3.devices.Thermostat;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class DeviceAdminModel extends Model {
   private List<DeviceItem> deviceItems;
   private List<String> devicesSupported;
   private MasterHub h;
+  private Token token;
 
   private SimpleBooleanProperty isReady;
 
@@ -39,6 +41,7 @@ public class DeviceAdminModel extends Model {
     devices = new ArrayList<UUID>();
 	deviceItems = new ArrayList<DeviceItem>();
 	this.h = h;
+	this.token = token;
 
     devicesSupported = new ArrayList<String>();
     devicesSupported.add(Camera.class.getName());
@@ -198,6 +201,10 @@ public class DeviceAdminModel extends Model {
         device.toString(),
         getDeviceStatus(device),
         getDeviceOwner(device));
+  }
+
+  public Hub getHubForUser(String user) {
+	return h.getHubForUser(token, user);
   }
 
   @Override

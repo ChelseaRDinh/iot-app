@@ -245,7 +245,28 @@ public class DeviceAdminView {
               // Show error message.
             }
           }
-        });
+		});
+	
+	setOwnerButton.setOnAction(
+		new EventHandler<ActionEvent>() {
+		  @Override
+		  public void handle(ActionEvent e) {
+		  /**
+		   * After selecting device to change its ownership,
+		   * show combo box of avail users to change ownership to
+		   * Then update user field of table in place.
+		   */
+		   DeviceItem selectedItem = deviceTable.getSelectionModel().getSelectedItem();
+		   String oldOwner = selectedItem.getOwner();
+		   String selectedOwner = deviceOwnerBox.getValue().toString();
+		   String selectedDeviceUUID = selectedItem.getUUID();
+
+		   controller.changeDeviceOwner(oldOwner, selectedOwner, selectedDeviceUUID);
+		   selectedItem.setOwner(selectedOwner);
+		   /**Refresh table after changing owner so user doesn't have to refresh the page. */
+		   deviceTable.refresh();
+		}
+		});
 
     backButton.setOnAction(
         new EventHandler<ActionEvent>() {
@@ -269,19 +290,6 @@ public class DeviceAdminView {
           public void handle(ActionEvent e) {
             controller.userDeviceRegistrationGUI();
           }
-		});
-	
-	setOwnerButton.setOnAction(
-		new EventHandler<ActionEvent>() {
-		@Override
-		public void handle(ActionEvent e) {
-		/**
-		 * After selecting device to change its ownership,
-		 * show combo box of avail users to change ownership to
-		 */
-		DeviceItem selectedItem = deviceTable.getSelectionModel().getSelectedItem();
-
-		}
 		});
   }
 
