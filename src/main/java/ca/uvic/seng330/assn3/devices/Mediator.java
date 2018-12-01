@@ -36,6 +36,8 @@ public abstract class Mediator {
 
   public abstract List<UUID> getUUIDOfType(String type);
 
+  public abstract List<UUID> getUUIDOfType(String type, boolean ignoreStatus);
+
   public abstract void alert(JSONMessaging message);
 
   public abstract void register(Client c) throws HubRegistrationException;

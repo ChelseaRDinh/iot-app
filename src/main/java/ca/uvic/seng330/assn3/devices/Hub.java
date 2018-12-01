@@ -64,14 +64,32 @@ public final class Hub extends Mediator {
   }
 
   /**
-   * Gets all of the UUIDs of devices or clients with a given type (object.getClass().toString()).
+   * Gets all of the UUIDs of devices or clients with a given type (object.getClass().toString()),
+   * returning nothing if the hub is offline.
    *
    * @param type the type of the class as a string
    * @return a list of UUIDs, which may be empty if there are no objects of the given type
    */
   @Override
   public List<UUID> getUUIDOfType(String type) {
+    return getUUIDOfType(type, false);
+  }
+
+  /**
+   * Gets all of the UUIDs of devices or clients with a given type (object.getClass().toString())
+   * depending on if the hub is online or offline and if told to ignore status.
+   *
+   * @param type the type of the class as a string
+   * @param ignoreStatus whether or not to ignore if devices are online or offline
+   * @return a list of UUIDs, which may be empty if there are no objects of the given type
+   */
+  @Override
+  public List<UUID> getUUIDOfType(String type, boolean ignoreStatus) {
     ArrayList<UUID> uuids = new ArrayList<UUID>();
+
+    if (!ignoreStatus && status == Status.OFFLINE) {
+      return uuids;
+    }
 
     for (HashMap.Entry<UUID, Device> entry : devices.entrySet()) {
       if (entry.getValue().getClass().getName().equals(type)) {
@@ -103,7 +121,9 @@ public final class Hub extends Mediator {
     List<UUID> targets = message.getTargets();
 
     if (message.getMessage().equals("objectInFront")
-        || message.getMessage().equals("nothingInFront")) {
+        || message.getMessage().equals("nothingInFront")
+        || message.getMessage().equals("getHubCondition")
+        || message.getMessage().equals("toggleHubPower")) {
       processMessage(message.invoke());
       return;
     }
@@ -308,6 +328,22 @@ public final class Hub extends Mediator {
 
       JSONMessaging on = new JSONMessaging(devices.get(sender), "turnOff");
       devices.get(lightbulbs.get(index)).notify(on.invoke());
+    } else if (message.equals("getHubCondition")) {
+      JSONMessaging reply = new JSONMessaging(clients.get(sender), message);
+      reply.addData(Boolean.toString(status == Status.NORMAL));
+
+      clients.get(sender).notify(reply.invoke());
+    } else if (message.equals("toggleHubPower")) {
+      if (status == Status.NORMAL) {
+        shutdown();
+      } else {
+        startup();
+      }
+
+      JSONMessaging reply = new JSONMessaging(clients.get(sender), message);
+      reply.addData(Boolean.toString(status == Status.NORMAL));
+
+      clients.get(sender).notify(reply.invoke());
     }
   }
 

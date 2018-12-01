@@ -79,11 +79,11 @@ Think of this as "pre-condition/test stimulus/post-condition".
       WHEN the devices of the system are functional
         THEN the Hub should display device status visually: functioning, offline, error~~
 
-5. GIVEN the Home Automation System is functional
+5. ~~GIVEN the Home Automation System is functional
       WHEN I click shutdown from the Client Control
         THEN the Hub should turn off all the devices 
         AND should safely shutdown the system
-        AND notify about the activity on the Client.
+        AND notify about the activity on the Client.~~
 
 ## Scenario C: User wants to access camera
 

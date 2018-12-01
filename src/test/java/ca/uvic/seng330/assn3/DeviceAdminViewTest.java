@@ -10,7 +10,6 @@ import ca.uvic.seng330.assn3.devices.Lightbulb;
 import ca.uvic.seng330.assn3.devices.MasterHub;
 import ca.uvic.seng330.assn3.devices.SmartPlug;
 import ca.uvic.seng330.assn3.devices.Status;
-
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.Scene;

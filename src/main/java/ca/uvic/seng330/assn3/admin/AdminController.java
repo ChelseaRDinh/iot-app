@@ -22,6 +22,10 @@ public class AdminController extends Controller {
     this.model = model;
   }
 
+  public boolean toggleHubPower() {
+    return model.toggleHubPower();
+  }
+
   /** Open the user management UI. */
   public void manageUsersGUI() {
     Token token = model.getToken();

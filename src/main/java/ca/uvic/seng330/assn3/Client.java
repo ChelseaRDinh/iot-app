@@ -30,6 +30,8 @@ public abstract class Client {
     commandMap.put(Command.CAMERA_IS_RECORDING, "isRecording");
     commandMap.put(Command.CAMERA_RECORD, "record");
     commandMap.put(Command.CAMERA_STOP_RECORD, "stopRecording");
+    commandMap.put(Command.HUB_GET_CONDITION, "getHubCondition");
+    commandMap.put(Command.HUB_TOGGLE_POWER, "toggleHubPower");
 
     // Make sure all Command are in the map.
     assert commandMap.size() == Command.values().length;
@@ -57,6 +59,20 @@ public abstract class Client {
    */
   public final List<UUID> getUUIDOfType(String type) {
     return mediator.getUUIDOfType(type);
+  }
+
+  /**
+   * Gets the list of UUIDs from the mediator of a given type, ignoring if the mediator is offline
+   * based on if ignoreStatus is true.
+   *
+   * @param type the type of the class you wish to get the UUIDs of
+   * @param ignoreStatus whether or not to ignore the status of the mediator, if true the mediator
+   *     will return a list of UUIDs whether or not it's on, if false the mediator will return an
+   *     empty list if it's offline
+   * @return the list of UUIDs who belong to objects of type
+   */
+  public final List<UUID> getUUIDOfType(String type, boolean ignoreStatus) {
+    return mediator.getUUIDOfType(type, ignoreStatus);
   }
 
   /**
