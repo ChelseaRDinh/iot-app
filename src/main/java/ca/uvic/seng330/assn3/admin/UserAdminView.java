@@ -30,7 +30,6 @@ public class UserAdminView {
   private TableColumn userName;
   private TableColumn firstName;
   private TableColumn lastName;
-  private TableColumn userDevices;
   private Button addUser;
   private Button removeUser;
   private Button backButton;
@@ -156,7 +155,7 @@ public class UserAdminView {
     users = controller.getUsers();
     for (int i = 0; i < users.length; i++) {
       String currentUser = users[i];
-      User newUser = new User(currentUser, "Test", "Test");
+      User newUser = new User(currentUser, currentUser, currentUser);
       userData.add(newUser);
     }
   }

@@ -82,15 +82,15 @@ public class UserDeviceRegistrationView {
 
     userName = new TableColumn("Username");
     userName.setMinWidth(100);
-    userName.setCellValueFactory(new PropertyValueFactory<User, String>("Username"));
+    userName.setCellValueFactory(new PropertyValueFactory<User, String>("userName"));
 
     firstName = new TableColumn("First");
     firstName.setMinWidth(100);
-    firstName.setCellValueFactory(new PropertyValueFactory<User, String>("First"));
+    firstName.setCellValueFactory(new PropertyValueFactory<User, String>("firstName"));
 
     lastName = new TableColumn("Last");
     lastName.setMinWidth(100);
-    lastName.setCellValueFactory(new PropertyValueFactory<User, String>("Last"));
+    lastName.setCellValueFactory(new PropertyValueFactory<User, String>("lastName"));
 
     userTable.getColumns().addAll(userName, firstName, lastName);
     userTable.setItems(userData);
@@ -99,10 +99,9 @@ public class UserDeviceRegistrationView {
   /** Add current users in DB from the auth manager. */
   private void addUsersToTable() {
     users = controller.getUsers();
-
     for (int i = 0; i < users.length; i++) {
       String currentUser = users[i];
-      User newUser = new User(currentUser, "Test", "Test");
+      User newUser = new User(currentUser, currentUser, currentUser);
       userData.add(newUser);
     }
   }
